@@ -27,6 +27,7 @@ export class UCPClient {
   private readonly gatewayUrl: string;
   private readonly agentProfileUrl: string;
   private readonly ucpVersion: string;
+  private readonly requestSignature: string | undefined;
 
   constructor(config: UCPClientConfig) {
     new URL(config.gatewayUrl);
@@ -38,6 +39,7 @@ export class UCPClient {
     this.gatewayUrl = config.gatewayUrl.replace(/\/+$/, '');
     this.agentProfileUrl = config.agentProfileUrl;
     this.ucpVersion = config.ucpVersion ?? DEFAULT_UCP_VERSION;
+    this.requestSignature = config.requestSignature;
   }
 
   async discover(): Promise<UCPProfile> {
@@ -127,6 +129,72 @@ export class UCPClient {
     return this.validateCheckout(data);
   }
 
+  // ── Fulfillment convenience methods ──────────────────────────────────────
+  // These wrap updateCheckout with the correct fulfillment payload shape,
+  // matching the multi-step flow from the official UCP sample client.
+
+  async setFulfillment(
+    id: string,
+    type: string,
+    patch?: UpdateCheckoutPayload,
+  ): Promise<CheckoutSession> {
+    return this.updateCheckout(id, {
+      ...patch,
+      fulfillment: { methods: [{ id: 'default', type }] },
+    });
+  }
+
+  async selectDestination(
+    id: string,
+    destinationId: string,
+    fulfillmentType = 'shipping',
+    patch?: UpdateCheckoutPayload,
+  ): Promise<CheckoutSession> {
+    return this.updateCheckout(id, {
+      ...patch,
+      fulfillment: {
+        methods: [{ id: 'default', type: fulfillmentType, selected_destination_id: destinationId }],
+      },
+    });
+  }
+
+  async selectFulfillmentOption(
+    id: string,
+    optionId: string,
+    destinationId?: string,
+    fulfillmentType = 'shipping',
+    patch?: UpdateCheckoutPayload,
+  ): Promise<CheckoutSession> {
+    return this.updateCheckout(id, {
+      ...patch,
+      fulfillment: {
+        methods: [
+          {
+            id: 'default',
+            type: fulfillmentType,
+            ...(destinationId !== undefined
+              ? { selected_destination_id: destinationId }
+              : {}),
+            groups: [{ id: 'default', selected_option_id: optionId }],
+          },
+        ],
+      },
+    });
+  }
+
+  async applyDiscountCodes(
+    id: string,
+    codes: readonly string[],
+    patch?: UpdateCheckoutPayload,
+  ): Promise<CheckoutSession> {
+    return this.updateCheckout(id, {
+      ...patch,
+      discounts: { codes: [...codes] },
+    });
+  }
+
+  // ── Orders ─────────────────────────────────────────────────────────────
+
   async getOrder(id: string): Promise<UCPOrder> {
     const data = await this.request('GET', `/orders/${encodeURIComponent(id)}`);
     return this.validate(data, UCPOrderSchema) as UCPOrder;
@@ -153,9 +221,16 @@ export class UCPClient {
 
     const headers: Record<string, string> = {
       'UCP-Agent': `profile="${this.agentProfileUrl}", version="${this.ucpVersion}"`,
-      'Content-Type': 'application/json',
       'request-id': requestId,
     };
+
+    if (body !== undefined) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    if (this.requestSignature !== undefined) {
+      headers['request-signature'] = this.requestSignature;
+    }
 
     if (method === 'POST') {
       headers['idempotency-key'] = randomUUID();

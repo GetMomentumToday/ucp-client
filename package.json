@@ -17,6 +17,7 @@
     "format:check": "prettier --check '**/*.{ts,json,md}'",
     "typecheck": "tsc --noEmit --project packages/ucp-client/tsconfig.json",
     "check:comments": "bash scripts/no-descriptive-comments.sh",
+    "check:schemas": "bash scripts/validate-schema-coverage.sh",
     "postinstall": "patch-package"
   },
   "devDependencies": {
