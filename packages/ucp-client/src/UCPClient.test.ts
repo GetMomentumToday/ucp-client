@@ -10,7 +10,7 @@ function mockResponse(body: unknown, status = 200) {
   mockFetch.mockResolvedValueOnce({
     ok: status >= 200 && status < 300,
     status,
-    json: async () => body,
+    json: () => Promise.resolve(body),
   });
 }
 
@@ -387,9 +387,7 @@ describe('UCPClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 502,
-        json: async () => {
-          throw new Error('invalid json');
-        },
+        json: () => Promise.reject(new Error('invalid json')),
       });
 
       try {
