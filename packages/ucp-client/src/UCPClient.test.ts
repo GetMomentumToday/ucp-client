@@ -57,13 +57,24 @@ describe('UCPClient', () => {
       );
     });
 
-    it('attaches Content-Type: application/json on every request', async () => {
+    it('attaches Content-Type: application/json when body is present', async () => {
+      mockResponse(makeSession());
+      await client.createCheckout({
+        line_items: [{ item: { id: 'prod-001' }, quantity: 1 }],
+      });
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const headers = init.headers as Record<string, string>;
+      expect(headers['Content-Type']).toBe('application/json');
+    });
+
+    it('does NOT attach Content-Type on bodiless requests', async () => {
       mockResponse({ products: [] });
       await client.searchProducts('shoes');
 
       const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
       const headers = init.headers as Record<string, string>;
-      expect(headers['Content-Type']).toBe('application/json');
+      expect(headers['Content-Type']).toBeUndefined();
     });
 
     it('attaches request-id on every request', async () => {

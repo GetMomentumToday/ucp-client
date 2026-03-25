@@ -221,9 +221,12 @@ export class UCPClient {
 
     const headers: Record<string, string> = {
       'UCP-Agent': `profile="${this.agentProfileUrl}", version="${this.ucpVersion}"`,
-      'Content-Type': 'application/json',
       'request-id': requestId,
     };
+
+    if (body !== undefined) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     if (this.requestSignature !== undefined) {
       headers['request-signature'] = this.requestSignature;
