@@ -502,4 +502,99 @@ describe('UCPClient', () => {
       expect(warnSpy).not.toHaveBeenCalled();
     });
   });
+
+  describe('request-signature header', () => {
+    it('attaches request-signature when configured', async () => {
+      const signedClient = new UCPClient({
+        gatewayUrl: 'http://localhost:3000',
+        agentProfileUrl: 'https://agent.test/profile',
+        requestSignature: 'sig_abc123',
+      });
+      mockResponse({ ucp: { version: '2026-01-23', services: {}, capabilities: [] } });
+      await signedClient.discover();
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const headers = init.headers as Record<string, string>;
+      expect(headers['request-signature']).toBe('sig_abc123');
+    });
+
+    it('does NOT attach request-signature when not configured', async () => {
+      mockResponse({ ucp: { version: '2026-01-23', services: {}, capabilities: [] } });
+      await client.discover();
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const headers = init.headers as Record<string, string>;
+      expect(headers['request-signature']).toBeUndefined();
+    });
+  });
+
+  describe('completeCheckout with payment_data format', () => {
+    it('sends payment_data (single instrument) + risk_signals', async () => {
+      mockResponse(makeSession({ status: 'completed' }));
+      await client.completeCheckout('chk_1', {
+        payment_data: {
+          id: 'instr_card',
+          handler_id: 'mock_handler',
+          type: 'card',
+          brand: 'Visa',
+          last_digits: '4242',
+          credential: { type: 'token', token: 'tok_success' },
+        },
+        risk_signals: { ip: '127.0.0.1', browser: 'test' },
+      });
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const body = JSON.parse(init.body as string) as Record<string, unknown>;
+      expect(body['payment_data']).toBeDefined();
+      expect((body['payment_data'] as Record<string, unknown>)['brand']).toBe('Visa');
+      expect(body['risk_signals']).toEqual({ ip: '127.0.0.1', browser: 'test' });
+    });
+  });
+
+  describe('fulfillment convenience methods', () => {
+    it('setFulfillment sends correct fulfillment payload', async () => {
+      mockResponse(makeSession());
+      await client.setFulfillment('chk_1', 'shipping');
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const body = JSON.parse(init.body as string) as Record<string, unknown>;
+      const fulfillment = body['fulfillment'] as Record<string, unknown>;
+      const methods = fulfillment['methods'] as Array<Record<string, unknown>>;
+      expect(methods[0]!['type']).toBe('shipping');
+    });
+
+    it('selectDestination sends destination ID', async () => {
+      mockResponse(makeSession());
+      await client.selectDestination('chk_1', 'dest_home');
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const body = JSON.parse(init.body as string) as Record<string, unknown>;
+      const fulfillment = body['fulfillment'] as Record<string, unknown>;
+      const methods = fulfillment['methods'] as Array<Record<string, unknown>>;
+      expect(methods[0]!['selected_destination_id']).toBe('dest_home');
+    });
+
+    it('selectFulfillmentOption sends option and destination IDs', async () => {
+      mockResponse(makeSession());
+      await client.selectFulfillmentOption('chk_1', 'opt_express', 'dest_home');
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const body = JSON.parse(init.body as string) as Record<string, unknown>;
+      const fulfillment = body['fulfillment'] as Record<string, unknown>;
+      const methods = fulfillment['methods'] as Array<Record<string, unknown>>;
+      expect(methods[0]!['selected_destination_id']).toBe('dest_home');
+      const groups = methods[0]!['groups'] as Array<Record<string, unknown>>;
+      expect(groups[0]!['selected_option_id']).toBe('opt_express');
+    });
+
+    it('applyDiscountCodes sends discount codes', async () => {
+      mockResponse(makeSession());
+      await client.applyDiscountCodes('chk_1', ['10OFF', 'FREESHIP']);
+
+      const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
+      const body = JSON.parse(init.body as string) as Record<string, unknown>;
+      const discounts = body['discounts'] as Record<string, unknown>;
+      expect(discounts['codes']).toEqual(['10OFF', 'FREESHIP']);
+    });
+  });
 });

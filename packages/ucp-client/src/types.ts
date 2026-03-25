@@ -8,6 +8,7 @@ export interface UCPClientConfig {
   readonly gatewayUrl: string;
   readonly agentProfileUrl: string;
   readonly ucpVersion?: string;
+  readonly requestSignature?: string;
 }
 
 export interface SearchFilters {
@@ -86,20 +87,33 @@ export interface UpdateCheckoutPayload {
   };
 }
 
-export interface CompleteCheckoutPayload {
-  readonly payment: {
-    readonly instruments: ReadonlyArray<{
-      readonly id: string;
-      readonly handler_id: string;
-      readonly type: string;
-      readonly selected?: boolean;
-      readonly credential?: {
-        readonly type: string;
-        readonly token?: string;
-      };
-      readonly billing_address?: unknown;
-    }>;
+export interface PaymentInstrument {
+  readonly id: string;
+  readonly handler_id: string;
+  readonly type: string;
+  readonly brand?: string;
+  readonly last_digits?: string;
+  readonly handler_name?: string;
+  readonly selected?: boolean;
+  readonly credential?: {
+    readonly type: string;
+    readonly token?: string;
   };
+  readonly billing_address?: unknown;
+}
+
+/**
+ * Supports both gateway formats:
+ * - `payment.instruments[]` — array of instruments
+ * - `payment_data` — single instrument (official UCP spec format)
+ * At least one must be provided.
+ */
+export interface CompleteCheckoutPayload {
+  readonly payment?: {
+    readonly instruments: ReadonlyArray<PaymentInstrument>;
+  };
+  readonly payment_data?: PaymentInstrument;
+  readonly risk_signals?: Readonly<Record<string, string>>;
 }
 
 /**

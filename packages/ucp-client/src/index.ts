@@ -38,6 +38,7 @@ export type {
   CompleteCheckoutPayload,
   CheckoutSession,
   CheckoutSessionStatus,
+  PaymentInstrument,
   UCPProduct,
   UCPOrder,
   UCPProfile,
