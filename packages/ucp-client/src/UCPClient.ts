@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import type { ZodType } from 'zod';
 import type {
   UCPClientConfig,
   SearchFilters,
@@ -11,6 +12,12 @@ import type {
   UCPProfile,
 } from './types.js';
 import { UCPError, UCPEscalationError } from './errors.js';
+import {
+  CheckoutSessionSchema,
+  UCPProfileSchema,
+  UCPProductSchema,
+  UCPOrderSchema,
+} from './schemas.js';
 
 const DEFAULT_UCP_VERSION = '2026-01-23';
 
@@ -34,7 +41,8 @@ export class UCPClient {
   }
 
   async discover(): Promise<UCPProfile> {
-    return this.request('GET', '/.well-known/ucp') as Promise<UCPProfile>;
+    const data = await this.request('GET', '/.well-known/ucp');
+    return this.validate(data, UCPProfileSchema) as UCPProfile;
   }
 
   async searchProducts(query: string, filters: SearchFilters = {}): Promise<UCPProduct[]> {
@@ -61,37 +69,48 @@ export class UCPClient {
 
     const res = await this.request('GET', `/ucp/products?${params.toString()}`);
     const data = res as { products?: UCPProduct[] } | UCPProduct[];
-    return Array.isArray(data) ? data : (data.products ?? []);
+    const products = Array.isArray(data) ? data : (data.products ?? []);
+    return products.map((p) => this.validate(p, UCPProductSchema) as UCPProduct);
   }
 
   async getProduct(id: string): Promise<UCPProduct> {
-    return this.request('GET', `/ucp/products/${encodeURIComponent(id)}`) as Promise<UCPProduct>;
+    const data = await this.request('GET', `/ucp/products/${encodeURIComponent(id)}`);
+    return this.validate(data, UCPProductSchema) as UCPProduct;
   }
 
   async createCheckout(payload: CreateCheckoutPayload): Promise<CheckoutSession> {
-    return this.request('POST', '/checkout-sessions', payload) as Promise<CheckoutSession>;
+    const data = await this.request('POST', '/checkout-sessions', payload);
+    return this.validateCheckout(data);
   }
 
   async getCheckout(id: string): Promise<CheckoutSession> {
-    return this.request('GET', `/checkout-sessions/${encodeURIComponent(id)}`) as Promise<CheckoutSession>;
+    const data = await this.request(
+      'GET',
+      `/checkout-sessions/${encodeURIComponent(id)}`,
+    );
+    return this.validateCheckout(data);
   }
 
   async updateCheckout(id: string, patch: UpdateCheckoutPayload): Promise<CheckoutSession> {
-    return this.request('PUT', `/checkout-sessions/${encodeURIComponent(id)}`, {
-      id,
-      ...patch,
-    }) as Promise<CheckoutSession>;
+    const body = { ...patch, id };
+    const data = await this.request(
+      'PUT',
+      `/checkout-sessions/${encodeURIComponent(id)}`,
+      body,
+    );
+    return this.validateCheckout(data);
   }
 
   async completeCheckout(
     id: string,
     payload: CompleteCheckoutPayload,
   ): Promise<CheckoutSession> {
-    const session = (await this.request(
+    const data = await this.request(
       'POST',
       `/checkout-sessions/${encodeURIComponent(id)}/complete`,
       payload,
-    )) as CheckoutSession;
+    );
+    const session = this.validateCheckout(data);
 
     if (session.status === 'requires_escalation' && session.continue_url) {
       throw new UCPEscalationError(session.continue_url);
@@ -101,14 +120,31 @@ export class UCPClient {
   }
 
   async cancelCheckout(id: string): Promise<CheckoutSession> {
-    return this.request(
+    const data = await this.request(
       'POST',
       `/checkout-sessions/${encodeURIComponent(id)}/cancel`,
-    ) as Promise<CheckoutSession>;
+    );
+    return this.validateCheckout(data);
   }
 
   async getOrder(id: string): Promise<UCPOrder> {
-    return this.request('GET', `/orders/${encodeURIComponent(id)}`) as Promise<UCPOrder>;
+    const data = await this.request('GET', `/orders/${encodeURIComponent(id)}`);
+    return this.validate(data, UCPOrderSchema) as UCPOrder;
+  }
+
+  private validateCheckout(data: unknown): CheckoutSession {
+    return this.validate(data, CheckoutSessionSchema) as CheckoutSession;
+  }
+
+  private validate(data: unknown, schema: ZodType): unknown {
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      // Graceful degradation: warn but return unvalidated data
+      // eslint-disable-next-line no-console
+      console.warn('[UCPClient] Response validation failed:', result.error.message);
+      return data;
+    }
+    return result.data;
   }
 
   private async request(method: HttpMethod, path: string, body?: unknown): Promise<unknown> {

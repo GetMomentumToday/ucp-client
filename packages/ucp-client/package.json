@@ -18,6 +18,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@ucp-js/sdk": "^0.1.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {

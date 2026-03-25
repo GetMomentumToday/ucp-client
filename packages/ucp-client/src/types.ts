@@ -1,3 +1,9 @@
+import type {
+  ExtendedCheckoutResponse,
+  UcpDiscoveryProfile,
+  CheckoutResponseStatus,
+} from '@ucp-js/sdk';
+
 export interface UCPClientConfig {
   readonly gatewayUrl: string;
   readonly agentProfileUrl: string;
@@ -13,6 +19,17 @@ export interface SearchFilters {
   readonly page?: number;
 }
 
+/**
+ * SDK re-exports — official UCP spec types for checkout responses and discovery.
+ */
+export type CheckoutSession = ExtendedCheckoutResponse;
+export type CheckoutSessionStatus = CheckoutResponseStatus;
+export type UCPProfile = UcpDiscoveryProfile;
+
+/**
+ * Request payloads — gateway accepts partial payloads, so these are
+ * more lenient than the SDK's full spec types.
+ */
 export interface CreateCheckoutPayload {
   readonly line_items: ReadonlyArray<{
     readonly item: { readonly id: string };
@@ -85,40 +102,10 @@ export interface CompleteCheckoutPayload {
   };
 }
 
-export type CheckoutSessionStatus =
-  | 'incomplete'
-  | 'ready_for_complete'
-  | 'complete_in_progress'
-  | 'completed'
-  | 'canceled'
-  | 'expired'
-  | 'requires_escalation';
-
-export interface CheckoutSession {
-  readonly id: string;
-  readonly status: CheckoutSessionStatus;
-  readonly line_items: readonly unknown[];
-  readonly currency: string;
-  readonly totals: ReadonlyArray<{
-    readonly type: string;
-    readonly amount: number;
-    readonly display_text?: string;
-  }>;
-  readonly buyer: unknown | null;
-  readonly fulfillment: unknown | null;
-  readonly discounts: unknown | null;
-  readonly continue_url: string | null;
-  readonly messages: ReadonlyArray<{
-    readonly type: string;
-    readonly code: string;
-    readonly content: string;
-    readonly severity?: 'error' | 'warning' | 'info';
-  }>;
-  readonly expires_at: string;
-  readonly created_at: string;
-  readonly order: { readonly id: string; readonly permalink_url?: string } | null;
-}
-
+/**
+ * Gateway-specific product shape — richer than SDK's ItemResponse
+ * which only has { id, image_url, price, title }.
+ */
 export interface UCPProduct {
   readonly id: string;
   readonly title: string;
@@ -137,29 +124,14 @@ export interface UCPProduct {
   }>;
 }
 
+/**
+ * Gateway-specific order shape — richer than SDK's Order
+ * which uses a different structure (adjustments, fulfillment, line_items).
+ */
 export interface UCPOrder {
   readonly id: string;
   readonly status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
   readonly total_cents: number;
   readonly currency: string;
   readonly created_at_iso: string;
-}
-
-export interface UCPProfile {
-  readonly ucp: {
-    readonly version: string;
-    readonly services: Readonly<Record<string, unknown>>;
-    readonly capabilities: ReadonlyArray<{
-      readonly name: string;
-      readonly version: string;
-    }>;
-  };
-  readonly payment?: {
-    readonly handlers?: ReadonlyArray<{
-      readonly id: string;
-      readonly name: string;
-      readonly version: string;
-      readonly [k: string]: unknown;
-    }>;
-  };
 }

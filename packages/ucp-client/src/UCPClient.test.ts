@@ -4,6 +4,7 @@ import { UCPError, UCPEscalationError } from './errors.js';
 
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
+vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 function mockResponse(body: unknown, status = 200) {
   mockFetch.mockResolvedValueOnce({
@@ -445,6 +446,60 @@ describe('UCPClient', () => {
             agentProfileUrl: 'not-a-url',
           }),
       ).toThrow();
+    });
+  });
+
+  describe('Zod validation', () => {
+    it('warns on invalid response but still returns data (graceful degradation)', async () => {
+      const warnSpy = vi.spyOn(console, 'warn');
+      const invalidSession = { id: 'chk_1', status: 'incomplete' };
+      mockResponse(invalidSession);
+      const session = await client.createCheckout({
+        line_items: [{ item: { id: 'prod-001' }, quantity: 1 }],
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[UCPClient] Response validation failed:',
+        expect.any(String),
+      );
+      expect(session.id).toBe('chk_1');
+    });
+
+    it('returns validated data when response matches schema', async () => {
+      const validProduct = {
+        id: 'prod-001',
+        title: 'Shoes',
+        description: null,
+        price_cents: 9999,
+        currency: 'USD',
+        in_stock: true,
+        stock_quantity: 5,
+        images: ['https://example.com/shoe.jpg'],
+        variants: [],
+      };
+      const warnSpy = vi.spyOn(console, 'warn').mockClear();
+      mockResponse(validProduct);
+      const product = await client.getProduct('prod-001');
+
+      expect(product.id).toBe('prod-001');
+      expect(product.title).toBe('Shoes');
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('validates order responses', async () => {
+      const validOrder = {
+        id: 'order-001',
+        status: 'processing',
+        total_cents: 5000,
+        currency: 'USD',
+        created_at_iso: '2026-03-25T12:00:00Z',
+      };
+      const warnSpy = vi.spyOn(console, 'warn').mockClear();
+      mockResponse(validOrder);
+      const order = await client.getOrder('order-001');
+
+      expect(order.id).toBe('order-001');
+      expect(warnSpy).not.toHaveBeenCalled();
     });
   });
 });
