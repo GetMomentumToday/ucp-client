@@ -38,35 +38,39 @@ export const UCPProfileSchema = UcpDiscoveryProfileSchema.passthrough();
 // These types extend beyond the SDK spec (gateway adds fields like price_cents,
 // stock_quantity, variants for products; status, total_cents for orders).
 
-export const UCPProductSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  description: z.string().nullable(),
-  price_cents: z.number().int(),
-  currency: z.string().min(3).max(3),
-  in_stock: z.boolean(),
-  stock_quantity: z.number().int().min(0),
-  images: z.array(z.string().url()),
-  variants: z.array(
-    z
-      .object({
-        id: z.string(),
-        title: z.string(),
-        price_cents: z.number().int(),
-        in_stock: z.boolean(),
-        attributes: z.record(z.string()),
-      })
-      .passthrough(),
-  ),
-}).passthrough();
+export const UCPProductSchema = z
+  .object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string().nullable(),
+    price_cents: z.number().int(),
+    currency: z.string().min(3).max(3),
+    in_stock: z.boolean(),
+    stock_quantity: z.number().int().min(0),
+    images: z.array(z.string().url()),
+    variants: z.array(
+      z
+        .object({
+          id: z.string(),
+          title: z.string(),
+          price_cents: z.number().int(),
+          in_stock: z.boolean(),
+          attributes: z.record(z.string()),
+        })
+        .passthrough(),
+    ),
+  })
+  .passthrough();
 
-export const UCPOrderSchema = z.object({
-  id: z.string(),
-  status: z.enum(['pending', 'processing', 'shipped', 'delivered', 'canceled']),
-  total_cents: z.number().int(),
-  currency: z.string().min(3).max(3),
-  created_at_iso: z.string().datetime({ offset: true }),
-}).passthrough();
+export const UCPOrderSchema = z
+  .object({
+    id: z.string(),
+    status: z.enum(['pending', 'processing', 'shipped', 'delivered', 'canceled']),
+    total_cents: z.number().int(),
+    currency: z.string().min(3).max(3),
+    created_at_iso: z.string().datetime({ offset: true }),
+  })
+  .passthrough();
 
 // ─── Request validation ─────────────────────────────────────────────────────
 // Used to validate outgoing payloads before sending to gateway.

@@ -41,17 +41,17 @@ npm run format:check # Prettier check
 
 ## API
 
-| Method | Gateway Endpoint |
-|--------|-----------------|
-| `discover()` | `GET /.well-known/ucp` |
-| `searchProducts(query, filters?)` | `GET /ucp/products?q=...` |
-| `getProduct(id)` | `GET /ucp/products/:id` |
-| `createCheckout(payload)` | `POST /checkout-sessions` |
-| `getCheckout(id)` | `GET /checkout-sessions/:id` |
-| `updateCheckout(id, patch)` | `PUT /checkout-sessions/:id` |
-| `completeCheckout(id, payment)` | `POST /checkout-sessions/:id/complete` |
-| `cancelCheckout(id)` | `POST /checkout-sessions/:id/cancel` |
-| `getOrder(id)` | `GET /orders/:id` |
+| Method                            | Gateway Endpoint                       |
+| --------------------------------- | -------------------------------------- |
+| `discover()`                      | `GET /.well-known/ucp`                 |
+| `searchProducts(query, filters?)` | `GET /ucp/products?q=...`              |
+| `getProduct(id)`                  | `GET /ucp/products/:id`                |
+| `createCheckout(payload)`         | `POST /checkout-sessions`              |
+| `getCheckout(id)`                 | `GET /checkout-sessions/:id`           |
+| `updateCheckout(id, patch)`       | `PUT /checkout-sessions/:id`           |
+| `completeCheckout(id, payment)`   | `POST /checkout-sessions/:id/complete` |
+| `cancelCheckout(id)`              | `POST /checkout-sessions/:id/cancel`   |
+| `getOrder(id)`                    | `GET /orders/:id`                      |
 
 ## License
 

@@ -86,27 +86,17 @@ export class UCPClient {
   }
 
   async getCheckout(id: string): Promise<CheckoutSession> {
-    const data = await this.request(
-      'GET',
-      `/checkout-sessions/${encodeURIComponent(id)}`,
-    );
+    const data = await this.request('GET', `/checkout-sessions/${encodeURIComponent(id)}`);
     return this.validateCheckout(data);
   }
 
   async updateCheckout(id: string, patch: UpdateCheckoutPayload): Promise<CheckoutSession> {
     const body = { ...patch, id };
-    const data = await this.request(
-      'PUT',
-      `/checkout-sessions/${encodeURIComponent(id)}`,
-      body,
-    );
+    const data = await this.request('PUT', `/checkout-sessions/${encodeURIComponent(id)}`, body);
     return this.validateCheckout(data);
   }
 
-  async completeCheckout(
-    id: string,
-    payload: CompleteCheckoutPayload,
-  ): Promise<CheckoutSession> {
+  async completeCheckout(id: string, payload: CompleteCheckoutPayload): Promise<CheckoutSession> {
     const data = await this.request(
       'POST',
       `/checkout-sessions/${encodeURIComponent(id)}/complete`,
@@ -122,10 +112,7 @@ export class UCPClient {
   }
 
   async cancelCheckout(id: string): Promise<CheckoutSession> {
-    const data = await this.request(
-      'POST',
-      `/checkout-sessions/${encodeURIComponent(id)}/cancel`,
-    );
+    const data = await this.request('POST', `/checkout-sessions/${encodeURIComponent(id)}/cancel`);
     return this.validateCheckout(data);
   }
 
@@ -172,9 +159,7 @@ export class UCPClient {
           {
             id: 'default',
             type: fulfillmentType,
-            ...(destinationId !== undefined
-              ? { selected_destination_id: destinationId }
-              : {}),
+            ...(destinationId !== undefined ? { selected_destination_id: destinationId } : {}),
             groups: [{ id: 'default', selected_option_id: optionId }],
           },
         ],

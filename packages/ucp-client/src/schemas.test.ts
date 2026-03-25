@@ -98,9 +98,7 @@ describe('Response schemas', () => {
       });
       expect(result.success).toBe(true);
       if (result.success) {
-        expect((result.data as Record<string, unknown>)['extra_field']).toBe(
-          'should be preserved',
-        );
+        expect((result.data as Record<string, unknown>)['extra_field']).toBe('should be preserved');
       }
     });
   });

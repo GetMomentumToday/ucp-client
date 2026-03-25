@@ -29,8 +29,9 @@ METHODS=$(grep -oE '^\s+async\s+[a-zA-Z]+\(' "$SRC" | grep -oE '[a-zA-Z]+\(' | s
 
 echo "--- Method validation coverage ---"
 for method in $METHODS; do
-  # Count validate calls in the method body (between this method and the next async/private)
-  HAS_VALIDATE=$(awk "/async ${method}\(/,/^\s+(async|private)\s/" "$SRC" | grep -c 'this\.validate\|this\.validateCheckout\|this\.updateCheckout\|this\.request' || true)
+  # Check if the method body contains a validate/validateCheckout/updateCheckout/request call
+  # Simple grep: find "async methodName(" then look for validation within 20 lines
+  HAS_VALIDATE=$(grep -A 30 "async ${method}(" "$SRC" | grep -c 'this\.validate\|this\.validateCheckout\|this\.updateCheckout\|this\.request' || true)
 
   if [ "$HAS_VALIDATE" -gt 0 ]; then
     echo "  ✅ ${method}()"

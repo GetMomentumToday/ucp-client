@@ -182,7 +182,10 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
             expect(err.continue_url).toBeDefined();
           } else {
             // Magento may reject if session not fully ready — that's OK for integration
-            console.warn('Complete checkout failed (expected in some adapter states):', (err as Error).message);
+            console.warn(
+              'Complete checkout failed (expected in some adapter states):',
+              (err as Error).message,
+            );
           }
         }
       });
