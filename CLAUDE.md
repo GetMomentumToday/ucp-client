@@ -7,10 +7,11 @@ It is a **library, not a server** — no port, no process, no Docker container.
 
 ## Architecture
 
-- **Monorepo**: npm workspaces, single package at `packages/ucp-client`
+- **Single package**: `src/` at root, no monorepo
 - **Runtime**: Node 22+ native `fetch` (no Axios, no ky)
 - **Validation**: Zod schemas via `@ucp-js/sdk` for runtime response validation
 - **Capability-aware**: `UCPClient.connect()` discovers server capabilities and exposes only supported features
+- **Build**: tsdown → dual ESM (`.js`) + CJS (`.cjs`) with `.d.ts` + `.d.cts` declarations
 
 ### File Structure
 
@@ -19,7 +20,7 @@ src/
   types/           — Domain-split types (config, checkout, order, payment, identity-linking, common, product)
   capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability, ProductsCapability
   http.ts          — Shared HttpClient (headers, idempotency, error parsing)
-  errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError
+  errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
   schemas.ts       — Zod schemas (SDK re-exports)
   UCPClient.ts     — connect() → ConnectedClient with describeTools()
   index.ts         — Public API
@@ -55,6 +56,7 @@ All interfaces use `readonly` properties. Never mutate existing objects — crea
 - Parse gateway `messages[]` errors into typed `UCPError` (with `type`, `path`, `content_type`, full `messages[]`)
 - Detect `requires_escalation` status and throw `UCPEscalationError`
 - Throw `UCPIdempotencyConflictError` on 409 responses
+- Throw `UCPOAuthError` for identity linking failures
 - Never silently swallow errors
 
 ### Testing
@@ -67,16 +69,14 @@ All interfaces use `readonly` properties. Never mutate existing objects — crea
 
 ```bash
 npm install
-npm run build        # tsc
+npm run build        # tsdown (dual ESM + CJS)
 npm test             # vitest run
 npm run typecheck    # tsc --noEmit
 npm run lint         # eslint
 npm run format:check # prettier --check
+npm run check:exports # attw (validates exports map)
+npm run check:publish # publint (validates package)
 ```
-
-## Build Order
-
-Single package — just `packages/ucp-client`.
 
 ## Dependencies
 

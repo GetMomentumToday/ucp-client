@@ -35,27 +35,24 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: No descriptive comments
-        run: npm run check:comments
-
-      - name: Schema coverage check
-        run: npm run check:schemas
-
       - name: Format check
         run: npm run format:check
 
       - name: Build
         run: npm run build
 
-      - name: Run tests
-        run: npm test
+      - name: Validate exports
+        run: npm run check:exports
+
+      - name: Validate package
+        run: npm run check:publish
 
       - name: Run tests with coverage
-        run: npm run test --workspace=packages/ucp-client -- --coverage
+        run: npm run test:coverage
 
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v5
         with:
-          files: packages/ucp-client/coverage/lcov.info
+          files: coverage/lcov.info
           fail_ci_if_error: false

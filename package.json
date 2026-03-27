@@ -1,33 +1,87 @@
 {
-  "name": "@omnix/ucp-client-monorepo",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@omnix/ucp-client",
+  "version": "0.1.0",
+  "description": "Capability-aware TypeScript client for any UCP-compliant server",
   "license": "MIT",
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
+  "sideEffects": false,
   "engines": {
     "node": ">=22"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OmnixHQ/ucp-client.git"
+  },
+  "homepage": "https://github.com/OmnixHQ/ucp-client#readme",
+  "bugs": {
+    "url": "https://github.com/OmnixHQ/ucp-client/issues"
+  },
+  "keywords": [
+    "ucp",
+    "universal-commerce-protocol",
+    "agentic-commerce",
+    "ai-agent",
+    "checkout",
+    "e-commerce",
+    "typescript"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "build": "npm run build --workspace=packages/ucp-client",
-    "test": "npm run test --workspace=packages/ucp-client",
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write '**/*.{ts,json,md}'",
     "format:check": "prettier --check '**/*.{ts,json,md}'",
-    "typecheck": "tsc --noEmit --project packages/ucp-client/tsconfig.json",
     "check:comments": "bash scripts/no-descriptive-comments.sh",
     "check:schemas": "bash scripts/validate-schema-coverage.sh",
+    "check:exports": "attw --pack .",
+    "check:publish": "publint",
+    "prepublishOnly": "npm run build && npm run check:exports && npm run check:publish",
     "postinstall": "patch-package"
   },
+  "dependencies": {
+    "@ucp-js/sdk": "^0.1.0",
+    "zod": "^3.23.0"
+  },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.0",
+    "@types/node": "^25.5.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "patch-package": "^8.0.1",
     "prettier": "^3.2.0",
-    "typescript": "^5.4.0"
+    "publint": "^0.3.0",
+    "tsdown": "^0.9.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
   }
 }

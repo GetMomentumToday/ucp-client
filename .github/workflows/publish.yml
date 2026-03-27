@@ -28,7 +28,10 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Validate exports
+        run: npm run check:exports
+
       - name: Publish
-        run: npm publish --workspace=packages/ucp-client --provenance --access public
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
