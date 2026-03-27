@@ -79,40 +79,68 @@ while (true) {
 
 You write the loop. Claude decides the flow: search → create checkout → set shipping → complete → done.
 
-## What `getAgentTools()` returns
+Each tool returned by `getAgentTools()` has: `name`, `description`, `parameters` (JSON Schema), and `execute(params)` — everything an LLM needs.
 
-Each tool has everything an LLM needs:
+## Error handling
 
 ```typescript
-interface AgentTool {
-  name: string; // 'search_products', 'create_checkout', etc.
-  description: string; // Human-readable, for the LLM
-  parameters: JsonSchema; // JSON Schema for input validation
-  execute: (params) => Promise<unknown>; // Calls the right method
+import { UCPError, UCPEscalationError } from '@omnix/ucp-client';
+
+try {
+  await client.checkout.complete(sessionId, payload);
+} catch (err) {
+  if (err instanceof UCPEscalationError) {
+    // Redirect buyer to err.continue_url for merchant-hosted checkout
+  }
+  if (err instanceof UCPError) {
+    // err.code — e.g., 'PRODUCT_NOT_FOUND'
+    // err.messages[] — all messages from the server
+    // err.path — JSONPath to the field that caused the error
+    // err.type — 'error' | 'warning' | 'info'
+  }
 }
 ```
 
-The tools returned depend on what the server supports:
+## Capabilities
 
-| Server declares                | Tools you get                                                                                |
-| ------------------------------ | -------------------------------------------------------------------------------------------- |
-| `dev.ucp.shopping.checkout`    | `create_checkout`, `get_checkout`, `update_checkout`, `complete_checkout`, `cancel_checkout` |
-| `dev.ucp.shopping.fulfillment` | + `set_fulfillment`, `select_destination`, `select_fulfillment_option`                       |
-| `dev.ucp.shopping.discount`    | + `apply_discount_codes`                                                                     |
-| `dev.ucp.shopping.order`       | + `get_order`                                                                                |
-| _(always)_                     | `search_products`, `get_product`                                                             |
+The tools you get depend on what the server declares:
+
+| Server declares                   | Tools you get                                                                                |
+| --------------------------------- | -------------------------------------------------------------------------------------------- |
+| `dev.ucp.shopping.checkout`       | `create_checkout`, `get_checkout`, `update_checkout`, `complete_checkout`, `cancel_checkout` |
+| `dev.ucp.shopping.fulfillment`    | + `set_fulfillment`, `select_destination`, `select_fulfillment_option`                       |
+| `dev.ucp.shopping.discount`       | + `apply_discount_codes`                                                                     |
+| `dev.ucp.shopping.order`          | + `get_order`                                                                                |
+| `dev.ucp.common.identity_linking` | + `get_authorization_url`, `exchange_auth_code`, `refresh_access_token`, `revoke_token`      |
+| _(always)_                        | `search_products`, `get_product`                                                             |
 
 Connect to a different server → get different tools. Your agent code stays the same.
 
-## Works with any agent framework
+### Checking capabilities manually
 
-The `AgentTool` format maps directly to every major framework:
-
-**Claude API:**
+If you need more control than `getAgentTools()`:
 
 ```typescript
-tools.map((t) => ({ name: t.name, description: t.description, input_schema: t.parameters }));
+const client = await UCPClient.connect(config);
+
+client.checkout; // CheckoutCapability | null
+client.order; // OrderCapability | null
+client.identityLinking; // IdentityLinkingCapability | null
+client.products; // ProductsCapability (always available)
+
+if (client.checkout) {
+  client.checkout.extensions.fulfillment; // boolean
+  client.checkout.extensions.discount; // boolean
+  client.checkout.extensions.buyerConsent; // boolean
+}
+
+console.log(Object.keys(client.paymentHandlers));
+// e.g., ['com.google.pay', 'dev.shopify.shop_pay']
 ```
+
+## Other agent frameworks
+
+The `AgentTool` format maps directly to every major framework:
 
 **OpenAI:**
 
@@ -126,8 +154,7 @@ tools.map((t) => ({
 **Vercel AI SDK:**
 
 ```typescript
-import { tool } from 'ai';
-import { jsonSchema } from 'ai';
+import { tool, jsonSchema } from 'ai';
 
 Object.fromEntries(
   tools.map((t) => [
@@ -144,75 +171,6 @@ for (const t of tools) {
   server.tool(t.name, t.description, t.parameters, async (params) => ({
     content: [{ type: 'text', text: JSON.stringify(await t.execute(params)) }],
   }));
-}
-```
-
-## Checking capabilities manually
-
-If you need more control than `getAgentTools()`:
-
-```typescript
-const client = await UCPClient.connect(config);
-
-// Capabilities are null when the server doesn't support them
-client.checkout; // CheckoutCapability | null
-client.order; // OrderCapability | null
-client.identityLinking; // IdentityLinkingCapability | null
-client.products; // ProductsCapability (always available)
-
-// Checkout extensions
-if (client.checkout) {
-  client.checkout.extensions.fulfillment; // boolean
-  client.checkout.extensions.discount; // boolean
-  client.checkout.extensions.buyerConsent; // boolean
-}
-
-// Payment handlers from server profile
-console.log(Object.keys(client.paymentHandlers));
-// e.g., ['com.google.pay', 'dev.shopify.shop_pay']
-```
-
-## How connect() works
-
-```
-UCPClient.connect(config)
-    │
-    ├── 1. Validate config
-    ├── 2. GET /.well-known/ucp → parse server profile
-    ├── 3. Read profile.capabilities[]
-    ├── 4. Instantiate only supported capabilities:
-    │       ├── dev.ucp.shopping.checkout      → CheckoutCapability
-    │       ├── dev.ucp.shopping.order          → OrderCapability
-    │       └── dev.ucp.common.identity_linking → IdentityLinkingCapability
-    ├── 5. Always instantiate ProductsCapability
-    └── 6. Return frozen ConnectedClient
-```
-
-## Capabilities reference
-
-| Server Capability                 | Client Property                    | Methods                                                              |
-| --------------------------------- | ---------------------------------- | -------------------------------------------------------------------- |
-| `dev.ucp.shopping.checkout`       | `checkout`                         | `create`, `get`, `update`, `complete`, `cancel`                      |
-| `dev.ucp.shopping.fulfillment`    | `checkout.extensions.fulfillment`  | `setFulfillment`, `selectDestination`, `selectFulfillmentOption`     |
-| `dev.ucp.shopping.discount`       | `checkout.extensions.discount`     | `applyDiscountCodes`                                                 |
-| `dev.ucp.shopping.buyer_consent`  | `checkout.extensions.buyerConsent` | consent fields in buyer payloads                                     |
-| `dev.ucp.shopping.order`          | `order`                            | `get`                                                                |
-| `dev.ucp.common.identity_linking` | `identityLinking`                  | `getAuthorizationUrl`, `exchangeCode`, `refreshToken`, `revokeToken` |
-
-## Error handling
-
-```typescript
-import { UCPError, UCPEscalationError } from '@omnix/ucp-client';
-
-try {
-  await client.checkout.complete(id, payload);
-} catch (err) {
-  if (err instanceof UCPEscalationError) {
-    // Redirect buyer to err.continue_url for merchant-hosted checkout
-  }
-  if (err instanceof UCPError) {
-    // err.code, err.messages[], err.path, err.type
-  }
 }
 ```
 
