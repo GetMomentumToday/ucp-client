@@ -17,6 +17,8 @@ export interface CardCredential {
 
 export type PaymentCredential = TokenCredential | CardCredential;
 
+import type { PostalAddress } from './common.js';
+
 export interface PaymentInstrument {
   readonly id: string;
   readonly handler_id: string;
@@ -27,7 +29,7 @@ export interface PaymentInstrument {
   readonly selected?: boolean;
   readonly display?: Readonly<Record<string, unknown>>;
   readonly credential?: PaymentCredential;
-  readonly billing_address?: unknown;
+  readonly billing_address?: PostalAddress;
 }
 
 export interface PaymentHandlerInstance {

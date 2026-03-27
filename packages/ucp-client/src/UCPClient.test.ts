@@ -311,15 +311,15 @@ describe('checkout capability', () => {
     expect(session.id).toBe('chk_42');
   });
 
-  it('updates checkout with id merged into body', async () => {
+  it('updates checkout via PUT', async () => {
     const client = await connectWithCapabilities();
     mockResponse(makeSession());
     await client.checkout!.update('chk_1', { buyer: { first_name: 'Jan' } });
 
-    const [, init] = mockFetch.mock.calls[1] as [string, RequestInit];
+    const [url, init] = mockFetch.mock.calls[1] as [string, RequestInit];
+    expect(url).toBe('http://localhost:3000/checkout-sessions/chk_1');
     expect(init.method).toBe('PUT');
     const body = JSON.parse(init.body as string) as Record<string, unknown>;
-    expect(body['id']).toBe('chk_1');
     expect(body['buyer']).toEqual({ first_name: 'Jan' });
   });
 

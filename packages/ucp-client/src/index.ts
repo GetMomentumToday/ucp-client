@@ -1,10 +1,13 @@
-export { UCPClient } from './UCPClient.js';
+export { UCPClient, connect } from './UCPClient.js';
 export type { ConnectedClient, ToolDescriptor, UCPProfile } from './UCPClient.js';
 
-export { UCPError, UCPEscalationError, UCPIdempotencyConflictError } from './errors.js';
-export type { UCPMessage } from './errors.js';
-
-export { HttpClient } from './http.js';
+export {
+  UCPError,
+  UCPEscalationError,
+  UCPIdempotencyConflictError,
+  UCPOAuthError,
+} from './errors.js';
+export type { UCPMessage, MessageType, MessageSeverity, ContentType } from './errors.js';
 
 export { CheckoutCapability } from './capabilities/checkout.js';
 export { OrderCapability } from './capabilities/order.js';

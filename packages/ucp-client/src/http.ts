@@ -1,9 +1,11 @@
 import { randomUUID } from 'node:crypto';
 import type { ZodType } from 'zod';
-import { UCPError, UCPEscalationError, UCPIdempotencyConflictError } from './errors.js';
-import type { UCPMessage } from './errors.js';
+import { UCPError, UCPIdempotencyConflictError } from './errors.js';
+import type { UCPMessage, MessageType, MessageSeverity, ContentType } from './errors.js';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+export type LogFn = (message: string, detail?: string) => void;
 
 export interface HttpClientConfig {
   readonly gatewayUrl: string;
@@ -11,6 +13,7 @@ export interface HttpClientConfig {
   readonly ucpVersion: string;
   readonly requestSignature?: string;
   readonly accessToken?: string;
+  readonly onValidationWarning?: LogFn;
 }
 
 export class HttpClient {
@@ -19,6 +22,7 @@ export class HttpClient {
   private readonly ucpVersion: string;
   private readonly requestSignature: string | undefined;
   private readonly accessToken: string | undefined;
+  private readonly onValidationWarning: LogFn;
 
   constructor(config: HttpClientConfig) {
     this.gatewayUrl = config.gatewayUrl;
@@ -26,19 +30,20 @@ export class HttpClient {
     this.ucpVersion = config.ucpVersion;
     this.requestSignature = config.requestSignature;
     this.accessToken = config.accessToken;
+    // eslint-disable-next-line no-console
+    this.onValidationWarning =
+      config.onValidationWarning ?? ((msg, detail) => console.warn(msg, detail));
   }
 
   withAccessToken(token: string): HttpClient {
-    const config: HttpClientConfig = {
+    return new HttpClient({
       gatewayUrl: this.gatewayUrl,
       agentProfileUrl: this.agentProfileUrl,
       ucpVersion: this.ucpVersion,
+      ...(this.requestSignature !== undefined ? { requestSignature: this.requestSignature } : {}),
       accessToken: token,
-    };
-    if (this.requestSignature !== undefined) {
-      (config as { requestSignature: string }).requestSignature = this.requestSignature;
-    }
-    return new HttpClient(config);
+      onValidationWarning: this.onValidationWarning,
+    });
   }
 
   async request(method: HttpMethod, path: string, body?: unknown): Promise<unknown> {
@@ -84,19 +89,15 @@ export class HttpClient {
   validate(data: unknown, schema: ZodType): unknown {
     const result = schema.safeParse(data);
     if (!result.success) {
-      // eslint-disable-next-line no-console
-      console.warn('[UCPClient] Response validation failed:', result.error.message);
+      this.onValidationWarning('[UCPClient] Response validation failed:', result.error.message);
       return data;
     }
     return result.data;
   }
 
   private throwFromResponse(data: unknown, statusCode: number): never {
-    if (statusCode === 409) {
-      throw new UCPIdempotencyConflictError();
-    }
-
     if (typeof data !== 'object' || data === null) {
+      if (statusCode === 409) throw new UCPIdempotencyConflictError();
       throw new UCPError('HTTP_ERROR', `Gateway returned ${statusCode}`, 'error', statusCode);
     }
 
@@ -104,58 +105,40 @@ export class HttpClient {
     const rawMessages = body['messages'];
 
     if (Array.isArray(rawMessages) && rawMessages.length > 0) {
-      const allMessages = this.parseMessages(rawMessages);
+      const allMessages = parseMessages(rawMessages);
       const first = allMessages[0]!;
       const code = first.code ?? 'UNKNOWN';
 
-      const options: {
-        readonly type: 'error' | 'warning' | 'info';
-        readonly path?: string;
-        readonly contentType?: 'plain' | 'markdown';
-        readonly messages: readonly UCPMessage[];
-      } = { type: first.type, messages: allMessages };
-      if (first.path !== undefined) (options as { path: string }).path = first.path;
-      if (first.content_type !== undefined)
-        (options as { contentType: string }).contentType = first.content_type;
-
-      throw new UCPError(code, first.content, first.type, statusCode, options);
+      throw new UCPError(code, first.content, first.type, statusCode, {
+        ...(first.path !== undefined ? { path: first.path } : {}),
+        ...(first.content_type !== undefined ? { contentType: first.content_type } : {}),
+        messages: allMessages,
+      });
     }
 
+    if (statusCode === 409) throw new UCPIdempotencyConflictError();
     throw new UCPError('HTTP_ERROR', `Gateway returned ${statusCode}`, 'error', statusCode);
-  }
-
-  private parseMessages(rawMessages: unknown[]): UCPMessage[] {
-    return rawMessages.map((m: unknown) => {
-      const record = m as Record<string, unknown>;
-      const rawType = String(record['type'] ?? 'error');
-      const messageType = (['error', 'warning', 'info'].includes(rawType) ? rawType : 'error') as
-        | 'error'
-        | 'warning'
-        | 'info';
-
-      const msg: UCPMessage = {
-        type: messageType,
-        content: String(record['content'] ?? 'Unknown error'),
-      };
-
-      if (record['code'] !== undefined) (msg as { code: string }).code = String(record['code']);
-      if (record['severity'] !== undefined)
-        (msg as { severity: string }).severity = String(record['severity']);
-      if (record['path'] !== undefined) (msg as { path: string }).path = String(record['path']);
-      if (record['content_type'] !== undefined)
-        (msg as { content_type: string }).content_type = String(record['content_type']);
-
-      return msg;
-    });
   }
 }
 
-export function validateCheckoutSession(http: HttpClient, data: unknown, schema: ZodType): unknown {
-  const session = http.validate(data, schema) as Record<string, unknown>;
+function parseMessages(rawMessages: unknown[]): UCPMessage[] {
+  return rawMessages.map((m: unknown) => {
+    const record = m as Record<string, unknown>;
+    const rawType = String(record['type'] ?? 'error');
+    const validTypes: readonly string[] = ['error', 'warning', 'info'];
+    const type: MessageType = validTypes.includes(rawType) ? (rawType as MessageType) : 'error';
 
-  if (session['status'] === 'requires_escalation' && session['continue_url']) {
-    throw new UCPEscalationError(String(session['continue_url']));
-  }
-
-  return session;
+    return {
+      type,
+      content: String(record['content'] ?? 'Unknown error'),
+      ...(record['code'] !== undefined ? { code: String(record['code']) } : {}),
+      ...(record['severity'] !== undefined
+        ? { severity: String(record['severity']) as MessageSeverity }
+        : {}),
+      ...(record['path'] !== undefined ? { path: String(record['path']) } : {}),
+      ...(record['content_type'] !== undefined
+        ? { content_type: String(record['content_type']) as ContentType }
+        : {}),
+    };
+  });
 }

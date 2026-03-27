@@ -6,7 +6,7 @@ import type { SearchFilters } from '../types/common.js';
 export class ProductsCapability {
   constructor(private readonly http: HttpClient) {}
 
-  async search(query: string, filters: SearchFilters = {}): Promise<UCPProduct[]> {
+  async search(query: string, filters: SearchFilters = {}): Promise<readonly UCPProduct[]> {
     const params = new URLSearchParams({ q: query });
 
     const filterEntries: ReadonlyArray<[string, unknown]> = [

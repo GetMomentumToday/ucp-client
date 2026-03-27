@@ -1,39 +1,40 @@
+export type MessageType = 'error' | 'warning' | 'info';
+export type MessageSeverity = 'recoverable' | 'requires_buyer_input' | 'requires_buyer_review';
+export type ContentType = 'plain' | 'markdown';
+
 export interface UCPMessage {
-  readonly type: 'error' | 'warning' | 'info';
+  readonly type: MessageType;
   readonly code?: string;
   readonly content: string;
-  readonly severity?: 'recoverable' | 'requires_buyer_input' | 'requires_buyer_review';
+  readonly severity?: MessageSeverity;
   readonly path?: string;
-  readonly content_type?: 'plain' | 'markdown';
+  readonly content_type?: ContentType;
 }
 
 export class UCPError extends Error {
   readonly code: string;
-  readonly severity: 'error' | 'warning' | 'info';
+  readonly type: MessageType;
   readonly statusCode: number;
-  readonly type: 'error' | 'warning' | 'info';
   readonly path: string | undefined;
-  readonly contentType: 'plain' | 'markdown' | undefined;
+  readonly contentType: ContentType | undefined;
   readonly messages: readonly UCPMessage[];
 
   constructor(
     code: string,
     message: string,
-    severity: 'error' | 'warning' | 'info' = 'error',
+    type: MessageType = 'error',
     statusCode = 400,
     options: {
-      readonly type?: 'error' | 'warning' | 'info';
       readonly path?: string;
-      readonly contentType?: 'plain' | 'markdown';
+      readonly contentType?: ContentType;
       readonly messages?: readonly UCPMessage[];
     } = {},
   ) {
     super(message);
     this.name = 'UCPError';
     this.code = code;
-    this.severity = severity;
+    this.type = type;
     this.statusCode = statusCode;
-    this.type = options.type ?? 'error';
     this.path = options.path;
     this.contentType = options.contentType;
     this.messages = options.messages ?? [];
@@ -54,5 +55,15 @@ export class UCPEscalationError extends Error {
     super(message);
     this.name = 'UCPEscalationError';
     this.continue_url = continue_url;
+  }
+}
+
+export class UCPOAuthError extends Error {
+  readonly statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.name = 'UCPOAuthError';
+    this.statusCode = statusCode;
   }
 }

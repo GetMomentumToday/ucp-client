@@ -1,5 +1,5 @@
 import type { HttpClient } from '../http.js';
-import { validateCheckoutSession } from '../http.js';
+import { UCPEscalationError } from '../errors.js';
 import { CheckoutSessionSchema } from '../schemas.js';
 import type {
   CheckoutSession,
@@ -8,6 +8,9 @@ import type {
   UpdateCheckoutPayload,
   CompleteCheckoutPayload,
 } from '../types/checkout.js';
+
+const DEFAULT_METHOD_ID = 'default';
+const DEFAULT_GROUP_ID = 'default';
 
 export class CheckoutCapability {
   readonly extensions: CheckoutExtensions;
@@ -30,11 +33,10 @@ export class CheckoutCapability {
   }
 
   async update(id: string, patch: UpdateCheckoutPayload): Promise<CheckoutSession> {
-    const body = { ...patch, id };
     const data = await this.http.request(
       'PUT',
       `/checkout-sessions/${encodeURIComponent(id)}`,
-      body,
+      patch,
     );
     return this.validateSession(data);
   }
@@ -63,7 +65,7 @@ export class CheckoutCapability {
   ): Promise<CheckoutSession> {
     return this.update(id, {
       ...patch,
-      fulfillment: { methods: [{ id: 'default', type }] },
+      fulfillment: { methods: [{ id: DEFAULT_METHOD_ID, type }] },
     });
   }
 
@@ -76,7 +78,13 @@ export class CheckoutCapability {
     return this.update(id, {
       ...patch,
       fulfillment: {
-        methods: [{ id: 'default', type: fulfillmentType, selected_destination_id: destinationId }],
+        methods: [
+          {
+            id: DEFAULT_METHOD_ID,
+            type: fulfillmentType,
+            selected_destination_id: destinationId,
+          },
+        ],
       },
     });
   }
@@ -93,10 +101,10 @@ export class CheckoutCapability {
       fulfillment: {
         methods: [
           {
-            id: 'default',
+            id: DEFAULT_METHOD_ID,
             type: fulfillmentType,
             ...(destinationId !== undefined ? { selected_destination_id: destinationId } : {}),
-            groups: [{ id: 'default', selected_option_id: optionId }],
+            groups: [{ id: DEFAULT_GROUP_ID, selected_option_id: optionId }],
           },
         ],
       },
@@ -115,6 +123,12 @@ export class CheckoutCapability {
   }
 
   private validateSession(data: unknown): CheckoutSession {
-    return validateCheckoutSession(this.http, data, CheckoutSessionSchema) as CheckoutSession;
+    const session = this.http.validate(data, CheckoutSessionSchema) as CheckoutSession;
+
+    if (session.status === 'requires_escalation' && session.continue_url) {
+      throw new UCPEscalationError(session.continue_url);
+    }
+
+    return session;
   }
 }

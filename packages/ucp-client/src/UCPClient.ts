@@ -1,5 +1,7 @@
+import { z } from 'zod';
 import type { UcpDiscoveryProfile } from '@ucp-js/sdk';
 import { HttpClient } from './http.js';
+import type { LogFn } from './http.js';
 import { UCPProfileSchema } from './schemas.js';
 import { CheckoutCapability } from './capabilities/checkout.js';
 import { OrderCapability } from './capabilities/order.js';
@@ -29,46 +31,49 @@ export interface ConnectedClient {
   describeTools(): readonly ToolDescriptor[];
 }
 
+export async function connect(
+  config: UCPClientConfig,
+  options?: { readonly onValidationWarning?: LogFn },
+): Promise<ConnectedClient> {
+  validateConfig(config);
+
+  const http = new HttpClient({
+    gatewayUrl: config.gatewayUrl.replace(/\/+$/, ''),
+    agentProfileUrl: config.agentProfileUrl,
+    ucpVersion: config.ucpVersion ?? DEFAULT_UCP_VERSION,
+    ...(config.requestSignature !== undefined ? { requestSignature: config.requestSignature } : {}),
+    ...(options?.onValidationWarning !== undefined
+      ? { onValidationWarning: options.onValidationWarning }
+      : {}),
+  });
+
+  const rawProfile = await http.request('GET', '/.well-known/ucp');
+  const profile = http.validate(rawProfile, UCPProfileSchema) as UCPProfile;
+  const capabilityNames = extractCapabilityNames(profile);
+
+  const checkout = buildCheckoutCapability(http, capabilityNames);
+  const order = capabilityNames.has(UCP_CAPABILITIES.ORDER) ? new OrderCapability(http) : null;
+  const identityLinking = await buildIdentityLinking(config, capabilityNames);
+  const products = new ProductsCapability(http);
+  const paymentHandlers = extractPaymentHandlers(profile);
+
+  return Object.freeze({
+    profile,
+    checkout,
+    order,
+    identityLinking,
+    products,
+    paymentHandlers,
+    describeTools: () => buildToolDescriptors(checkout, order, identityLinking),
+  });
+}
+
 export class UCPClient {
   private constructor() {
-    /* use UCPClient.connect() */
+    /* use UCPClient.connect() or the standalone connect() function */
   }
 
-  static async connect(config: UCPClientConfig): Promise<ConnectedClient> {
-    validateConfig(config);
-
-    const httpConfig: ConstructorParameters<typeof HttpClient>[0] = {
-      gatewayUrl: config.gatewayUrl.replace(/\/+$/, ''),
-      agentProfileUrl: config.agentProfileUrl,
-      ucpVersion: config.ucpVersion ?? DEFAULT_UCP_VERSION,
-    };
-    if (config.requestSignature !== undefined) {
-      (httpConfig as { requestSignature: string }).requestSignature = config.requestSignature;
-    }
-    const http = new HttpClient(httpConfig);
-
-    const rawProfile = await http.request('GET', '/.well-known/ucp');
-    const profile = http.validate(rawProfile, UCPProfileSchema) as UCPProfile;
-    const capabilityNames = extractCapabilityNames(profile);
-
-    const checkout = buildCheckoutCapability(http, capabilityNames);
-    const order = capabilityNames.has(UCP_CAPABILITIES.ORDER) ? new OrderCapability(http) : null;
-
-    const identityLinking = await buildIdentityLinking(http, config, capabilityNames);
-
-    const products = new ProductsCapability(http);
-    const paymentHandlers = extractPaymentHandlers(profile);
-
-    return Object.freeze({
-      profile,
-      checkout,
-      order,
-      identityLinking,
-      products,
-      paymentHandlers,
-      describeTools: () => buildToolDescriptors(checkout, order, identityLinking),
-    });
-  }
+  static connect = connect;
 }
 
 function validateConfig(config: UCPClientConfig): void {
@@ -87,10 +92,24 @@ function extractCapabilityNames(profile: UCPProfile): Set<string> {
   );
 }
 
+const PaymentHandlerInstanceSchema = z
+  .object({
+    id: z.string(),
+    version: z.string(),
+    spec: z.string(),
+    schema: z.string(),
+    config: z.record(z.unknown()).optional(),
+  })
+  .passthrough();
+
+const PaymentHandlerMapSchema = z.record(z.array(PaymentHandlerInstanceSchema));
+
 function extractPaymentHandlers(profile: UCPProfile): PaymentHandlerMap {
   const raw = (profile as Record<string, unknown>)['payment_handlers'];
   if (typeof raw !== 'object' || raw === null) return {};
-  return raw as PaymentHandlerMap;
+  const result = PaymentHandlerMapSchema.safeParse(raw);
+  if (!result.success) return {};
+  return result.data as PaymentHandlerMap;
 }
 
 function buildCheckoutCapability(
@@ -109,23 +128,44 @@ function buildCheckoutCapability(
   return new CheckoutCapability(http, extensions);
 }
 
+const OAuthServerMetadataSchema = z
+  .object({
+    issuer: z.string(),
+    authorization_endpoint: z.string().url(),
+    token_endpoint: z.string().url(),
+    revocation_endpoint: z.string().url(),
+    scopes_supported: z.array(z.string()),
+    response_types_supported: z.array(z.string()),
+    grant_types_supported: z.array(z.string()),
+    token_endpoint_auth_methods_supported: z.array(z.string()),
+    service_documentation: z.string().url().optional(),
+  })
+  .passthrough();
+
 async function buildIdentityLinking(
-  http: HttpClient,
   config: UCPClientConfig,
   capabilityNames: Set<string>,
 ): Promise<IdentityLinkingCapability | null> {
   if (!capabilityNames.has(UCP_CAPABILITIES.IDENTITY_LINKING)) return null;
 
-  try {
-    const gatewayUrl = config.gatewayUrl.replace(/\/+$/, '');
-    const metadataUrl = `${gatewayUrl}/.well-known/oauth-authorization-server`;
-    const res = await fetch(metadataUrl);
-    if (!res.ok) return null;
-    const metadata = (await res.json()) as OAuthServerMetadata;
-    return new IdentityLinkingCapability(metadata);
-  } catch {
-    return null;
+  const gatewayUrl = config.gatewayUrl.replace(/\/+$/, '');
+  const metadataUrl = `${gatewayUrl}/.well-known/oauth-authorization-server`;
+  const res = await fetch(metadataUrl);
+
+  if (!res.ok) {
+    throw new Error(
+      `Identity linking capability declared but OAuth metadata fetch failed: ${res.status} from ${metadataUrl}`,
+    );
   }
+
+  const raw: unknown = await res.json();
+  const parsed = OAuthServerMetadataSchema.safeParse(raw);
+
+  if (!parsed.success) {
+    throw new Error(`Identity linking OAuth metadata validation failed: ${parsed.error.message}`);
+  }
+
+  return new IdentityLinkingCapability(parsed.data as OAuthServerMetadata);
 }
 
 function buildToolDescriptors(
@@ -140,15 +180,31 @@ function buildToolDescriptors(
 
   if (checkout) {
     tools.push(
-      { name: 'create_checkout', capability: 'checkout', description: 'Create a checkout session' },
-      { name: 'get_checkout', capability: 'checkout', description: 'Get checkout session by ID' },
-      { name: 'update_checkout', capability: 'checkout', description: 'Update a checkout session' },
+      {
+        name: 'create_checkout',
+        capability: 'checkout',
+        description: 'Create a checkout session',
+      },
+      {
+        name: 'get_checkout',
+        capability: 'checkout',
+        description: 'Get checkout session by ID',
+      },
+      {
+        name: 'update_checkout',
+        capability: 'checkout',
+        description: 'Update a checkout session',
+      },
       {
         name: 'complete_checkout',
         capability: 'checkout',
         description: 'Complete checkout with payment',
       },
-      { name: 'cancel_checkout', capability: 'checkout', description: 'Cancel a checkout session' },
+      {
+        name: 'cancel_checkout',
+        capability: 'checkout',
+        description: 'Cancel a checkout session',
+      },
     );
 
     if (checkout.extensions.fulfillment) {

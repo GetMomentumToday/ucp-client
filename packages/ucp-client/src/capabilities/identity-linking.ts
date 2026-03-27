@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { UCPOAuthError } from '../errors.js';
 import type {
   OAuthServerMetadata,
   AuthorizationParams,
@@ -6,6 +8,16 @@ import type {
   TokenRefreshParams,
   TokenRevokeParams,
 } from '../types/identity-linking.js';
+
+const TokenResponseSchema = z
+  .object({
+    access_token: z.string(),
+    token_type: z.string(),
+    expires_in: z.number().optional(),
+    refresh_token: z.string().optional(),
+    scope: z.string().optional(),
+  })
+  .passthrough();
 
 export class IdentityLinkingCapability {
   constructor(private readonly metadata: OAuthServerMetadata) {}
@@ -47,23 +59,21 @@ export class IdentityLinkingCapability {
       body.set('token_type_hint', params.token_type_hint);
     }
 
-    const basicAuth = btoa(`${params.client_id}:${params.client_secret}`);
-
     const res = await fetch(this.metadata.revocation_endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${basicAuth}`,
+        Authorization: encodeBasicAuth(params.client_id, params.client_secret),
       },
       body: body.toString(),
     });
 
     if (!res.ok) {
-      throw new Error(`Token revocation failed: ${res.status}`);
+      throw new UCPOAuthError(`Token revocation failed: ${res.status}`, res.status);
     }
   }
 
-  getMetadata(): OAuthServerMetadata {
+  getMetadata(): Readonly<OAuthServerMetadata> {
     return this.metadata;
   }
 
@@ -72,22 +82,30 @@ export class IdentityLinkingCapability {
     clientSecret: string,
     body: URLSearchParams,
   ): Promise<TokenResponse> {
-    const basicAuth = btoa(`${clientId}:${clientSecret}`);
-
     const res = await fetch(this.metadata.token_endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${basicAuth}`,
+        Authorization: encodeBasicAuth(clientId, clientSecret),
       },
       body: body.toString(),
     });
 
     if (!res.ok) {
       const errorBody = await res.text().catch(() => '');
-      throw new Error(`Token exchange failed: ${res.status} ${errorBody}`);
+      throw new UCPOAuthError(`Token exchange failed: ${res.status} ${errorBody}`, res.status);
     }
 
-    return (await res.json()) as TokenResponse;
+    const raw: unknown = await res.json();
+    const parsed = TokenResponseSchema.safeParse(raw);
+    if (!parsed.success) {
+      throw new UCPOAuthError(`Invalid token response: ${parsed.error.message}`, res.status);
+    }
+
+    return parsed.data as TokenResponse;
   }
+}
+
+function encodeBasicAuth(username: string, password: string): string {
+  return `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`;
 }
