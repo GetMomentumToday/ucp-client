@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1](https://github.com/OmnixHQ/ucp-client/compare/v0.1.0...v0.1.1) (2026-03-27)
+
+
+### Maintenance
+
+* fix release-please config for v4 API ([98fed58](https://github.com/OmnixHQ/ucp-client/commit/98fed58229a8c7c14ff1cbd35cdd078c2df5c482))
+* ignore CHANGELOG.md and dist from prettier ([2890294](https://github.com/OmnixHQ/ucp-client/commit/28902949e86335564c57d59fe4c9e75a78b3ad8e))
+* set include-component-in-tag false to match existing v0.1.0 tag ([2d71826](https://github.com/OmnixHQ/ucp-client/commit/2d71826bab1a67255c44eb2ebdc94e994ad1d265))
+* use RELEASE_PLEASE_TOKEN PAT to allow PR creation ([e23632b](https://github.com/OmnixHQ/ucp-client/commit/e23632b4c3eb54c85addce3c3f70d5882fd72a12))
+
 ## [0.1.0] - 2026-03-27
 
 ### Added
