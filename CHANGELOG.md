@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Capability-aware `UCPClient.connect()` — discovers server capabilities via `GET /.well-known/ucp` and only exposes supported features
-- `ConnectedClient.describeTools()` — returns only tools the server supports, for dynamic agent tool registration
+- **`getAgentTools()`** — returns complete tool definitions with JSON Schema parameters and execute functions, ready for any AI agent framework (Claude API, OpenAI, Vercel AI SDK, LangChain, MCP)
+- **Capability-aware `UCPClient.connect()`** — discovers server capabilities via `GET /.well-known/ucp` and only exposes supported features
 - **Checkout capability** — `create`, `get`, `update`, `complete`, `cancel`
 - **Fulfillment extension** — `setFulfillment`, `selectDestination`, `selectFulfillmentOption`
 - **Discount extension** — `applyDiscountCodes`
@@ -28,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generic `validate<T>()` — zero unsafe casts at call sites
 - Dual ESM/CJS output via tsdown
 - Export validation with `@arethetypeswrong/cli` and `publint`
-- 81 unit tests, 15 integration tests
+- 116 unit tests, 15 integration tests
 - Optional `onValidationWarning` callback for custom logging
+- MIT license, published to public npm as `@omnix/ucp-client`
 
 [0.1.0]: https://github.com/OmnixHQ/ucp-client/releases/tag/v0.1.0
