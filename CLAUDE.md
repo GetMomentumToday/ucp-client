@@ -2,29 +2,39 @@
 
 ## What This Is
 
-`@getmomentumtoday/ucp-client` is a typed TypeScript HTTP client wrapping the ucp-gateway REST API.
+`@getmomentumtoday/ucp-client` is a capability-aware TypeScript HTTP client for the ucp-gateway REST API.
 It is a **library, not a server** — no port, no process, no Docker container.
 
 ## Architecture
 
 - **Monorepo**: npm workspaces, single package at `packages/ucp-client`
 - **Runtime**: Node 22+ native `fetch` (no Axios, no ky)
-- **Validation**: Zod schemas for runtime response validation
-- **Headers**: Auto-attached `UCP-Agent`, `idempotency-key`, `request-id` on every request
+- **Validation**: Zod schemas via `@ucp-js/sdk` for runtime response validation
+- **Capability-aware**: `UCPClient.connect()` discovers server capabilities and exposes only supported features
 
-### Gateway HTTP Surface (9 endpoints)
+### File Structure
 
 ```
-GET  /.well-known/ucp                    → discover()
-GET  /ucp/products?q=...                 → searchProducts()
-GET  /ucp/products/:id                   → getProduct()
-POST /checkout-sessions                  → createCheckout()
-GET  /checkout-sessions/:id              → getCheckout()
-PUT  /checkout-sessions/:id              → updateCheckout()
-POST /checkout-sessions/:id/complete     → completeCheckout()
-POST /checkout-sessions/:id/cancel       → cancelCheckout()
-GET  /orders/:id                         → getOrder()
+src/
+  types/           — Domain-split types (config, checkout, order, payment, identity-linking, common, product)
+  capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability, ProductsCapability
+  http.ts          — Shared HttpClient (headers, idempotency, error parsing)
+  errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError
+  schemas.ts       — Zod schemas (SDK re-exports)
+  UCPClient.ts     — connect() → ConnectedClient with describeTools()
+  index.ts         — Public API
 ```
+
+### Capability Mapping
+
+| Server Capability                 | Client Property          | Null when absent      |
+| --------------------------------- | ------------------------ | --------------------- |
+| `dev.ucp.shopping.checkout`       | `client.checkout`        | Yes                   |
+| `dev.ucp.shopping.order`          | `client.order`           | Yes                   |
+| `dev.ucp.common.identity_linking` | `client.identityLinking` | Yes                   |
+| _(gateway-specific)_              | `client.products`        | No (always available) |
+
+Extensions (`fulfillment`, `discount`, `buyerConsent`, `ap2Mandate`) are booleans on `checkout.extensions`.
 
 ## Code Rules
 
@@ -42,8 +52,9 @@ All interfaces use `readonly` properties. Never mutate existing objects — crea
 
 ### Error Handling
 
-- Parse gateway `messages[]` errors into typed `UCPError`
+- Parse gateway `messages[]` errors into typed `UCPError` (with `type`, `path`, `content_type`, full `messages[]`)
 - Detect `requires_escalation` status and throw `UCPEscalationError`
+- Throw `UCPIdempotencyConflictError` on 409 responses
 - Never silently swallow errors
 
 ### Testing
@@ -71,6 +82,7 @@ Single package — just `packages/ucp-client`.
 
 | Package                | Purpose                                           |
 | ---------------------- | ------------------------------------------------- |
+| `@ucp-js/sdk`          | UCP spec types and Zod schemas                    |
 | `zod`                  | Runtime validation of gateway responses           |
 | Node 22 native `fetch` | HTTP calls                                        |
 | `node:crypto`          | `randomUUID()` for idempotency-key and request-id |
