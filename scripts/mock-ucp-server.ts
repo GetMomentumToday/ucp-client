@@ -236,10 +236,7 @@ function sessionToResponse(session: Session): object {
     };
   });
 
-  const subtotal = lineItems.reduce(
-    (sum, li) => sum + (li.totals[0]?.amount ?? 0),
-    0,
-  );
+  const subtotal = lineItems.reduce((sum, li) => sum + (li.totals[0]?.amount ?? 0), 0);
 
   const response: Record<string, unknown> = {
     id: session.id,
@@ -330,10 +327,7 @@ function handleSearchProducts(url: URL, res: ServerResponse): void {
 
   const results = [...PRODUCTS.values()]
     .filter(
-      (p) =>
-        !q ||
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q),
+      (p) => !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q),
     )
     .slice(0, limit);
 
@@ -595,5 +589,7 @@ server.listen(PORT, () => {
   console.log(`  POST /checkout-sessions/:id/cancel`);
   console.log(`  GET /orders/:id`);
   console.log(``);
-  console.log(`Test with: GATEWAY_URL=http://localhost:${PORT} npx tsx scripts/test-gateway-connection.ts`);
+  console.log(
+    `Test with: GATEWAY_URL=http://localhost:${PORT} npx tsx scripts/test-gateway-connection.ts`,
+  );
 });

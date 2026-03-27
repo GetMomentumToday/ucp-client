@@ -37,7 +37,10 @@ async function main() {
 
   // 1. Connect to the UCP server — discovers capabilities automatically
   console.log('Connecting to UCP server...');
-  const client = await UCPClient.connect({ gatewayUrl: GATEWAY_URL, agentProfileUrl: AGENT_PROFILE });
+  const client = await UCPClient.connect({
+    gatewayUrl: GATEWAY_URL,
+    agentProfileUrl: AGENT_PROFILE,
+  });
 
   console.log(`Connected. Available tools:`);
   for (const t of client.describeTools()) {
@@ -60,7 +63,7 @@ async function main() {
       model: 'claude-sonnet-4-6',
       max_tokens: 2048,
       system:
-        'You are a shopping agent. Complete the user\'s shopping task using the available UCP tools. ' +
+        "You are a shopping agent. Complete the user's shopping task using the available UCP tools. " +
         'Be concise — do not explain each step, just execute the tools.',
       tools: tools.map((t) => ({
         name: t.name,
