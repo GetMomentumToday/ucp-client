@@ -8,7 +8,7 @@ import type {
   CompleteCheckoutPayload,
   CheckoutSession,
   UCPProduct,
-  UCPOrder,
+  UCPSpecOrder,
   UCPProfile,
 } from './types.js';
 import { UCPError, UCPEscalationError } from './errors.js';
@@ -16,7 +16,7 @@ import {
   CheckoutSessionSchema,
   UCPProfileSchema,
   UCPProductSchema,
-  UCPOrderSchema,
+  UCPSpecOrderSchema,
 } from './schemas.js';
 
 const DEFAULT_UCP_VERSION = '2026-01-23';
@@ -102,13 +102,7 @@ export class UCPClient {
       `/checkout-sessions/${encodeURIComponent(id)}/complete`,
       payload,
     );
-    const session = this.validateCheckout(data);
-
-    if (session.status === 'requires_escalation' && session.continue_url) {
-      throw new UCPEscalationError(session.continue_url);
-    }
-
-    return session;
+    return this.validateCheckout(data);
   }
 
   async cancelCheckout(id: string): Promise<CheckoutSession> {
@@ -180,13 +174,19 @@ export class UCPClient {
 
   // ── Orders ─────────────────────────────────────────────────────────────
 
-  async getOrder(id: string): Promise<UCPOrder> {
+  async getOrder(id: string): Promise<UCPSpecOrder> {
     const data = await this.request('GET', `/orders/${encodeURIComponent(id)}`);
-    return this.validate(data, UCPOrderSchema) as UCPOrder;
+    return this.validate(data, UCPSpecOrderSchema) as UCPSpecOrder;
   }
 
   private validateCheckout(data: unknown): CheckoutSession {
-    return this.validate(data, CheckoutSessionSchema) as CheckoutSession;
+    const session = this.validate(data, CheckoutSessionSchema) as CheckoutSession;
+
+    if (session.status === 'requires_escalation' && session.continue_url) {
+      throw new UCPEscalationError(session.continue_url);
+    }
+
+    return session;
   }
 
   private validate(data: unknown, schema: ZodType): unknown {
@@ -217,7 +217,7 @@ export class UCPClient {
       headers['request-signature'] = this.requestSignature;
     }
 
-    if (method === 'POST') {
+    if (method === 'POST' || method === 'PUT') {
       headers['idempotency-key'] = randomUUID();
     }
 

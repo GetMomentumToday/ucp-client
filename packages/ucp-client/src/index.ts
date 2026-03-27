@@ -41,5 +41,6 @@ export type {
   PaymentInstrument,
   UCPProduct,
   UCPOrder,
+  UCPSpecOrder,
   UCPProfile,
 } from './types.js';

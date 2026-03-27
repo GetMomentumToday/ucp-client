@@ -2,6 +2,7 @@ import type {
   ExtendedCheckoutResponse,
   UcpDiscoveryProfile,
   CheckoutResponseStatus,
+  Order,
 } from '@ucp-js/sdk';
 
 export interface UCPClientConfig {
@@ -26,6 +27,7 @@ export interface SearchFilters {
 export type CheckoutSession = ExtendedCheckoutResponse;
 export type CheckoutSessionStatus = CheckoutResponseStatus;
 export type UCPProfile = UcpDiscoveryProfile;
+export type UCPSpecOrder = Order;
 
 /**
  * Request payloads — gateway accepts partial payloads, so these are

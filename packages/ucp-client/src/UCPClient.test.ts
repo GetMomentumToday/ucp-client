@@ -134,13 +134,13 @@ describe('UCPClient', () => {
       expect(headers['idempotency-key']).toBeUndefined();
     });
 
-    it('does NOT attach idempotency-key on PUT requests', async () => {
+    it('attaches idempotency-key on PUT requests (spec requires on all mutations)', async () => {
       mockResponse(makeSession());
       await client.updateCheckout('chk_1', { buyer: { first_name: 'Jan' } });
 
       const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];
       const headers = init.headers as Record<string, string>;
-      expect(headers['idempotency-key']).toBeUndefined();
+      expect(headers['idempotency-key']).toBeDefined();
     });
   });
 
@@ -312,6 +312,47 @@ describe('UCPClient', () => {
     });
   });
 
+  describe('escalation detection on all checkout responses', () => {
+    it('throws UCPEscalationError on createCheckout when requires_escalation', async () => {
+      mockResponse(
+        makeSession({ status: 'requires_escalation', continue_url: 'https://store.com/pay' }),
+      );
+      const err = await client
+        .createCheckout({ line_items: [{ item: { id: 'prod-001' }, quantity: 1 }] })
+        .catch((e: unknown) => e);
+
+      expect(err).toBeInstanceOf(UCPEscalationError);
+      expect((err as UCPEscalationError).continue_url).toBe('https://store.com/pay');
+    });
+
+    it('throws UCPEscalationError on updateCheckout when requires_escalation', async () => {
+      mockResponse(
+        makeSession({ status: 'requires_escalation', continue_url: 'https://store.com/pay' }),
+      );
+      const err = await client
+        .updateCheckout('chk_1', { buyer: { email: 'a@b.com' } })
+        .catch((e: unknown) => e);
+
+      expect(err).toBeInstanceOf(UCPEscalationError);
+    });
+
+    it('throws UCPEscalationError on getCheckout when requires_escalation', async () => {
+      mockResponse(
+        makeSession({ status: 'requires_escalation', continue_url: 'https://store.com/pay' }),
+      );
+      const err = await client.getCheckout('chk_1').catch((e: unknown) => e);
+
+      expect(err).toBeInstanceOf(UCPEscalationError);
+    });
+
+    it('does NOT throw escalation when continue_url is absent', async () => {
+      mockResponse(makeSession({ status: 'requires_escalation', continue_url: null }));
+      const session = await client.getCheckout('chk_1');
+
+      expect(session.status).toBe('requires_escalation');
+    });
+  });
+
   describe('cancelCheckout', () => {
     it('sends POST to /checkout-sessions/:id/cancel', async () => {
       mockResponse(makeSession({ status: 'canceled' }));
@@ -328,16 +369,26 @@ describe('UCPClient', () => {
     it('sends GET to /orders/:id and URL-encodes', async () => {
       mockResponse({
         id: 'order/123',
-        status: 'processing',
-        total_cents: 5000,
-        currency: 'USD',
-        created_at_iso: '2026-03-25T12:00:00Z',
+        checkout_id: 'chk_1',
+        permalink_url: 'https://store.example/orders/123',
+        line_items: [
+          {
+            id: 'li_1',
+            status: 'processing',
+            item: { id: 'prod-001', title: 'Shoes', price: 5000 },
+            quantity: { total: 1, fulfilled: 0 },
+            totals: [{ type: 'total', amount: 5000 }],
+          },
+        ],
+        fulfillment: {},
+        totals: [{ type: 'total', amount: 5000 }],
+        ucp: { version: '2026-01-23', capabilities: [] },
       });
       const order = await client.getOrder('order/123');
 
       const [url] = mockFetch.mock.calls[0] as [string];
       expect(url).toContain('order%2F123');
-      expect(order.status).toBe('processing');
+      expect(order.id).toBe('order/123');
     });
   });
 
@@ -497,19 +548,31 @@ describe('UCPClient', () => {
       expect(warnSpy).not.toHaveBeenCalled();
     });
 
-    it('validates order responses', async () => {
+    it('validates order responses against UCP spec schema', async () => {
       const validOrder = {
         id: 'order-001',
-        status: 'processing',
-        total_cents: 5000,
-        currency: 'USD',
-        created_at_iso: '2026-03-25T12:00:00Z',
+        checkout_id: 'chk_1',
+        permalink_url: 'https://store.example/orders/001',
+        line_items: [
+          {
+            id: 'li_1',
+            status: 'processing',
+            item: { id: 'prod-001', title: 'Shoes', price: 5000 },
+            quantity: { total: 1, fulfilled: 0 },
+            totals: [{ type: 'total', amount: 5000 }],
+          },
+        ],
+        fulfillment: {},
+        totals: [{ type: 'total', amount: 5000 }],
+        ucp: { version: '2026-01-23', capabilities: [] },
       };
       const warnSpy = vi.spyOn(console, 'warn').mockClear();
       mockResponse(validOrder);
       const order = await client.getOrder('order-001');
 
       expect(order.id).toBe('order-001');
+      expect(order.checkout_id).toBe('chk_1');
+      expect(order.permalink_url).toBe('https://store.example/orders/001');
       expect(warnSpy).not.toHaveBeenCalled();
     });
   });
