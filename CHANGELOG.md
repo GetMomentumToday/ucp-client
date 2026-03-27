@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2](https://github.com/OmnixHQ/ucp-client/compare/v0.1.1...v0.1.2) (2026-03-27)
+
+
+### Bug Fixes
+
+* rename npm scope from [@omnix](https://github.com/omnix) to [@omnixhq](https://github.com/omnixhq) ([9619854](https://github.com/OmnixHQ/ucp-client/commit/9619854adffc8e3d830a70dfa17a40c8f155641e))
+* restore version 0.1.1 after rebase conflict ([e08f7dc](https://github.com/OmnixHQ/ucp-client/commit/e08f7dcb447e3d004dd1e79395206532909c8007))
+
+
+### Maintenance
+
+* add workflow_dispatch to publish without release-please ([8e8f37f](https://github.com/OmnixHQ/ucp-client/commit/8e8f37f84f4790b2cbf4b0dd0dd319d18c9ef18f))
+
 ## [0.1.1](https://github.com/OmnixHQ/ucp-client/compare/v0.1.0...v0.1.1) (2026-03-27)
 
 
