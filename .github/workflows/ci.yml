@@ -56,3 +56,36 @@ jobs:
         with:
           files: coverage/lcov.info
           fail_ci_if_error: false
+
+  integration:
+    name: Integration (mock server)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start mock UCP server
+        run: PORT=3002 npx tsx scripts/mock-ucp-server.ts &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3002/.well-known/ucp > /dev/null && echo "Server ready" && exit 0
+            sleep 1
+          done
+          echo "Server did not start in time" && exit 1
+
+      - name: Run integration test
+        run: npm run test:e2e
