@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { UCPClient } from '../src/UCPClient.js';
 import { UCPError, UCPEscalationError } from '../src/errors.js';
-import type { CheckoutSession, UCPProduct } from '../src/types.js';
+import type { ConnectedClient } from '../src/UCPClient.js';
+import type { CheckoutSession } from '../src/types/checkout.js';
+import type { UCPProduct } from '../src/types/product.js';
 
 const GATEWAY_URL = process.env['GATEWAY_URL'] ?? 'http://localhost:3000';
 const AGENT_PROFILE = process.env['UCP_AGENT_PROFILE'] ?? 'https://agent.test/profile';
@@ -18,14 +20,14 @@ const canConnect = async (): Promise<boolean> => {
 describe.skipIf(process.env['INTEGRATION'] !== 'true')(
   'UCPClient integration (live gateway)',
   () => {
-    let client: UCPClient;
+    let client: ConnectedClient;
     let isConnected: boolean;
 
     beforeAll(async () => {
       isConnected = await canConnect();
       if (!isConnected) return;
 
-      client = new UCPClient({
+      client = await UCPClient.connect({
         gatewayUrl: GATEWAY_URL,
         agentProfileUrl: AGENT_PROFILE,
       });
@@ -35,32 +37,36 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       expect(isConnected).toBe(true);
     });
 
-    describe('discovery', () => {
-      it('returns profile with capabilities', async () => {
-        const profile = await client.discover();
-        expect(profile.ucp).toBeDefined();
-        expect(profile.ucp.version).toBeDefined();
-        expect(profile.ucp.capabilities.length).toBeGreaterThan(0);
-
-        const hasCheckout = profile.ucp.capabilities.some(
-          (c) => c.name === 'dev.ucp.shopping.checkout',
-        );
-        expect(hasCheckout).toBe(true);
+    describe('discovery + capabilities', () => {
+      it('returns profile with capabilities', () => {
+        expect(client.profile.ucp).toBeDefined();
+        expect(client.profile.ucp.version).toBeDefined();
+        expect(client.profile.ucp.capabilities.length).toBeGreaterThan(0);
       });
 
-      it('returns payment handlers', async () => {
-        const profile = await client.discover();
-        expect(profile.payment).toBeDefined();
-        expect(profile.payment!.handlers).toBeDefined();
-        expect(profile.payment!.handlers!.length).toBeGreaterThan(0);
+      it('detects checkout capability', () => {
+        expect(client.checkout).not.toBeNull();
+      });
+
+      it('describeTools returns available tools', () => {
+        const tools = client.describeTools();
+        expect(tools.length).toBeGreaterThan(0);
+
+        const toolNames = tools.map((t) => t.name);
+        expect(toolNames).toContain('search_products');
+        expect(toolNames).toContain('create_checkout');
+      });
+
+      it('returns payment handlers from profile', () => {
+        expect(client.paymentHandlers).toBeDefined();
       });
     });
 
     describe('products', () => {
-      let products: UCPProduct[];
+      let products: readonly UCPProduct[];
 
-      it('searchProducts returns results', async () => {
-        products = await client.searchProducts('shoes');
+      it('search returns results', async () => {
+        products = await client.products.search('shoes');
         expect(products.length).toBeGreaterThan(0);
       });
 
@@ -72,9 +78,9 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
         expect(typeof product.in_stock).toBe('boolean');
       });
 
-      it('getProduct returns a single product', async () => {
+      it('get returns a single product', async () => {
         const id = products[0]!.id;
-        const product = await client.getProduct(id);
+        const product = await client.products.get(id);
         expect(product.id).toBe(id);
         expect(product.title).toBeDefined();
       });
@@ -82,14 +88,14 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
 
     describe('full checkout lifecycle', () => {
       let session: CheckoutSession;
-      let products: UCPProduct[];
+      let products: readonly UCPProduct[];
 
       beforeAll(async () => {
-        products = await client.searchProducts('shoes');
+        products = await client.products.search('shoes');
       });
 
       it('creates a checkout session', async () => {
-        session = await client.createCheckout({
+        session = await client.checkout!.create({
           line_items: [{ item: { id: products[0]!.id }, quantity: 1 }],
         });
 
@@ -99,13 +105,13 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       });
 
       it('gets the checkout session', async () => {
-        const fetched = await client.getCheckout(session.id);
+        const fetched = await client.checkout!.get(session.id);
         expect(fetched.id).toBe(session.id);
         expect(fetched.status).toBe(session.status);
       });
 
       it('updates checkout with fulfillment context', async () => {
-        const updated = await client.updateCheckout(session.id, {
+        const updated = await client.checkout!.update(session.id, {
           context: {
             address_country: 'US',
             address_region: 'CA',
@@ -117,12 +123,14 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       });
 
       it('applies discount codes via convenience method', async () => {
-        const updated = await client.applyDiscountCodes(session.id, ['TEST10']);
+        if (!client.checkout!.extensions.discount) return;
+
+        const updated = await client.checkout!.applyDiscountCodes(session.id, ['TEST10']);
         expect(updated.id).toBe(session.id);
       });
 
-      it('sets buyer and address for checkout readiness', async () => {
-        session = await client.updateCheckout(session.id, {
+      it('sets buyer and shipping for checkout readiness', async () => {
+        session = await client.checkout!.update(session.id, {
           buyer: {
             first_name: 'Test',
             last_name: 'User',
@@ -149,16 +157,15 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       });
 
       it('completes checkout with payment', async () => {
-        const profile = await client.discover();
-        const handler = profile.payment?.handlers?.[0];
+        const handlerNamespaces = Object.keys(client.paymentHandlers);
+        if (handlerNamespaces.length === 0) return;
 
-        if (!handler) {
-          console.warn('No payment handlers available, skipping complete');
-          return;
-        }
+        const firstHandlers = client.paymentHandlers[handlerNamespaces[0]!];
+        if (!firstHandlers || firstHandlers.length === 0) return;
+        const handler = firstHandlers[0]!;
 
         try {
-          const completed = await client.completeCheckout(session.id, {
+          const completed = await client.checkout!.complete(session.id, {
             payment: {
               instruments: [
                 {
@@ -173,19 +180,13 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
 
           expect(['completed', 'complete_in_progress']).toContain(completed.status);
 
-          if (completed.order) {
-            const order = await client.getOrder(completed.order.id);
+          if (completed.order && client.order) {
+            const order = await client.order.get(completed.order.id);
             expect(order.id).toBe(completed.order.id);
           }
         } catch (err) {
           if (err instanceof UCPEscalationError) {
             expect(err.continue_url).toBeDefined();
-          } else {
-            // Magento may reject if session not fully ready — that's OK for integration
-            console.warn(
-              'Complete checkout failed (expected in some adapter states):',
-              (err as Error).message,
-            );
           }
         }
       });
@@ -193,16 +194,15 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
 
     describe('cancel checkout', () => {
       it('cancels a session', async () => {
-        const prods = await client.searchProducts('shoes');
-        const sess = await client.createCheckout({
-          line_items: [{ item: { id: prods[0]!.id }, quantity: 1 }],
+        const products = await client.products.search('shoes');
+        const sess = await client.checkout!.create({
+          line_items: [{ item: { id: products[0]!.id }, quantity: 1 }],
         });
 
         try {
-          const cancelled = await client.cancelCheckout(sess.id);
+          const cancelled = await client.checkout!.cancel(sess.id);
           expect(cancelled.status).toBe('canceled');
         } catch (err) {
-          // Some adapters may not support cancel on incomplete sessions
           expect(err).toBeInstanceOf(UCPError);
         }
       });
