@@ -10,49 +10,19 @@ TypeScript client that connects to any [UCP](https://ucp.dev)-compliant server, 
 
 ## Why
 
-Every AI agent that wants to buy something from a UCP store needs to: discover capabilities, construct headers, handle idempotency, parse errors, manage escalation, handle OAuth. That's a lot of boilerplate.
+Every AI agent that wants to buy something from a UCP store needs to discover capabilities, construct headers, handle idempotency, parse errors, manage escalation. That's a lot of boilerplate.
 
-`@omnix/ucp-client` does all of it in 3 lines:
-
-```typescript
-import { UCPClient } from '@omnix/ucp-client';
-
-// 1. Connect — discovers server capabilities automatically
-const client = await UCPClient.connect({
-  gatewayUrl: 'https://store.example.com',
-  agentProfileUrl: 'https://your-app.com/.well-known/ucp',
-});
-
-// 2. Get tools — only what this server supports, with schemas + executors
-const tools = client.getAgentTools();
-
-// 3. Register with any AI framework (Claude, OpenAI, Vercel AI, LangChain, MCP)
-```
-
-## Who is this for
-
-- **AI agent developers** — building shopping assistants, purchasing bots, autonomous commerce agents
-- **Anyone integrating with UCP** — any app that needs to talk to a UCP-compliant server
-
-## Install
-
-```bash
-npm install @omnix/ucp-client
-```
-
-## Quick Start: AI Agent with Claude
+`@omnix/ucp-client` handles all of it. Connect, get tools, register with your agent:
 
 ```typescript
 import Anthropic from '@anthropic-ai/sdk';
 import { UCPClient } from '@omnix/ucp-client';
 
-// Connect to any UCP server
 const client = await UCPClient.connect({
   gatewayUrl: 'https://store.example.com',
   agentProfileUrl: 'https://your-app.com/.well-known/ucp',
 });
 
-// Get tools — ready for Claude API
 const tools = client.getAgentTools();
 
 const anthropic = new Anthropic();
@@ -67,17 +37,24 @@ const response = await anthropic.messages.create({
   messages: [{ role: 'user', content: 'Find me running shoes under $100' }],
 });
 
-// Execute whatever Claude decides to call
 for (const block of response.content) {
   if (block.type === 'tool_use') {
     const tool = tools.find((t) => t.name === block.name);
-    const result = await tool.execute(block.input);
-    // Send result back to Claude...
+    if (tool) {
+      const result = await tool.execute(block.input);
+      // Send result back to Claude...
+    }
   }
 }
 ```
 
-That's it. The client figures out what the store supports and gives Claude only the tools that work.
+The client figures out what the store supports and gives Claude only the tools that work.
+
+## Install
+
+```bash
+npm install @omnix/ucp-client
+```
 
 ## What `getAgentTools()` returns
 
@@ -103,6 +80,49 @@ The tools returned depend on what the server supports:
 | _(always)_                     | `search_products`, `get_product`                                                             |
 
 Connect to a different server → get different tools. Your agent code stays the same.
+
+## Works with any agent framework
+
+The `AgentTool` format maps directly to every major framework:
+
+**Claude API:**
+
+```typescript
+tools.map((t) => ({ name: t.name, description: t.description, input_schema: t.parameters }));
+```
+
+**OpenAI:**
+
+```typescript
+tools.map((t) => ({
+  type: 'function',
+  function: { name: t.name, description: t.description, parameters: t.parameters },
+}));
+```
+
+**Vercel AI SDK:**
+
+```typescript
+import { tool } from 'ai';
+import { jsonSchema } from 'ai';
+
+Object.fromEntries(
+  tools.map((t) => [
+    t.name,
+    tool({ description: t.description, parameters: jsonSchema(t.parameters), execute: t.execute }),
+  ]),
+);
+```
+
+**MCP server:**
+
+```typescript
+for (const t of tools) {
+  server.tool(t.name, t.description, t.parameters, async (params) => ({
+    content: [{ type: 'text', text: JSON.stringify(await t.execute(params)) }],
+  }));
+}
+```
 
 ## Checking capabilities manually
 
@@ -132,6 +152,10 @@ console.log(Object.keys(client.paymentHandlers));
 ## Full checkout flow (programmatic)
 
 ```typescript
+const client = await UCPClient.connect(config);
+
+if (!client.checkout) throw new Error('Server does not support checkout');
+
 const products = await client.products.search('running shoes');
 
 const session = await client.checkout.create({
@@ -213,7 +237,7 @@ try {
 ```bash
 npm install
 npm run build        # tsdown (dual ESM + CJS)
-npm test             # vitest (95 unit tests)
+npm test             # vitest (116 unit tests)
 npm run typecheck    # tsc --noEmit
 npm run lint         # eslint
 npm run check:exports # attw
