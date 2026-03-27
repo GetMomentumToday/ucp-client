@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { UCPClient } from './UCPClient.js';
+import { UCPClient, connect } from './UCPClient.js';
 import { UCPError, UCPEscalationError, UCPIdempotencyConflictError } from './errors.js';
 
 const mockFetch = vi.fn();
@@ -636,5 +636,191 @@ describe('Zod validation', () => {
       expect.any(String),
     );
     expect(session.id).toBe('chk_1');
+  });
+
+  it('uses custom onValidationWarning callback when provided', async () => {
+    const warnings: string[] = [];
+    mockResponse(makeProfile());
+    const client = await connect(CONFIG, {
+      onValidationWarning: (msg) => warnings.push(msg),
+    });
+
+    const invalidSession = { id: 'chk_1', status: 'incomplete' };
+    mockResponse(invalidSession);
+    await client.checkout!.create({
+      line_items: [{ item: { id: 'prod-001' }, quantity: 1 }],
+    });
+
+    expect(warnings.length).toBeGreaterThanOrEqual(1);
+    expect(warnings.some((w) => w === '[UCPClient] Response validation failed:')).toBe(true);
+  });
+});
+
+describe('standalone connect function', () => {
+  it('works identically to UCPClient.connect', async () => {
+    mockResponse(makeProfile());
+    const client = await connect(CONFIG);
+    expect(client.profile.ucp.version).toBe('2026-01-23');
+    expect(client.checkout).not.toBeNull();
+  });
+});
+
+describe('ConnectedClient immutability', () => {
+  it('is frozen and cannot be mutated', async () => {
+    const client = await connectWithCapabilities();
+    expect(Object.isFrozen(client)).toBe(true);
+  });
+});
+
+describe('payment handler extraction', () => {
+  it('extracts valid payment handlers from profile', async () => {
+    mockResponse({
+      ...makeProfile(),
+      payment_handlers: {
+        'com.google.pay': [
+          {
+            id: 'gpay_1',
+            version: '2026-01-23',
+            spec: 'https://example.com',
+            schema: 'https://example.com/schema',
+          },
+        ],
+      },
+    });
+    const client = await UCPClient.connect(CONFIG);
+    const gpay = client.paymentHandlers['com.google.pay'];
+    expect(gpay).toBeDefined();
+    expect(gpay![0]!.id).toBe('gpay_1');
+  });
+
+  it('returns empty map for invalid payment handlers', async () => {
+    mockResponse({
+      ...makeProfile(),
+      payment_handlers: 'not-an-object',
+    });
+    const client = await UCPClient.connect(CONFIG);
+    expect(Object.keys(client.paymentHandlers)).toHaveLength(0);
+  });
+
+  it('returns empty map when payment handlers missing', async () => {
+    const client = await connectWithCapabilities();
+    expect(Object.keys(client.paymentHandlers)).toHaveLength(0);
+  });
+});
+
+describe('identity linking', () => {
+  it('is null when server does not declare identity_linking', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.checkout']);
+    expect(client.identityLinking).toBeNull();
+  });
+
+  it('throws when identity_linking declared but metadata fetch fails', async () => {
+    mockResponse(makeProfile(['dev.ucp.shopping.checkout', 'dev.ucp.common.identity_linking']));
+    mockResponse({}, 404);
+
+    await expect(UCPClient.connect(CONFIG)).rejects.toThrow('OAuth metadata fetch failed');
+  });
+
+  it('instantiates when metadata fetch succeeds', async () => {
+    mockResponse(makeProfile(['dev.ucp.shopping.checkout', 'dev.ucp.common.identity_linking']));
+    mockResponse({
+      issuer: 'https://merchant.example.com',
+      authorization_endpoint: 'https://merchant.example.com/oauth2/authorize',
+      token_endpoint: 'https://merchant.example.com/oauth2/token',
+      revocation_endpoint: 'https://merchant.example.com/oauth2/revoke',
+      scopes_supported: ['ucp:scopes:checkout_session'],
+      response_types_supported: ['code'],
+      grant_types_supported: ['authorization_code', 'refresh_token'],
+      token_endpoint_auth_methods_supported: ['client_secret_basic'],
+    });
+
+    const client = await UCPClient.connect(CONFIG);
+    expect(client.identityLinking).not.toBeNull();
+  });
+
+  it('builds correct authorization URL', async () => {
+    mockResponse(makeProfile(['dev.ucp.shopping.checkout', 'dev.ucp.common.identity_linking']));
+    mockResponse({
+      issuer: 'https://merchant.example.com',
+      authorization_endpoint: 'https://merchant.example.com/oauth2/authorize',
+      token_endpoint: 'https://merchant.example.com/oauth2/token',
+      revocation_endpoint: 'https://merchant.example.com/oauth2/revoke',
+      scopes_supported: ['ucp:scopes:checkout_session'],
+      response_types_supported: ['code'],
+      grant_types_supported: ['authorization_code'],
+      token_endpoint_auth_methods_supported: ['client_secret_basic'],
+    });
+
+    const client = await UCPClient.connect(CONFIG);
+    const url = client.identityLinking!.getAuthorizationUrl({
+      client_id: 'my_client',
+      redirect_uri: 'https://platform.example.com/callback',
+      state: 'csrf_token_123',
+    });
+
+    expect(url).toContain('response_type=code');
+    expect(url).toContain('client_id=my_client');
+    expect(url).toContain('state=csrf_token_123');
+    expect(url).toContain('scope=ucp');
+  });
+
+  it('includes identity linking tools in describeTools', async () => {
+    mockResponse(makeProfile(['dev.ucp.shopping.checkout', 'dev.ucp.common.identity_linking']));
+    mockResponse({
+      issuer: 'https://merchant.example.com',
+      authorization_endpoint: 'https://merchant.example.com/oauth2/authorize',
+      token_endpoint: 'https://merchant.example.com/oauth2/token',
+      revocation_endpoint: 'https://merchant.example.com/oauth2/revoke',
+      scopes_supported: ['ucp:scopes:checkout_session'],
+      response_types_supported: ['code'],
+      grant_types_supported: ['authorization_code'],
+      token_endpoint_auth_methods_supported: ['client_secret_basic'],
+    });
+
+    const client = await UCPClient.connect(CONFIG);
+    const toolNames = client.describeTools().map((t) => t.name);
+
+    expect(toolNames).toContain('get_authorization_url');
+    expect(toolNames).toContain('exchange_auth_code');
+    expect(toolNames).toContain('refresh_access_token');
+    expect(toolNames).toContain('revoke_token');
+  });
+});
+
+describe('409 with messages preserves error detail', () => {
+  it('throws UCPError with messages when 409 has message body', async () => {
+    const client = await connectWithCapabilities();
+    mockResponse(
+      {
+        messages: [{ type: 'error', code: 'DUPLICATE_REQUEST', content: 'Key already used' }],
+      },
+      409,
+    );
+
+    try {
+      await client.checkout!.create({
+        line_items: [{ item: { id: 'prod-001' }, quantity: 1 }],
+      });
+      expect.unreachable('should have thrown');
+    } catch (err) {
+      expect(err).toBeInstanceOf(UCPError);
+      const ucpErr = err as UCPError;
+      expect(ucpErr.code).toBe('DUPLICATE_REQUEST');
+      expect(ucpErr.messages).toHaveLength(1);
+    }
+  });
+
+  it('throws UCPIdempotencyConflictError when 409 has no messages', async () => {
+    const client = await connectWithCapabilities();
+    mockResponse({}, 409);
+
+    try {
+      await client.checkout!.create({
+        line_items: [{ item: { id: 'prod-001' }, quantity: 1 }],
+      });
+      expect.unreachable('should have thrown');
+    } catch (err) {
+      expect(err).toBeInstanceOf(UCPIdempotencyConflictError);
+    }
   });
 });
