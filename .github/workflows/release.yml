@@ -19,18 +19,8 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          release-type: node
-          package-name: '@omnix/ucp-client'
-          changelog-types: >-
-            [
-              {"type":"feat","section":"Features"},
-              {"type":"fix","section":"Bug Fixes"},
-              {"type":"refactor","section":"Code Quality"},
-              {"type":"test","section":"Tests"},
-              {"type":"docs","section":"Documentation"},
-              {"type":"chore","section":"Maintenance"},
-              {"type":"perf","section":"Performance"}
-            ]
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   publish:
     needs: release-please
