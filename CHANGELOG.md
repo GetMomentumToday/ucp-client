@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3](https://github.com/OmnixHQ/ucp-client/compare/v0.1.2...v0.1.3) (2026-03-28)
+
+
+### Maintenance
+
+* add ucp-client keyword for npm search discoverability ([480c587](https://github.com/OmnixHQ/ucp-client/commit/480c5872c42154ed5235ebb09c827299b57a52bd))
+
 ## [0.1.2](https://github.com/OmnixHQ/ucp-client/compare/v0.1.1...v0.1.2) (2026-03-27)
 
 
