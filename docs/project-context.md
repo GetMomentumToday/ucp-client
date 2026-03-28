@@ -36,10 +36,10 @@ UCPClient.connect(config)
 ```typescript
 interface ConnectedClient {
   profile: UCPProfile;
-  checkout: CheckoutCapability | null;                   // dev.ucp.shopping.checkout
-  order: OrderCapability | null;                         // dev.ucp.shopping.order
-  identityLinking: IdentityLinkingCapability | null;     // dev.ucp.common.identity_linking
-  products: ProductsCapability;                          // always present
+  checkout: CheckoutCapability | null; // dev.ucp.shopping.checkout
+  order: OrderCapability | null; // dev.ucp.shopping.order
+  identityLinking: IdentityLinkingCapability | null; // dev.ucp.common.identity_linking
+  products: ProductsCapability; // always present
   paymentHandlers: PaymentHandlerMap;
   describeTools(): readonly ToolDescriptor[];
   getAgentTools(): readonly AgentTool[];
@@ -125,24 +125,24 @@ scripts/
 
 ### Subpath exports (framework adapters)
 
-| Subpath                           | Exports                                                                  |
-| --------------------------------- | ------------------------------------------------------------------------ |
-| `@omnixhq/ucp-client/openai`      | `toOpenAITools`, `executeOpenAIToolCall`, `OpenAIFunction`, `OpenAITool` |
-| `@omnixhq/ucp-client/anthropic`   | `toAnthropicTools`, `executeAnthropicToolCall`, `AnthropicTool`          |
-| `@omnixhq/ucp-client/vercel-ai`   | `toVercelAITools`, `VercelAITool`, `VercelAITools`                       |
-| `@omnixhq/ucp-client/langchain`   | `toLangChainTools`, `LangChainTool`                                      |
-| `@omnixhq/ucp-client/mcp`         | `toMCPTools`, `executeMCPToolCall`, `MCPTool`                            |
+| Subpath                         | Exports                                                                  |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| `@omnixhq/ucp-client/openai`    | `toOpenAITools`, `executeOpenAIToolCall`, `OpenAIFunction`, `OpenAITool` |
+| `@omnixhq/ucp-client/anthropic` | `toAnthropicTools`, `executeAnthropicToolCall`, `AnthropicTool`          |
+| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`, `VercelAITool`, `VercelAITools`                       |
+| `@omnixhq/ucp-client/langchain` | `toLangChainTools`, `LangChainTool`                                      |
+| `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`, `MCPTool`                            |
 
 All adapters are zero-dependency pure mappings — no external SDK imports.
 
 ## Error Handling
 
-| Error class                   | When thrown                                                   |
-| ----------------------------- | ------------------------------------------------------------- |
-| `UCPError`                    | Gateway returns error response with `messages[]`              |
-| `UCPEscalationError`          | Checkout response has `status: 'requires_escalation'`         |
-| `UCPIdempotencyConflictError` | HTTP 409 (idempotency key reused with different body)         |
-| `UCPOAuthError`               | OAuth token exchange / refresh / revocation failure           |
+| Error class                   | When thrown                                           |
+| ----------------------------- | ----------------------------------------------------- |
+| `UCPError`                    | Gateway returns error response with `messages[]`      |
+| `UCPEscalationError`          | Checkout response has `status: 'requires_escalation'` |
+| `UCPIdempotencyConflictError` | HTTP 409 (idempotency key reused with different body) |
+| `UCPOAuthError`               | OAuth token exchange / refresh / revocation failure   |
 
 `UCPError` carries: `code`, `type`, `statusCode`, `path`, `contentType`, `messages[]` (all gateway messages).
 

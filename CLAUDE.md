@@ -149,13 +149,13 @@ All interfaces use `readonly` properties. Never mutate existing objects — crea
 
 Five subpath exports ship zero-dependency framework adapters:
 
-| Subpath                         | Adapter fn(s)                                 |
-| ------------------------------- | --------------------------------------------- |
+| Subpath                         | Adapter fn(s)                                  |
+| ------------------------------- | ---------------------------------------------- |
 | `@omnixhq/ucp-client/openai`    | `toOpenAITools`, `executeOpenAIToolCall`       |
 | `@omnixhq/ucp-client/anthropic` | `toAnthropicTools`, `executeAnthropicToolCall` |
-| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`                             |
-| `@omnixhq/ucp-client/langchain` | `toLangChainTools`                            |
-| `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`            |
+| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`                              |
+| `@omnixhq/ucp-client/langchain` | `toLangChainTools`                             |
+| `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`             |
 
 No external SDK imports — adapters are pure TypeScript mappings over `AgentTool[]`.
 
