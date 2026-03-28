@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0](https://github.com/OmnixHQ/ucp-client/compare/v0.2.0...v0.3.0) (2026-03-28)
+
+
+### Features
+
+* add catchErrors option to all framework adapters ([#19](https://github.com/OmnixHQ/ucp-client/issues/19)) ([a0607ff](https://github.com/OmnixHQ/ucp-client/commit/a0607ffa6d2a9d3b80375dbdfc2f9f0266c70141))
+
+
+### Tests
+
+* add type-level tests for public API surface ([#16](https://github.com/OmnixHQ/ucp-client/issues/16)) ([5098720](https://github.com/OmnixHQ/ucp-client/commit/5098720a1c667220a0ce1443e588a552d7ecaf43))
+
+
+### Documentation
+
+* never manually edit version — release-please owns it ([#17](https://github.com/OmnixHQ/ucp-client/issues/17)) ([17e8e8f](https://github.com/OmnixHQ/ucp-client/commit/17e8e8f62616b8eb349edce13f0494375d16b895))
+
 ## [0.2.0](https://github.com/OmnixHQ/ucp-client/compare/v0.1.3...v0.2.0) (2026-03-28)
 
 
