@@ -5,6 +5,13 @@
 `@omnixhq/ucp-client` is a capability-aware TypeScript HTTP client for any UCP-compliant server.
 It is a **library, not a server** — no port, no process, no Docker container.
 
+## Git Workflow
+
+- **Never push directly to `main`** — all changes go through a PR branch
+- Branch naming: `feat/<description>`, `fix/<description>`, `chore/<description>`
+- PRs require CI to pass before merging
+- Use squash merge only
+
 ## Architecture
 
 - **Single package**: `src/` at root, no monorepo
@@ -19,11 +26,15 @@ It is a **library, not a server** — no port, no process, no Docker container.
 src/
   types/           — Domain-split types (config, checkout, order, payment, identity-linking, common, product)
   capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability, ProductsCapability
+  adapters/        — Framework adapters: openai, anthropic, vercel-ai, langchain, mcp
   http.ts          — Shared HttpClient (headers, idempotency, error parsing)
   errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
   schemas.ts       — Zod schemas (SDK re-exports)
-  UCPClient.ts     — connect() → ConnectedClient with describeTools()
+  agent-tools.ts   — AgentTool interface + getAgentTools() returning per-capability tools
+  UCPClient.ts     — connect() → ConnectedClient with describeTools() + getAgentTools()
   index.ts         — Public API
+examples/          — Illustrative agent loop examples per framework
+scripts/           — mock-ucp-server.ts, agent-demo.ts, test-gateway-connection.ts
 ```
 
 ### Capability Mapping
@@ -36,6 +47,18 @@ src/
 | _(gateway-specific)_              | `client.products`        | No (always available) |
 
 Extensions (`fulfillment`, `discount`, `buyerConsent`, `ap2Mandate`) are booleans on `checkout.extensions`.
+
+### Framework Adapters (subpath exports)
+
+| Import                            | Function(s)                                    |
+| --------------------------------- | ---------------------------------------------- |
+| `@omnixhq/ucp-client/openai`      | `toOpenAITools()`, `executeOpenAIToolCall()`    |
+| `@omnixhq/ucp-client/anthropic`   | `toAnthropicTools()`, `executeAnthropicToolCall()` |
+| `@omnixhq/ucp-client/vercel-ai`   | `toVercelAITools()`                            |
+| `@omnixhq/ucp-client/langchain`   | `toLangChainTools()`                           |
+| `@omnixhq/ucp-client/mcp`         | `toMCPTools()`, `executeMCPToolCall()`         |
+
+All adapters are zero-dependency pure mappings — no external SDK imports.
 
 ## Code Rules
 
@@ -74,9 +97,19 @@ npm test             # vitest run
 npm run typecheck    # tsc --noEmit
 npm run lint         # eslint
 npm run format:check # prettier --check
-npm run check:exports # attw (validates exports map)
+npm run check:exports # attw (validates exports map, node10 no-resolution ignored)
 npm run check:publish # publint (validates package)
 ```
+
+## Release Flow
+
+```
+Feature PR → merge to main → release-please opens Release PR → merge Release PR → npm publishes
+```
+
+- Versioning: conventional commits (`feat:` → minor, `fix:` → patch)
+- Config: `release-please-config.json` + `.release-please-manifest.json`
+- Publish: GitHub Actions `release.yml` with `NPM_TOKEN` + `RELEASE_PLEASE_TOKEN` secrets
 
 ## Dependencies
 
