@@ -49,6 +49,56 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./openai": {
+      "import": {
+        "types": "./dist/adapters/openai.d.ts",
+        "default": "./dist/adapters/openai.js"
+      },
+      "require": {
+        "types": "./dist/adapters/openai.d.cts",
+        "default": "./dist/adapters/openai.cjs"
+      }
+    },
+    "./anthropic": {
+      "import": {
+        "types": "./dist/adapters/anthropic.d.ts",
+        "default": "./dist/adapters/anthropic.js"
+      },
+      "require": {
+        "types": "./dist/adapters/anthropic.d.cts",
+        "default": "./dist/adapters/anthropic.cjs"
+      }
+    },
+    "./vercel-ai": {
+      "import": {
+        "types": "./dist/adapters/vercel-ai.d.ts",
+        "default": "./dist/adapters/vercel-ai.js"
+      },
+      "require": {
+        "types": "./dist/adapters/vercel-ai.d.cts",
+        "default": "./dist/adapters/vercel-ai.cjs"
+      }
+    },
+    "./langchain": {
+      "import": {
+        "types": "./dist/adapters/langchain.d.ts",
+        "default": "./dist/adapters/langchain.js"
+      },
+      "require": {
+        "types": "./dist/adapters/langchain.d.cts",
+        "default": "./dist/adapters/langchain.cjs"
+      }
+    },
+    "./mcp": {
+      "import": {
+        "types": "./dist/adapters/mcp.d.ts",
+        "default": "./dist/adapters/mcp.js"
+      },
+      "require": {
+        "types": "./dist/adapters/mcp.d.cts",
+        "default": "./dist/adapters/mcp.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
