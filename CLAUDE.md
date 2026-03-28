@@ -19,11 +19,18 @@ It is a **library, not a server** — no port, no process, no Docker container.
 src/
   types/           — Domain-split types (config, checkout, order, payment, identity-linking, common, product)
   capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability, ProductsCapability
+  adapters/        — Framework adapters (openai, anthropic, vercel-ai, langchain, mcp, catch-errors)
   http.ts          — Shared HttpClient (headers, idempotency, error parsing)
   errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
   schemas.ts       — Zod schemas (SDK re-exports)
+  agent-tools.ts   — AgentTool interface, getAgentTools(), JsonSchema
   UCPClient.ts     — connect() → ConnectedClient with describeTools()
   index.ts         — Public API
+
+scripts/
+  agents/          — Per-adapter example scripts (run in CI): openai, anthropic, mcp, vercel-ai, langchain
+  agent-demo.ts    — Full end-to-end demo with real Anthropic Claude (manual only, costs API credits)
+  mock-ucp-server.ts — Local mock server for integration tests
 ```
 
 ### Capability Mapping
@@ -169,6 +176,8 @@ Five subpath exports ship zero-dependency framework adapters:
 | `@omnixhq/ucp-client/langchain` | `toLangChainTools`                             |
 | `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`             |
 
+All adapters accept an optional `AdapterOptions` (`catchErrors?: boolean`). When `catchErrors: true`, errors are returned as `ToolErrorResult` objects instead of throwing — agents can observe and recover from failures without crashing the stream. Default is `false` (original throw behavior preserved).
+
 No external SDK imports — adapters are pure TypeScript mappings over `AgentTool[]`.
 
 ## Build & Test
@@ -177,6 +186,7 @@ No external SDK imports — adapters are pure TypeScript mappings over `AgentToo
 npm install
 npm run build        # tsdown (dual ESM + CJS)
 npm test             # vitest run
+npm run test:types   # vitest run --typecheck.only (type-level tests in src/__tests__/types/)
 npm run typecheck    # tsc --noEmit
 npm run lint         # eslint
 npm run format:check # prettier --check

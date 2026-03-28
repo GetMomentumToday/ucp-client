@@ -88,6 +88,7 @@ src/
     identity-linking.ts — IdentityLinkingCapability (OAuth 2.0 full flow)
     products.ts         — ProductsCapability (search, get)
   adapters/
+    catch-errors.ts     — AdapterOptions, ToolErrorResult, safeExecute, formatToolError
     openai.ts           — toOpenAITools(), executeOpenAIToolCall()
     anthropic.ts        — toAnthropicTools(), executeAnthropicToolCall()
     vercel-ai.ts        — toVercelAITools()
@@ -100,17 +101,16 @@ src/
   schemas.ts            — Zod schemas (SDK re-exports)
   index.ts              — Public API surface
 
-examples/
-  anthropic-agent-loop.ts
-  openai-agent-loop.ts
-  vercel-ai-nextjs.ts
-  langchain-agent.ts
-  mcp-server.ts
-
 scripts/
-  mock-ucp-server.ts        — Spec-compliant local UCP server for testing
-  agent-demo.ts             — End-to-end Claude agent demo
+  mock-ucp-server.ts         — Spec-compliant local UCP server for testing
+  agent-demo.ts              — End-to-end Claude agent demo (Anthropic SDK)
   test-gateway-connection.ts — Live gateway integration test
+  agents/
+    openai-agent.ts          — OpenAI adapter example (run in CI)
+    anthropic-agent.ts       — Anthropic adapter example (run in CI)
+    mcp-agent.ts             — MCP adapter example (run in CI)
+    vercel-ai-agent.ts       — Vercel AI adapter example (run in CI)
+    langchain-agent.ts       — LangChain adapter example (run in CI)
 ```
 
 ## Public Exports
@@ -121,6 +121,7 @@ scripts/
 - `UCPError`, `UCPEscalationError`, `UCPIdempotencyConflictError`, `UCPOAuthError`
 - `CheckoutCapability`, `OrderCapability`, `IdentityLinkingCapability`, `ProductsCapability`
 - `getAgentTools()`, `AgentTool`, `JsonSchema`
+- `AdapterOptions`, `ToolErrorResult` — adapter error-handling option and return type
 - All types from `src/types/`
 
 ### Subpath exports (framework adapters)
@@ -129,7 +130,7 @@ scripts/
 | ------------------------------- | ------------------------------------------------------------------------ |
 | `@omnixhq/ucp-client/openai`    | `toOpenAITools`, `executeOpenAIToolCall`, `OpenAIFunction`, `OpenAITool` |
 | `@omnixhq/ucp-client/anthropic` | `toAnthropicTools`, `executeAnthropicToolCall`, `AnthropicTool`          |
-| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`, `VercelAITool`, `VercelAITools`                       |
+| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`, `VercelAIToolDefinition`, `VercelAIToolMap`           |
 | `@omnixhq/ucp-client/langchain` | `toLangChainTools`, `LangChainTool`                                      |
 | `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`, `MCPTool`                            |
 
@@ -167,7 +168,8 @@ All adapters are zero-dependency pure mappings — no external SDK imports.
 - **Coverage threshold**: 80% (functions, lines, branches)
 - **Unit tests**: mock `fetch` via `vi.fn()`
 - **Integration tests**: skipped unless `GATEWAY_URL` env is set
-- **CI jobs**: Build+Lint+Test, Integration (mock server)
+- **Type tests**: `src/__tests__/types/*.test-d.ts` via `vitest run --typecheck.only` (`npm run test:types`)
+- **CI jobs**: Build+Lint+Test, Integration (mock server), Agent — OpenAI/Anthropic/MCP/Vercel AI/LangChain (5 per-adapter jobs running `scripts/agents/*.ts`)
 
 ## Open Tickets (next sprint)
 
