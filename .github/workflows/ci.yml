@@ -87,6 +87,9 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
+      - name: Run gateway connection example
+        run: GATEWAY_URL=http://localhost:3002 npm run test:e2e
+
       - name: Run integration tests
         run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/integration.test.ts tests/adapters-catcherrors.test.ts
 
