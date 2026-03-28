@@ -515,6 +515,13 @@ async function router(req: IncomingMessage, res: ServerResponse): Promise<void> 
   const method = req.method ?? 'GET';
   const path = url.pathname;
 
+  // health check used by integration tests to confirm the server is up
+  if (method === 'GET' && path === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
   // GET /.well-known/ucp
   if (method === 'GET' && path === '/.well-known/ucp') {
     return handleDiscovery(res);
