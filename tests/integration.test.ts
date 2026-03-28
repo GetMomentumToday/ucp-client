@@ -66,7 +66,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       let products: readonly UCPProduct[];
 
       it('search returns results', async () => {
-        products = await client.products.search('shoes');
+        products = await client.products.search('roses');
         expect(products.length).toBeGreaterThan(0);
       });
 
@@ -91,7 +91,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       let products: readonly UCPProduct[];
 
       beforeAll(async () => {
-        products = await client.products.search('shoes');
+        products = await client.products.search('roses');
       });
 
       it('creates a checkout session', async () => {
@@ -194,7 +194,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
 
     describe('cancel checkout', () => {
       it('cancels a session', async () => {
-        const products = await client.products.search('shoes');
+        const products = await client.products.search('roses');
         const sess = await client.checkout!.create({
           line_items: [{ item: { id: products[0]!.id }, quantity: 1 }],
         });
