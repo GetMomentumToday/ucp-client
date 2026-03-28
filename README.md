@@ -138,40 +138,82 @@ console.log(Object.keys(client.paymentHandlers));
 // e.g., ['com.google.pay', 'dev.shopify.shop_pay']
 ```
 
-## Other agent frameworks
+## Framework adapters
 
-The `AgentTool` format maps directly to every major framework:
+Ready-made adapters convert `getAgentTools()` output to each framework's native format — no manual mapping.
+
+| Framework | Import | Example |
+|---|---|---|
+| **Anthropic SDK** | `@omnixhq/ucp-client` (built-in) | [examples/anthropic-agent-loop.ts](./examples/anthropic-agent-loop.ts) |
+| **OpenAI SDK** | `@omnixhq/ucp-client/openai` | [examples/openai-agent-loop.ts](./examples/openai-agent-loop.ts) |
+| **Vercel AI SDK** | `@omnixhq/ucp-client/vercel-ai` | [examples/vercel-ai-nextjs.ts](./examples/vercel-ai-nextjs.ts) |
+| **LangChain** | `@omnixhq/ucp-client/langchain` | [examples/langchain-agent.ts](./examples/langchain-agent.ts) |
+| **MCP server** | `@omnixhq/ucp-client/mcp` | [examples/mcp-server.ts](./examples/mcp-server.ts) |
 
 **OpenAI:**
 
 ```typescript
-tools.map((t) => ({
-  type: 'function',
-  function: { name: t.name, description: t.description, parameters: t.parameters },
-}));
+import { toOpenAITools, executeOpenAIToolCall } from '@omnixhq/ucp-client/openai';
+
+const tools = toOpenAITools(client.getAgentTools());
+
+// In your agent loop:
+const response = await openai.chat.completions.create({ model: 'gpt-4o', tools, messages });
+
+for (const call of response.choices[0].message.tool_calls ?? []) {
+  const result = await executeOpenAIToolCall(agentTools, call.function.name, JSON.parse(call.function.arguments));
+}
 ```
 
 **Vercel AI SDK:**
 
 ```typescript
-import { tool, jsonSchema } from 'ai';
+import { toVercelAITools } from '@omnixhq/ucp-client/vercel-ai';
+import { jsonSchema, streamText } from 'ai';
 
-Object.fromEntries(
-  tools.map((t) => [
-    t.name,
-    tool({ description: t.description, parameters: jsonSchema(t.parameters), execute: t.execute }),
+const rawTools = toVercelAITools(client.getAgentTools());
+
+// Wrap parameters with jsonSchema() for strict Vercel AI SDK typing:
+const tools = Object.fromEntries(
+  Object.entries(rawTools).map(([name, t]) => [
+    name,
+    { ...t, parameters: jsonSchema(t.parameters) },
   ]),
+);
+
+const result = await streamText({ model, tools, messages });
+```
+
+**LangChain:**
+
+```typescript
+import { toLangChainTools } from '@omnixhq/ucp-client/langchain';
+import { DynamicStructuredTool } from '@langchain/core/tools';
+import { z } from 'zod';
+
+const rawTools = toLangChainTools(client.getAgentTools());
+
+const tools = rawTools.map(
+  (t) => new DynamicStructuredTool({ name: t.name, description: t.description, schema: z.object({}), func: t.call }),
 );
 ```
 
 **MCP server:**
 
 ```typescript
-for (const t of tools) {
-  server.tool(t.name, t.description, t.parameters, async (params) => ({
-    content: [{ type: 'text', text: JSON.stringify(await t.execute(params)) }],
-  }));
-}
+import { toMCPTools, executeMCPToolCall } from '@omnixhq/ucp-client/mcp';
+
+const agentTools = client.getAgentTools();
+
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: toMCPTools(agentTools),
+}));
+
+server.setRequestHandler(CallToolRequestSchema, async (req) => ({
+  content: [{ type: 'text', text: JSON.stringify(
+    await executeMCPToolCall(agentTools, req.params.name, req.params.arguments ?? {})
+  )}],
+}));
 ```
 
 ## Development
