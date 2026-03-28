@@ -120,8 +120,8 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
-      - name: Run OpenAI agent tests
-        run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/agents/openai-agent.test.ts
+      - name: Run OpenAI agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:openai
 
   agent-anthropic:
     name: Agent — Anthropic adapter
@@ -153,8 +153,8 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
-      - name: Run Anthropic agent tests
-        run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/agents/anthropic-agent.test.ts
+      - name: Run Anthropic agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:anthropic
 
   agent-mcp:
     name: Agent — MCP adapter
@@ -186,8 +186,8 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
-      - name: Run MCP agent tests
-        run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/agents/mcp-agent.test.ts
+      - name: Run MCP agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:mcp
 
   agent-vercel-ai:
     name: Agent — Vercel AI adapter
@@ -219,8 +219,8 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
-      - name: Run Vercel AI agent tests
-        run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/agents/vercel-ai-agent.test.ts
+      - name: Run Vercel AI agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:vercel-ai
 
   agent-langchain:
     name: Agent — LangChain adapter
@@ -252,5 +252,5 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
-      - name: Run LangChain agent tests
-        run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/agents/langchain-agent.test.ts
+      - name: Run LangChain agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:langchain
