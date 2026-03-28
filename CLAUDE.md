@@ -77,6 +77,7 @@ Enter plan mode for any non-trivial task (3+ steps or architectural decisions). 
 
 - Never mark a task complete without proving it works.
 - Run tests, check logs, demonstrate correctness.
+- If any public export changed: rebuild and regenerate the API baseline (`npx api-extractor run --local`), commit `docs/ucp-client.api.md` alongside the code.
 - When asked to review a ticket, treat it as a readiness review by default.
 - Before starting a readiness review, transition the ticket to `CR In Progress`.
 - Check whether a GitHub PR exists; create one if it doesn't.
@@ -128,6 +129,33 @@ Release-please reads conventional commits and opens a Release PR automatically o
 - **typecheck**: runs `tsc --noEmit` (full project) on every commit
 
 Hooks install automatically via `prepare` script on `npm install`. Do not bypass with `--no-verify`.
+
+### Backward Compatibility (CRITICAL)
+
+This is a **public npm library**. Every change to the public API surface must be intentional and explicit.
+
+**Triggers — regenerate the API baseline whenever you:**
+
+- Add, remove, or rename any export in `src/index.ts`
+- Change a public interface (add/remove/rename fields)
+- Change a public function signature (parameters, return type)
+- Add a new subpath export
+
+**How to update the baseline:**
+
+```bash
+npm run build
+npx api-extractor run --local   # rewrites docs/ucp-client.api.md
+git add docs/ucp-client.api.md  # commit alongside the code change
+```
+
+CI (`Check API surface` step) re-generates the report and runs `git diff --exit-code` — any uncommitted diff fails the build. The baseline file (`docs/ucp-client.api.md`) is the source of truth for what consumers depend on.
+
+**Semver classification:**
+
+- New optional param / new optional field / new export → `feat:` → minor bump
+- Removed export / changed required signature / narrowed type → `BREAKING CHANGE:` in commit body → major bump
+- Bug fix with no API change → `fix:` → patch bump
 
 ### No Descriptive Comments
 
