@@ -1,4 +1,5 @@
 import type { AgentTool, JsonSchema } from '../agent-tools.js';
+import { type AdapterOptions, safeExecute } from './catch-errors.js';
 
 export type { AgentTool, JsonSchema };
 
@@ -13,7 +14,10 @@ export interface OpenAITool {
   readonly function: OpenAIFunction;
 }
 
-export function toOpenAITools(agentTools: readonly AgentTool[]): readonly OpenAITool[] {
+export function toOpenAITools(
+  agentTools: readonly AgentTool[],
+  _options?: AdapterOptions,
+): readonly OpenAITool[] {
   return agentTools.map((tool) => ({
     type: 'function' as const,
     function: {
@@ -28,10 +32,11 @@ export async function executeOpenAIToolCall(
   agentTools: readonly AgentTool[],
   toolName: string,
   toolInput: Record<string, unknown>,
+  options?: AdapterOptions,
 ): Promise<unknown> {
   const tool = agentTools.find((t) => t.name === toolName);
   if (!tool) {
     throw new Error(`Tool not found: ${toolName}`);
   }
-  return tool.execute(toolInput);
+  return safeExecute(() => tool.execute(toolInput), options?.catchErrors ?? false);
 }

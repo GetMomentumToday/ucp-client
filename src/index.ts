@@ -4,6 +4,8 @@ export type { ConnectedClient, ToolDescriptor, UCPProfile } from './UCPClient.js
 export { getAgentTools } from './agent-tools.js';
 export type { AgentTool, JsonSchema } from './agent-tools.js';
 
+export type { AdapterOptions } from './adapters/catch-errors.js';
+
 export {
   UCPError,
   UCPEscalationError,

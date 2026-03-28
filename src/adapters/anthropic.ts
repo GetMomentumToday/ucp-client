@@ -1,4 +1,5 @@
 import type { AgentTool, JsonSchema } from '../agent-tools.js';
+import { type AdapterOptions, safeExecute } from './catch-errors.js';
 
 export type { AgentTool, JsonSchema };
 
@@ -15,7 +16,10 @@ export interface AnthropicTool {
   readonly input_schema: AnthropicInputSchema & JsonSchema;
 }
 
-export function toAnthropicTools(agentTools: readonly AgentTool[]): readonly AnthropicTool[] {
+export function toAnthropicTools(
+  agentTools: readonly AgentTool[],
+  _options?: AdapterOptions,
+): readonly AnthropicTool[] {
   return agentTools.map((tool) => ({
     name: tool.name,
     description: tool.description,
@@ -27,10 +31,11 @@ export async function executeAnthropicToolCall(
   agentTools: readonly AgentTool[],
   toolName: string,
   toolInput: Record<string, unknown>,
+  options?: AdapterOptions,
 ): Promise<unknown> {
   const tool = agentTools.find((t) => t.name === toolName);
   if (!tool) {
     throw new Error(`Tool not found: ${toolName}`);
   }
-  return tool.execute(toolInput);
+  return safeExecute(() => tool.execute(toolInput), options?.catchErrors ?? false);
 }
