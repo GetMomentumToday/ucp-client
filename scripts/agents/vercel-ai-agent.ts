@@ -65,9 +65,9 @@ async function main() {
   console.log(`  Status: ${updated.status}\n`);
 
   console.log('Step 4: cancel_checkout');
-  const cancelled = JSON.parse(
-    await tools['cancel_checkout']!.execute({ id: session.id }),
-  ) as { status: string };
+  const cancelled = JSON.parse(await tools['cancel_checkout']!.execute({ id: session.id })) as {
+    status: string;
+  };
   console.log(`  Status: ${cancelled.status}\n`);
 
   if (cancelled.status !== 'canceled') {
