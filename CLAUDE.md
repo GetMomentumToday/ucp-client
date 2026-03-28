@@ -65,6 +65,37 @@ All interfaces use `readonly` properties. Never mutate existing objects — crea
 - Mock `fetch` for unit tests, real gateway for integration tests
 - TDD: write test first (RED), implement (GREEN), refactor (IMPROVE)
 
+## Git Workflow
+
+**NEVER push directly to `main`.** All changes go through a branch + PR:
+
+```bash
+git checkout -b <type>/<short-description>
+# make changes
+git add <files>
+git commit -m "<type>: <description>"
+git push -u origin <branch>
+gh pr create --title "<type>: <description>" --body "..."
+```
+
+Commit types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`
+
+Release-please reads conventional commits and opens a Release PR automatically on merge to `main`. Merge the Release PR → npm publish fires.
+
+## Framework Adapters
+
+Five subpath exports ship zero-dependency framework adapters:
+
+| Subpath                         | Adapter fn(s)                                     |
+| ------------------------------- | ------------------------------------------------- |
+| `@omnixhq/ucp-client/openai`    | `toOpenAITools`, `executeOpenAIToolCall`           |
+| `@omnixhq/ucp-client/anthropic` | `toAnthropicTools`, `executeAnthropicToolCall`     |
+| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`                                 |
+| `@omnixhq/ucp-client/langchain` | `toLangChainTools`                                |
+| `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`                |
+
+No external SDK imports — adapters are pure TypeScript mappings over `AgentTool[]`.
+
 ## Build & Test
 
 ```bash
