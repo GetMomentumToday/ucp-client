@@ -60,6 +60,13 @@ describe('Vercel AI adapter types', () => {
   it('VercelAIToolDefinition execute returns Promise<string>', () => {
     expectTypeOf<VercelAIToolDefinition['execute']>().returns.toEqualTypeOf<Promise<string>>();
   });
+
+  it('VercelAIToolDefinition uses inputSchema (not parameters)', () => {
+    expectTypeOf<VercelAIToolDefinition>().toMatchTypeOf<{
+      readonly description: string;
+      readonly inputSchema: JsonSchema;
+    }>();
+  });
 });
 
 describe('LangChain adapter types', () => {

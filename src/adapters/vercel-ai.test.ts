@@ -27,10 +27,10 @@ describe('toVercelAITools', () => {
     expect(Object.keys(result)).toEqual(['search_products', 'failing_tool']);
   });
 
-  it('maps description and parameters for each tool', () => {
+  it('maps description and inputSchema for each tool', () => {
     const result = toVercelAITools(mockTools);
     expect(result['search_products'].description).toBe('Search for products');
-    expect(result['search_products'].parameters).toEqual(mockTools[0].parameters);
+    expect(result['search_products'].inputSchema).toEqual(mockTools[0].parameters);
   });
 
   it('execute returns JSON stringified result', async () => {

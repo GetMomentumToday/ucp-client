@@ -5,7 +5,7 @@ export type { AgentTool, JsonSchema };
 
 export interface VercelAIToolDefinition {
   readonly description: string;
-  readonly parameters: JsonSchema;
+  readonly inputSchema: JsonSchema;
   readonly execute: (args: Record<string, unknown>) => Promise<string>;
 }
 
@@ -20,7 +20,7 @@ export function toVercelAITools(
       tool.name,
       {
         description: tool.description,
-        parameters: tool.parameters,
+        inputSchema: tool.parameters,
         execute: async (args: Record<string, unknown>): Promise<string> => {
           const result = await safeExecute(() => tool.execute(args), options?.catchErrors ?? false);
           return JSON.stringify(result);
