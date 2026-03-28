@@ -110,6 +110,15 @@ Release-please reads conventional commits and opens a Release PR automatically o
 
 ## Code Rules
 
+### Pre-commit Hooks
+
+`husky` + `lint-staged` run automatically on every commit:
+
+- **lint-staged**: runs `prettier --check` and `eslint --max-warnings 0` on staged `*.ts` and `*.md` files
+- **typecheck**: runs `tsc --noEmit` (full project) on every commit
+
+Hooks install automatically via `prepare` script on `npm install`. Do not bypass with `--no-verify`.
+
 ### No Descriptive Comments
 
 Enforced by `scripts/no-descriptive-comments.sh`. Comments must explain WHY, never WHAT.
