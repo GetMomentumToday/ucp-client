@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0](https://github.com/OmnixHQ/ucp-client/compare/v0.1.3...v0.2.0) (2026-03-28)
+
+
+### Features
+
+* add framework adapters for OpenAI, Anthropic, Vercel AI, LangChain, MCP ([a4bd8dd](https://github.com/OmnixHQ/ucp-client/commit/a4bd8dd35b9760b3ed8f0d3d89bca0903089e087))
+
+
+### Bug Fixes
+
+* format examples, adapter tests and README with prettier ([423b3c9](https://github.com/OmnixHQ/ucp-client/commit/423b3c9dc1072ba45220ee43faafde932b051408))
+
+
+### Documentation
+
+* add framework adapters section with table, examples, and code snippets ([66bae7b](https://github.com/OmnixHQ/ucp-client/commit/66bae7b1b2980e91a5aaa57d8ec594ab09a177a2))
+* update CLAUDE.md and add project-context.md ([#12](https://github.com/OmnixHQ/ucp-client/issues/12)) ([856f5aa](https://github.com/OmnixHQ/ucp-client/commit/856f5aa3a331a31c2c7a8131ccef458dcfbd484e))
+
+
+### Maintenance
+
+* ignore no-resolution attw rule for node10 subpath exports ([b9c3b91](https://github.com/OmnixHQ/ucp-client/commit/b9c3b917d374062d26218d25fb639c6ffa100bcb))
+
 ## [0.1.3](https://github.com/OmnixHQ/ucp-client/compare/v0.1.2...v0.1.3) (2026-03-28)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@omnixhq/ucp-client",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Capability-aware TypeScript client for any UCP-compliant server",
   "author": "OmnixHQ <hello@getomnix.dev> (https://getomnix.dev)",
   "license": "MIT",
