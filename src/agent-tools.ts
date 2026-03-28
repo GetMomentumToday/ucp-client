@@ -75,6 +75,10 @@ export function getAgentTools(client: ConnectedClient): readonly AgentTool[] {
     tools.push(...orderTools(client));
   }
 
+  if (client.identityLinking) {
+    tools.push(...identityLinkingTools(client));
+  }
+
   return tools;
 }
 
@@ -367,6 +371,103 @@ function orderTools(client: ConnectedClient): AgentTool[] {
         required: ['id'],
       },
       execute: async (params) => client.order!.get(params['id'] as string),
+    },
+  ];
+}
+
+function identityLinkingTools(client: ConnectedClient): AgentTool[] {
+  return [
+    {
+      name: 'get_authorization_url',
+      description:
+        'Build the OAuth authorization URL to redirect the buyer to for account linking. Returns a URL string.',
+      parameters: {
+        type: 'object',
+        properties: {
+          client_id: { type: 'string', description: 'OAuth client ID' },
+          redirect_uri: { type: 'string', description: 'URI to redirect to after authorization' },
+          scope: {
+            type: 'string',
+            description: 'OAuth scope (default: ucp:scopes:checkout_session)',
+          },
+          state: { type: 'string', description: 'Opaque value for CSRF protection' },
+        },
+        required: ['client_id', 'redirect_uri'],
+      },
+      execute: (params) =>
+        Promise.resolve(
+          client.identityLinking!.getAuthorizationUrl(
+            params as unknown as Parameters<
+              NonNullable<typeof client.identityLinking>['getAuthorizationUrl']
+            >[0],
+          ),
+        ),
+    },
+    {
+      name: 'exchange_auth_code',
+      description: 'Exchange an OAuth authorization code for an access token and refresh token.',
+      parameters: {
+        type: 'object',
+        properties: {
+          client_id: { type: 'string', description: 'OAuth client ID' },
+          client_secret: { type: 'string', description: 'OAuth client secret' },
+          code: { type: 'string', description: 'Authorization code from the redirect' },
+          redirect_uri: {
+            type: 'string',
+            description: 'Must match the redirect_uri used in authorization',
+          },
+        },
+        required: ['client_id', 'client_secret', 'code', 'redirect_uri'],
+      },
+      execute: async (params) =>
+        client.identityLinking!.exchangeCode(
+          params as unknown as Parameters<
+            NonNullable<typeof client.identityLinking>['exchangeCode']
+          >[0],
+        ),
+    },
+    {
+      name: 'refresh_access_token',
+      description: 'Refresh an expired access token using a refresh token.',
+      parameters: {
+        type: 'object',
+        properties: {
+          client_id: { type: 'string', description: 'OAuth client ID' },
+          client_secret: { type: 'string', description: 'OAuth client secret' },
+          refresh_token: { type: 'string', description: 'Refresh token from a previous exchange' },
+        },
+        required: ['client_id', 'client_secret', 'refresh_token'],
+      },
+      execute: async (params) =>
+        client.identityLinking!.refreshToken(
+          params as unknown as Parameters<
+            NonNullable<typeof client.identityLinking>['refreshToken']
+          >[0],
+        ),
+    },
+    {
+      name: 'revoke_token',
+      description: 'Revoke an access or refresh token to invalidate an account link.',
+      parameters: {
+        type: 'object',
+        properties: {
+          client_id: { type: 'string', description: 'OAuth client ID' },
+          client_secret: { type: 'string', description: 'OAuth client secret' },
+          token: { type: 'string', description: 'Token to revoke' },
+          token_type_hint: {
+            type: 'string',
+            enum: ['access_token', 'refresh_token'],
+            description: 'Hint about the token type',
+          },
+        },
+        required: ['client_id', 'client_secret', 'token'],
+      },
+      execute: async (params) =>
+        client.identityLinking!.revokeToken(
+          params as unknown as Parameters<
+            NonNullable<typeof client.identityLinking>['revokeToken']
+          >[0],
+        ),
     },
   ];
 }

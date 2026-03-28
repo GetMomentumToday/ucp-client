@@ -84,13 +84,24 @@ Each tool returned by `getAgentTools()` has: `name`, `description`, `parameters`
 ## Error handling
 
 ```typescript
-import { UCPError, UCPEscalationError } from '@omnixhq/ucp-client';
+import {
+  UCPError,
+  UCPEscalationError,
+  UCPIdempotencyConflictError,
+  UCPOAuthError,
+} from '@omnixhq/ucp-client';
 
 try {
   await client.checkout.complete(sessionId, payload);
 } catch (err) {
   if (err instanceof UCPEscalationError) {
     // Redirect buyer to err.continue_url for merchant-hosted checkout
+  }
+  if (err instanceof UCPIdempotencyConflictError) {
+    // HTTP 409 — idempotency key reused with a different request body
+  }
+  if (err instanceof UCPOAuthError) {
+    // OAuth token exchange / refresh / revocation failed — err.statusCode
   }
   if (err instanceof UCPError) {
     // err.code — e.g., 'PRODUCT_NOT_FOUND'
@@ -100,6 +111,27 @@ try {
   }
 }
 ```
+
+### catchErrors option
+
+Pass `{ catchErrors: true }` to any adapter to return errors as structured objects instead of
+throwing. The agent observes the failure and can decide what to do next — no try/catch needed in
+every tool call.
+
+```typescript
+import { executeAnthropicToolCall } from '@omnixhq/ucp-client/anthropic';
+import type { ToolErrorResult } from '@omnixhq/ucp-client';
+
+const result = await executeAnthropicToolCall(agentTools, toolName, input, { catchErrors: true });
+
+if (result && typeof result === 'object' && 'error' in result) {
+  const err = result as ToolErrorResult;
+  // { error: 'OUT_OF_STOCK: Item unavailable' }
+  // { requires_escalation: true, continue_url: 'https://...' }
+}
+```
+
+All five adapters (`openai`, `anthropic`, `mcp`, `vercel-ai`, `langchain`) support `catchErrors`.
 
 ## Capabilities
 
@@ -236,7 +268,8 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => ({
 ```bash
 npm install
 npm run build        # tsdown (dual ESM + CJS)
-npm test             # vitest (116 unit tests)
+npm test             # vitest (unit tests)
+npm run test:types   # type-level tests (vitest --typecheck.only)
 npm run typecheck    # tsc --noEmit
 npm run lint         # eslint
 npm run check:exports # attw

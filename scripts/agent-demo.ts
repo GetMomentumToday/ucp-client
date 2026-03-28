@@ -15,6 +15,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { UCPClient } from '../src/index.js';
+import { toAnthropicTools, executeAnthropicToolCall } from '../src/adapters/anthropic.js';
 
 const GATEWAY_URL = process.env['GATEWAY_URL'] ?? 'http://localhost:3002';
 const AGENT_PROFILE = 'https://agent.example.com/.well-known/ucp';
@@ -48,8 +49,9 @@ async function main() {
   }
   console.log('');
 
-  // 2. Get tools — only what this server supports, with schemas + executors
-  const tools = client.getAgentTools();
+  // 2. Get tools via Anthropic adapter — catchErrors returns { error } instead of throwing
+  const agentTools = client.getAgentTools();
+  const anthropicTools = toAnthropicTools(agentTools, { catchErrors: true });
   const anthropic = new Anthropic();
   const messages: Anthropic.MessageParam[] = [{ role: 'user', content: TASK }];
 
@@ -65,11 +67,7 @@ async function main() {
       system:
         "You are a shopping agent. Complete the user's shopping task using the available UCP tools. " +
         'Be concise — do not explain each step, just execute the tools.',
-      tools: tools.map((t) => ({
-        name: t.name,
-        description: t.description,
-        input_schema: t.parameters as Anthropic.Tool['input_schema'],
-      })),
+      tools: anthropicTools as Anthropic.Tool[],
       messages,
     });
 
@@ -78,7 +76,6 @@ async function main() {
     const toolCalls = response.content.filter((b) => b.type === 'tool_use');
 
     if (toolCalls.length === 0) {
-      // Claude is done — print final response
       const text = response.content
         .filter((b) => b.type === 'text')
         .map((b) => (b as Anthropic.TextBlock).text)
@@ -87,29 +84,20 @@ async function main() {
       break;
     }
 
-    // Execute tool calls
     const results: Anthropic.ToolResultBlockParam[] = [];
     for (const block of toolCalls) {
       if (block.type !== 'tool_use') continue;
-      const tool = tools.find((t) => t.name === block.name);
-      if (!tool) continue;
 
       console.log(`  → ${block.name}(${JSON.stringify(block.input)})`);
-      try {
-        const result = await tool.execute(block.input as Record<string, unknown>);
-        const resultStr = JSON.stringify(result, null, 2);
-        console.log(`  ← ${resultStr.slice(0, 200)}${resultStr.length > 200 ? '...' : ''}`);
-        results.push({ type: 'tool_result', tool_use_id: block.id, content: resultStr });
-      } catch (err) {
-        const errMsg = (err as Error).message;
-        console.log(`  ✗ ${errMsg}`);
-        results.push({
-          type: 'tool_result',
-          tool_use_id: block.id,
-          content: `Error: ${errMsg}`,
-          is_error: true,
-        });
-      }
+      const result = await executeAnthropicToolCall(
+        agentTools,
+        block.name,
+        block.input as Record<string, unknown>,
+        { catchErrors: true },
+      );
+      const resultStr = JSON.stringify(result, null, 2);
+      console.log(`  ← ${resultStr.slice(0, 200)}${resultStr.length > 200 ? '...' : ''}`);
+      results.push({ type: 'tool_result', tool_use_id: block.id, content: resultStr });
     }
 
     messages.push({ role: 'user', content: results });

@@ -19,11 +19,18 @@ It is a **library, not a server** — no port, no process, no Docker container.
 src/
   types/           — Domain-split types (config, checkout, order, payment, identity-linking, common, product)
   capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability, ProductsCapability
+  adapters/        — Framework adapters (openai, anthropic, vercel-ai, langchain, mcp, catch-errors)
   http.ts          — Shared HttpClient (headers, idempotency, error parsing)
   errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
   schemas.ts       — Zod schemas (SDK re-exports)
+  agent-tools.ts   — AgentTool interface, getAgentTools(), JsonSchema
   UCPClient.ts     — connect() → ConnectedClient with describeTools()
   index.ts         — Public API
+
+scripts/
+  agents/          — Per-adapter example scripts (run in CI): openai, anthropic, mcp, vercel-ai, langchain
+  agent-demo.ts    — Full end-to-end demo with real Anthropic Claude (manual only, costs API credits)
+  mock-ucp-server.ts — Local mock server for integration tests
 ```
 
 ### Capability Mapping
@@ -70,6 +77,7 @@ Enter plan mode for any non-trivial task (3+ steps or architectural decisions). 
 
 - Never mark a task complete without proving it works.
 - Run tests, check logs, demonstrate correctness.
+- If any public export changed: rebuild and regenerate the API baseline (`npx api-extractor run --local`), commit `docs/ucp-client.api.md` alongside the code.
 - When asked to review a ticket, treat it as a readiness review by default.
 - Before starting a readiness review, transition the ticket to `CR In Progress`.
 - Check whether a GitHub PR exists; create one if it doesn't.
@@ -122,6 +130,33 @@ Release-please reads conventional commits and opens a Release PR automatically o
 
 Hooks install automatically via `prepare` script on `npm install`. Do not bypass with `--no-verify`.
 
+### Backward Compatibility (CRITICAL)
+
+This is a **public npm library**. Every change to the public API surface must be intentional and explicit.
+
+**Triggers — regenerate the API baseline whenever you:**
+
+- Add, remove, or rename any export in `src/index.ts`
+- Change a public interface (add/remove/rename fields)
+- Change a public function signature (parameters, return type)
+- Add a new subpath export
+
+**How to update the baseline:**
+
+```bash
+npm run build
+npx api-extractor run --local   # rewrites docs/ucp-client.api.md
+git add docs/ucp-client.api.md  # commit alongside the code change
+```
+
+CI (`Check API surface` step) re-generates the report and runs `git diff --exit-code` — any uncommitted diff fails the build. The baseline file (`docs/ucp-client.api.md`) is the source of truth for what consumers depend on.
+
+**Semver classification:**
+
+- New optional param / new optional field / new export → `feat:` → minor bump
+- Removed export / changed required signature / narrowed type → `BREAKING CHANGE:` in commit body → major bump
+- Bug fix with no API change → `fix:` → patch bump
+
 ### No Descriptive Comments
 
 Enforced by `scripts/no-descriptive-comments.sh`. Comments must explain WHY, never WHAT.
@@ -169,6 +204,8 @@ Five subpath exports ship zero-dependency framework adapters:
 | `@omnixhq/ucp-client/langchain` | `toLangChainTools`                             |
 | `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`             |
 
+All adapters accept an optional `AdapterOptions` (`catchErrors?: boolean`). When `catchErrors: true`, errors are returned as `ToolErrorResult` objects instead of throwing — agents can observe and recover from failures without crashing the stream. Default is `false` (original throw behavior preserved).
+
 No external SDK imports — adapters are pure TypeScript mappings over `AgentTool[]`.
 
 ## Build & Test
@@ -177,6 +214,7 @@ No external SDK imports — adapters are pure TypeScript mappings over `AgentToo
 npm install
 npm run build        # tsdown (dual ESM + CJS)
 npm test             # vitest run
+npm run test:types   # vitest run --typecheck.only (type-level tests in src/__tests__/types/)
 npm run typecheck    # tsc --noEmit
 npm run lint         # eslint
 npm run format:check # prettier --check

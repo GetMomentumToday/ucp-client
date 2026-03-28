@@ -47,6 +47,12 @@ jobs:
       - name: Validate package
         run: npm run check:publish
 
+      - name: Check API surface
+        run: npm run check:api
+
+      - name: Check for descriptive comments
+        run: bash scripts/no-descriptive-comments.sh
+
       - name: Run tests with coverage
         run: npm run test:coverage
 
@@ -87,5 +93,173 @@ jobs:
           done
           echo "Server did not start in time" && exit 1
 
-      - name: Run integration test
-        run: npm run test:e2e
+      - name: Run gateway connection example
+        run: GATEWAY_URL=http://localhost:3002 npm run test:e2e
+
+      - name: Run integration tests
+        run: INTEGRATION=true GATEWAY_URL=http://localhost:3002 npx vitest run tests/integration.test.ts tests/adapters-catcherrors.test.ts
+
+  agent-openai:
+    name: Agent — OpenAI adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start mock UCP server
+        run: PORT=3002 npx tsx scripts/mock-ucp-server.ts &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3002/.well-known/ucp > /dev/null && echo "Server ready" && exit 0
+            sleep 1
+          done
+          echo "Server did not start in time" && exit 1
+
+      - name: Run OpenAI agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:openai
+
+  agent-anthropic:
+    name: Agent — Anthropic adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start mock UCP server
+        run: PORT=3002 npx tsx scripts/mock-ucp-server.ts &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3002/.well-known/ucp > /dev/null && echo "Server ready" && exit 0
+            sleep 1
+          done
+          echo "Server did not start in time" && exit 1
+
+      - name: Run Anthropic agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:anthropic
+
+  agent-mcp:
+    name: Agent — MCP adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start mock UCP server
+        run: PORT=3002 npx tsx scripts/mock-ucp-server.ts &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3002/.well-known/ucp > /dev/null && echo "Server ready" && exit 0
+            sleep 1
+          done
+          echo "Server did not start in time" && exit 1
+
+      - name: Run MCP agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:mcp
+
+  agent-vercel-ai:
+    name: Agent — Vercel AI adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start mock UCP server
+        run: PORT=3002 npx tsx scripts/mock-ucp-server.ts &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3002/.well-known/ucp > /dev/null && echo "Server ready" && exit 0
+            sleep 1
+          done
+          echo "Server did not start in time" && exit 1
+
+      - name: Run Vercel AI agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:vercel-ai
+
+  agent-langchain:
+    name: Agent — LangChain adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start mock UCP server
+        run: PORT=3002 npx tsx scripts/mock-ucp-server.ts &
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3002/.well-known/ucp > /dev/null && echo "Server ready" && exit 0
+            sleep 1
+          done
+          echo "Server did not start in time" && exit 1
+
+      - name: Run LangChain agent example
+        run: GATEWAY_URL=http://localhost:3002 npm run agent:langchain
