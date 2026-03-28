@@ -108,6 +108,8 @@ Commit types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`
 
 Release-please reads conventional commits and opens a Release PR automatically on merge to `main`. Merge the Release PR → npm publish fires.
 
+**NEVER manually edit the `version` field in `package.json` or `.release-please-manifest.json`.** Version bumps are fully automated — release-please derives the next version from conventional commits and updates these files in the Release PR. Manual edits will conflict with or confuse the automation.
+
 ## Code Rules
 
 ### No Descriptive Comments
