@@ -181,8 +181,49 @@ npm run check:publish # publint (validates package)
 | Node 22 native `fetch` | HTTP calls                                        |
 | `node:crypto`          | `randomUUID()` for idempotency-key and request-id |
 
+## Backward Compatibility (CRITICAL)
+
+`@omnixhq/ucp-client` is a **public npm library**. Every published minor and patch release must be fully backward compatible. Breaking changes require a major version bump and must be explicitly agreed with the user before implementation.
+
+### What counts as a breaking change
+
+- Removing or renaming any export from `src/index.ts` or any adapter subpath
+- Removing or renaming a public interface property or method
+- Changing a method signature in a way that breaks existing call sites (new required parameter, changed return type, narrowed accepted type)
+- Changing the shape of `AgentTool`, `ConnectedClient`, or any capability class that consumers depend on
+- Removing or renaming a subpath export (`/openai`, `/anthropic`, `/vercel-ai`, `/langchain`, `/mcp`)
+- Throwing where previously resolving, or resolving where previously throwing
+- Changing error class hierarchy in a way that breaks `instanceof` checks
+
+### What is safe
+
+- Adding new optional properties to existing interfaces (`readonly newProp?: T`)
+- Adding new exports to `index.ts` or a subpath
+- Adding new methods to a capability class
+- Adding new subpath exports
+- Internal refactors that do not touch `index.ts` or adapter surfaces
+- Bug fixes that correct behavior that was never documented or intended
+
+### Before any change to the public API surface
+
+1. Check `src/index.ts` and all adapter files to understand what is currently exported.
+2. Run `npm run check:exports` and `npm run check:publish` after the change.
+3. If the change is breaking, stop and discuss with the user. Do not proceed without explicit approval.
+4. Add or update tests that cover the old call signature to confirm it still works.
+
+### Semver
+
+| Change type     | Version bump                             |
+| --------------- | ---------------------------------------- |
+| Breaking change | major (`X.0.0`) — requires user approval |
+| New feature     | minor (`0.X.0`)                          |
+| Bug fix / patch | patch (`0.0.X`)                          |
+
+Release-please derives the version bump automatically from conventional commit types. Use `feat:` for minor, `fix:` for patch. For breaking changes, add `BREAKING CHANGE:` in the commit body — release-please will bump major.
+
 ## Core Principles
 
 - **Simplicity First** — Make every change as simple as possible. Minimal code impact.
 - **No Laziness** — Find root causes. No temporary fixes. Senior developer standards.
 - **Minimal Impact** — Changes should only touch what's necessary.
+- **Public Contract** — This is a published library. Consumers depend on the API surface. Never break it silently.
