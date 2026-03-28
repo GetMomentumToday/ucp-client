@@ -37,11 +37,91 @@ src/
 
 Extensions (`fulfillment`, `discount`, `buyerConsent`, `ap2Mandate`) are booleans on `checkout.extensions`.
 
+## Project Context Maintenance
+
+The canonical project context file is `docs/project-context.md`. For any material change — architecture, new modules, new exports, auth flows, or data-model behavior — update `docs/project-context.md` in the same workstream. Do not leave context updates implicit.
+
+## Workflow
+
+### Jira Intake + User Approval Gate
+
+Before starting any implementation:
+
+1. Ask whether the work already exists in Jira.
+2. If not, draft a Jira ticket before implementation starts. Use `docs/jira-template.md` as the template. Every ticket must include an original estimate in hours.
+3. For large work, create an Epic first and organize implementation tickets under it.
+4. If work depends on other tickets, add explicit Jira links (`blocks`, `is blocked by`, `relates to`).
+5. Share the ticket or Epic breakdown with the user and wait for explicit approval (`yes`, `approved`, `go ahead`).
+6. Only start implementation after approval.
+7. When implementation starts, immediately transition the ticket to `In Development`.
+8. If scope changes materially during work, stop, update the Jira ticket, and re-confirm before continuing.
+
+### Plan Mode
+
+Enter plan mode for any non-trivial task (3+ steps or architectural decisions). If something goes sideways, stop and re-plan — don't keep pushing.
+
+### Subagent Strategy
+
+- Use subagents to keep the main context window clean.
+- Offload research, exploration, and parallel analysis to subagents.
+- One focused task per subagent.
+
+### Verification Before Done
+
+- Never mark a task complete without proving it works.
+- Run tests, check logs, demonstrate correctness.
+- When asked to review a ticket, treat it as a readiness review by default.
+- Before starting a readiness review, transition the ticket to `CR In Progress`.
+- Check whether a GitHub PR exists; create one if it doesn't.
+- Verify the implementation against the ticket's acceptance criteria and Definition of Done.
+- Update the Jira description to mark completed AC and DoD items explicitly.
+- After a successful review, add a Jira comment stating the PR can be approved.
+- If readiness review passes and the user didn't ask to stop before merge, merge the PR.
+- When ticket work is complete and deployment is pending, transition to `Pending Deployment`.
+
+### Self-Improvement
+
+After any correction from the user, update `tasks/lessons.md` with the pattern. Write rules that prevent the same mistake. Review lessons at session start.
+
+## Work Management
+
+1. **Jira First** — Jira is the canonical work tracker. Draft the ticket before implementation.
+2. **Branch from Jira key** — Name branches from the ticket key and summary slug, e.g. `UCPM-239-fix-ucp-agent-header`.
+3. **One commit per small scope** — Commit after each small, verified, reviewable change inside a ticket.
+4. **Include ticket key** — Put the Jira ticket key in progress updates and commit messages where relevant.
+5. **Track progress** — Keep ticket status reflected in Jira as you work.
+
+## Git Workflow
+
+**NEVER push directly to `main`.** All changes go through a branch + PR:
+
+```bash
+git checkout -b <type>/<jira-key>-<short-description>
+# make changes
+git add <files>
+git commit -m "<type>: <description>"
+git push -u origin <branch>
+gh pr create --title "<type>: <description>" --body "..."
+```
+
+Commit types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`
+
+Release-please reads conventional commits and opens a Release PR automatically on merge to `main`. Merge the Release PR → npm publish fires.
+
 ## Code Rules
 
 ### No Descriptive Comments
 
 Enforced by `scripts/no-descriptive-comments.sh`. Comments must explain WHY, never WHAT.
+
+### Code Quality
+
+- Optimize for readability first. Code must be easy to read before it is clever.
+- Prefer straightforward control flow, shallow nesting, and explicit data flow.
+- Function names must explain intent without requiring surrounding context.
+- Target ~20–30 lines per function. Extract helpers with meaningful names when logic grows.
+- A function should do one coherent thing. Avoid hidden side effects.
+- Prefer explicit contracts, validation, and typed boundaries over implicit assumptions.
 
 ### Immutability
 
@@ -65,34 +145,17 @@ All interfaces use `readonly` properties. Never mutate existing objects — crea
 - Mock `fetch` for unit tests, real gateway for integration tests
 - TDD: write test first (RED), implement (GREEN), refactor (IMPROVE)
 
-## Git Workflow
-
-**NEVER push directly to `main`.** All changes go through a branch + PR:
-
-```bash
-git checkout -b <type>/<short-description>
-# make changes
-git add <files>
-git commit -m "<type>: <description>"
-git push -u origin <branch>
-gh pr create --title "<type>: <description>" --body "..."
-```
-
-Commit types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`
-
-Release-please reads conventional commits and opens a Release PR automatically on merge to `main`. Merge the Release PR → npm publish fires.
-
 ## Framework Adapters
 
 Five subpath exports ship zero-dependency framework adapters:
 
-| Subpath                         | Adapter fn(s)                                     |
-| ------------------------------- | ------------------------------------------------- |
-| `@omnixhq/ucp-client/openai`    | `toOpenAITools`, `executeOpenAIToolCall`           |
-| `@omnixhq/ucp-client/anthropic` | `toAnthropicTools`, `executeAnthropicToolCall`     |
-| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`                                 |
-| `@omnixhq/ucp-client/langchain` | `toLangChainTools`                                |
-| `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`                |
+| Subpath                         | Adapter fn(s)                                 |
+| ------------------------------- | --------------------------------------------- |
+| `@omnixhq/ucp-client/openai`    | `toOpenAITools`, `executeOpenAIToolCall`       |
+| `@omnixhq/ucp-client/anthropic` | `toAnthropicTools`, `executeAnthropicToolCall` |
+| `@omnixhq/ucp-client/vercel-ai` | `toVercelAITools`                             |
+| `@omnixhq/ucp-client/langchain` | `toLangChainTools`                            |
+| `@omnixhq/ucp-client/mcp`       | `toMCPTools`, `executeMCPToolCall`            |
 
 No external SDK imports — adapters are pure TypeScript mappings over `AgentTool[]`.
 
@@ -117,3 +180,9 @@ npm run check:publish # publint (validates package)
 | `zod`                  | Runtime validation of gateway responses           |
 | Node 22 native `fetch` | HTTP calls                                        |
 | `node:crypto`          | `randomUUID()` for idempotency-key and request-id |
+
+## Core Principles
+
+- **Simplicity First** — Make every change as simple as possible. Minimal code impact.
+- **No Laziness** — Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact** — Changes should only touch what's necessary.
