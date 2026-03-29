@@ -27,10 +27,21 @@ describe('toVercelAITools', () => {
     expect(Object.keys(result)).toEqual(['search_products', 'failing_tool']);
   });
 
-  it('maps description and inputSchema for each tool', () => {
+  it('maps description and wraps inputSchema as Standard Schema v1', () => {
     const result = toVercelAITools(mockTools);
+    const schema = result['search_products'].inputSchema;
     expect(result['search_products'].description).toBe('Search for products');
-    expect(result['search_products'].inputSchema).toEqual(mockTools[0].parameters);
+    // Standard Schema v1 contract
+    expect(schema['~standard'].version).toBe(1);
+    expect(schema['~standard'].vendor).toBe('ucp-client');
+    expect(schema['~standard'].validate({ query: 'test' })).toEqual({ value: { query: 'test' } });
+    // AI SDK reads jsonSchema via ~standard.jsonSchema.input/output
+    expect(schema['~standard'].jsonSchema.input({ target: 'input' })).toEqual(
+      mockTools[0].parameters,
+    );
+    expect(schema['~standard'].jsonSchema.output({ target: 'output' })).toEqual(
+      mockTools[0].parameters,
+    );
   });
 
   it('execute returns JSON stringified result', async () => {

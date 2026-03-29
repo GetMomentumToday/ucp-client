@@ -1,7 +1,11 @@
 import { expectTypeOf, describe, it } from 'vitest';
 import type { OpenAITool, OpenAIFunction } from '../../adapters/openai.js';
 import type { AnthropicTool, AnthropicInputSchema } from '../../adapters/anthropic.js';
-import type { VercelAIToolMap, VercelAIToolDefinition } from '../../adapters/vercel-ai.js';
+import type {
+  VercelAIToolMap,
+  VercelAIToolDefinition,
+  VercelAISchema,
+} from '../../adapters/vercel-ai.js';
 import type { LangChainTool } from '../../adapters/langchain.js';
 import type { MCPTool, MCPInputSchema } from '../../adapters/mcp.js';
 import type { JsonSchema } from '../../agent-tools.js';
@@ -61,10 +65,24 @@ describe('Vercel AI adapter types', () => {
     expectTypeOf<VercelAIToolDefinition['execute']>().returns.toEqualTypeOf<Promise<string>>();
   });
 
-  it('VercelAIToolDefinition uses inputSchema (not parameters)', () => {
+  it('VercelAIToolDefinition.inputSchema is VercelAISchema (Standard Schema v1 compatible)', () => {
     expectTypeOf<VercelAIToolDefinition>().toMatchTypeOf<{
       readonly description: string;
-      readonly inputSchema: JsonSchema;
+      readonly inputSchema: VercelAISchema;
+    }>();
+  });
+
+  it('VercelAISchema carries ~standard with embedded jsonSchema', () => {
+    expectTypeOf<VercelAISchema>().toMatchTypeOf<{
+      readonly '~standard': {
+        readonly version: 1;
+        readonly vendor: string;
+        readonly validate: (value: unknown) => { readonly value: unknown };
+        readonly jsonSchema: {
+          readonly input: (options: { readonly target: string }) => Record<string, unknown>;
+          readonly output: (options: { readonly target: string }) => Record<string, unknown>;
+        };
+      };
     }>();
   });
 });
