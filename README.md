@@ -142,9 +142,8 @@ The tools you get depend on what the server declares:
 | `dev.ucp.shopping.checkout`       | `create_checkout`, `get_checkout`, `update_checkout`, `complete_checkout`, `cancel_checkout` |
 | `dev.ucp.shopping.fulfillment`    | + `set_fulfillment`, `select_destination`, `select_fulfillment_option`                       |
 | `dev.ucp.shopping.discount`       | + `apply_discount_codes`                                                                     |
-| `dev.ucp.shopping.order`          | + `get_order`                                                                                |
+| `dev.ucp.shopping.order`          | + `get_order`, `update_order`                                                                |
 | `dev.ucp.common.identity_linking` | + `get_authorization_url`, `exchange_auth_code`, `refresh_access_token`, `revoke_token`      |
-| _(always)_                        | `search_products`, `get_product`                                                             |
 
 Connect to a different server → get different tools. Your agent code stays the same.
 
@@ -158,12 +157,12 @@ const client = await UCPClient.connect(config);
 client.checkout; // CheckoutCapability | null
 client.order; // OrderCapability | null
 client.identityLinking; // IdentityLinkingCapability | null
-client.products; // ProductsCapability (always available)
 
 if (client.checkout) {
   client.checkout.extensions.fulfillment; // boolean
   client.checkout.extensions.discount; // boolean
   client.checkout.extensions.buyerConsent; // boolean
+  client.checkout.extensions.ap2Mandate; // boolean
 }
 
 console.log(Object.keys(client.paymentHandlers));

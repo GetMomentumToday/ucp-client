@@ -1,5 +1,5 @@
 /**
- * Basic checkout flow — connect, search, create checkout, complete.
+ * Basic checkout flow — connect, create checkout, complete.
  *
  * Usage:
  *   npx tsx examples/basic-checkout.ts
@@ -28,13 +28,8 @@ async function main() {
     return;
   }
 
-  const products = await client.products.search('shoes', { limit: 3 });
-  console.log(`Found ${products.length} products`);
-
-  if (products.length === 0) return;
-
   const session = await client.checkout.create({
-    line_items: [{ item: { id: products[0]!.id }, quantity: 1 }],
+    line_items: [{ item: { id: 'prod_roses' }, quantity: 1 }],
   });
   console.log(`Checkout created: ${session.id} (status: ${session.status})`);
 
