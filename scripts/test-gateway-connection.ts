@@ -31,10 +31,7 @@ async function main() {
 
   console.log('--- Profile ---');
   console.log('UCP Version:', client.profile.ucp.version);
-  console.log(
-    'Capabilities:',
-    Object.keys(client.profile.ucp.capabilities ?? {}),
-  );
+  console.log('Capabilities:', Object.keys(client.profile.ucp.capabilities ?? {}));
   console.log('');
 
   console.log('--- Capability Detection ---');
