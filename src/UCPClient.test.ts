@@ -645,6 +645,45 @@ describe('payment handler extraction', () => {
   });
 });
 
+// ─── signingKeys ──────────────────────────────────────────────────────────────
+
+describe('signingKeys', () => {
+  const TEST_JWK = {
+    kty: 'EC',
+    crv: 'P-256',
+    alg: 'ES256',
+    use: 'sig',
+    kid: 'key-1',
+    x: 'f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU',
+    y: 'x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0',
+  };
+
+  it('extracts signing keys from profile', async () => {
+    mockResponse({ ...makeProfile(), signing_keys: [TEST_JWK] });
+    const client = await UCPClient.connect(CONFIG);
+    expect(client.signingKeys).toHaveLength(1);
+    expect(client.signingKeys[0]!.kid).toBe('key-1');
+  });
+
+  it('returns empty array when signing_keys missing', async () => {
+    const client = await connectWithCapabilities();
+    expect(client.signingKeys).toHaveLength(0);
+  });
+
+  it('skips entries that fail JWK validation (missing kty)', async () => {
+    mockResponse({ ...makeProfile(), signing_keys: [{ kid: 'bad' }, TEST_JWK] });
+    const client = await UCPClient.connect(CONFIG);
+    expect(client.signingKeys).toHaveLength(1);
+    expect(client.signingKeys[0]!.kid).toBe('key-1');
+  });
+
+  it('returns empty array when signing_keys is not an array', async () => {
+    mockResponse({ ...makeProfile(), signing_keys: 'not-an-array' });
+    const client = await UCPClient.connect(CONFIG);
+    expect(client.signingKeys).toHaveLength(0);
+  });
+});
+
 describe('identity linking', () => {
   it('is null when server does not declare identity_linking', async () => {
     const client = await connectWithCapabilities(['dev.ucp.shopping.checkout']);

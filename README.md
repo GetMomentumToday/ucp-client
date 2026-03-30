@@ -167,7 +167,40 @@ if (client.checkout) {
 
 console.log(Object.keys(client.paymentHandlers));
 // e.g., ['com.google.pay', 'dev.shopify.shop_pay']
+
+client.signingKeys; // JWK[] — EC P-256 keys for webhook verification
 ```
+
+## Webhook signature verification
+
+UCP businesses sign webhook POST requests with a detached JWS in the `Request-Signature` header (RFC 7797). The JWT header MUST include a `kid` claim identifying the signing key.
+
+Use `createWebhookVerifier` to get a stateful verifier that fetches and caches signing keys from the business's discovery profile. It automatically re-fetches on a `kid` cache miss to support zero-downtime key rotation.
+
+```typescript
+import { createWebhookVerifier } from '@omnixhq/ucp-client';
+
+const verifier = createWebhookVerifier('https://store.example.com');
+
+// In your webhook handler — MUST respond quickly with 2xx, process async:
+const valid = await verifier.verify(rawBody, req.headers['request-signature']);
+if (!valid) return res.status(401).send('Invalid signature');
+
+// Safe to process
+```
+
+Keys are loaded lazily on the first `verify()` call from `<gatewayUrl>/.well-known/ucp` and cached by `kid`. A `kid` not found in cache triggers one re-fetch (key rotation support).
+
+If you already have signing keys loaded (e.g. from `client.signingKeys`), use `verifyRequestSignature` directly:
+
+```typescript
+import { UCPClient, verifyRequestSignature } from '@omnixhq/ucp-client';
+
+const client = await UCPClient.connect(config);
+const valid = await verifyRequestSignature(rawBody, signature, client.signingKeys);
+```
+
+See [examples/webhook-verification.ts](./examples/webhook-verification.ts) for a complete HTTP server example.
 
 ## Framework adapters
 

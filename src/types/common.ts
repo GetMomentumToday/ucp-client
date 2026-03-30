@@ -22,3 +22,10 @@ export interface LocalizationContext {
   readonly address_region?: string;
   readonly postal_code?: string;
 }
+
+/**
+ * A JSON Web Key (RFC 7517).
+ * Extends the TypeScript stdlib `JsonWebKey` with the `kid` claim required by UCP for webhook
+ * signature verification (the stdlib definition omits `kid`).
+ */
+export type JWK = JsonWebKey & { readonly kid?: string };

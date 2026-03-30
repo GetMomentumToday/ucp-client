@@ -1,7 +1,7 @@
 export type { UCPClientConfig } from './config.js';
 export { DEFAULT_UCP_VERSION, UCP_CAPABILITIES } from './config.js';
 
-export type { PostalAddress, BuyerConsent, LocalizationContext } from './common.js';
+export type { PostalAddress, BuyerConsent, LocalizationContext, JWK } from './common.js';
 
 export type {
   TokenCredential,

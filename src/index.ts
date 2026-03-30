@@ -1,6 +1,9 @@
 export { UCPClient, connect } from './UCPClient.js';
 export type { ConnectedClient, ToolDescriptor, UCPProfile } from './UCPClient.js';
 
+export { verifyRequestSignature, createWebhookVerifier } from './verify-signature.js';
+export type { WebhookVerifier } from './verify-signature.js';
+
 export { getAgentTools } from './agent-tools.js';
 export type { AgentTool, JsonSchema } from './agent-tools.js';
 
@@ -22,6 +25,7 @@ export {
   // Gateway-specific schemas
   CheckoutSessionSchema,
   UCPProfileSchema,
+  JWKSchema,
   CreateCheckoutRequestSchema,
   UpdateCheckoutRequestSchema,
   CompleteCheckoutRequestSchema,
@@ -161,6 +165,7 @@ export type {
   PostalAddress,
   BuyerConsent,
   LocalizationContext,
+  JWK,
   CheckoutSession,
   CheckoutSessionStatus,
   CheckoutExtensions,

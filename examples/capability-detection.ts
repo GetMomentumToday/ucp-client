@@ -40,6 +40,18 @@ async function main() {
   );
   console.log('');
 
+  console.log('Signing Keys (for webhook verification):');
+  if (client.signingKeys.length === 0) {
+    console.log('  none');
+  } else {
+    for (const key of client.signingKeys) {
+      console.log(
+        `  kid=${key.kid ?? '(none)'}  alg=${key.alg ?? '(none)'}  crv=${key.crv ?? '(none)'}`,
+      );
+    }
+  }
+  console.log('');
+
   console.log('Available tools for agent:');
   for (const tool of client.describeTools()) {
     console.log(`  ${tool.name} (${tool.capability}) — ${tool.description}`);
