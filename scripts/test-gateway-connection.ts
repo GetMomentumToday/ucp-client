@@ -31,10 +31,7 @@ async function main() {
 
   console.log('--- Profile ---');
   console.log('UCP Version:', client.profile.ucp.version);
-  console.log(
-    'Capabilities:',
-    client.profile.ucp.capabilities.map((c) => c.name),
-  );
+  console.log('Capabilities:', Object.keys(client.profile.ucp.capabilities ?? {}));
   console.log('');
 
   console.log('--- Capability Detection ---');
@@ -59,21 +56,6 @@ async function main() {
   }
   console.log('');
 
-  console.log('--- Product Search ---');
-  const SEARCH_QUERY = process.env['SEARCH_QUERY'] ?? '';
-  try {
-    const products = await client.products.search(SEARCH_QUERY, { limit: 3 });
-    console.log(`Found ${products.length} products (query: ${SEARCH_QUERY || '(all)'})`);
-    for (const p of products) {
-      console.log(
-        `  ${p.id}: ${p.title} — ${p.price_cents}c (${p.in_stock ? 'in stock' : 'out of stock'})`,
-      );
-    }
-  } catch (err) {
-    console.error('Product search failed:', (err as Error).message);
-  }
-  console.log('');
-
   if (!client.checkout) {
     console.log('No checkout capability — stopping here.');
     return;
@@ -81,17 +63,10 @@ async function main() {
 
   console.log('--- Checkout Flow ---');
 
-  const products = await client.products.search(SEARCH_QUERY, { limit: 1 });
-  if (products.length === 0) {
-    console.log('No products found — cannot test checkout.');
-    return;
-  }
-
-  const product = products[0]!;
-  console.log(`Creating checkout with: ${product.id} (${product.title})`);
+  console.log('Creating checkout with: prod_roses');
 
   const session = await client.checkout.create({
-    line_items: [{ item: { id: product.id }, quantity: 1 }],
+    line_items: [{ item: { id: 'prod_roses' }, quantity: 1 }],
   });
   console.log(`  Session: ${session.id} (status: ${session.status})`);
 

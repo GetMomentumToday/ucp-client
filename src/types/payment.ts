@@ -1,19 +1,10 @@
-export interface TokenCredential {
-  readonly type: string;
-  readonly token: string;
-}
+import type {
+  TokenCredential as SdkTokenCredential,
+  CardCredential as SdkCardCredential,
+} from '@omnixhq/ucp-js-sdk';
 
-export interface CardCredential {
-  readonly type: 'card';
-  readonly card_number_type?: 'fpan' | 'network_token' | 'dpan';
-  readonly number?: string;
-  readonly expiry_month?: string;
-  readonly expiry_year?: string;
-  readonly name?: string;
-  readonly cvc?: string;
-  readonly cryptogram?: string;
-  readonly eci_value?: string;
-}
+export type TokenCredential = SdkTokenCredential;
+export type CardCredential = SdkCardCredential;
 
 export type PaymentCredential = TokenCredential | CardCredential;
 

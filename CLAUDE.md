@@ -9,7 +9,7 @@ It is a **library, not a server** — no port, no process, no Docker container.
 
 - **Single package**: `src/` at root, no monorepo
 - **Runtime**: Node 22+ native `fetch` (no Axios, no ky)
-- **Validation**: Zod schemas via `@ucp-js/sdk` for runtime response validation
+- **Validation**: Zod schemas via `@omnixhq/ucp-js-sdk` for runtime response validation
 - **Capability-aware**: `UCPClient.connect()` discovers server capabilities and exposes only supported features
 - **Build**: tsdown → dual ESM (`.js`) + CJS (`.cjs`) with `.d.ts` + `.d.cts` declarations
 
@@ -17,8 +17,8 @@ It is a **library, not a server** — no port, no process, no Docker container.
 
 ```
 src/
-  types/           — Domain-split types (config, checkout, order, payment, identity-linking, common, product)
-  capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability, ProductsCapability
+  types/           — Domain-split types (config, checkout, order, payment, identity-linking, common)
+  capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability
   adapters/        — Framework adapters (openai, anthropic, vercel-ai, langchain, mcp, catch-errors)
   http.ts          — Shared HttpClient (headers, idempotency, error parsing)
   errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
@@ -35,12 +35,11 @@ scripts/
 
 ### Capability Mapping
 
-| Server Capability                 | Client Property          | Null when absent      |
-| --------------------------------- | ------------------------ | --------------------- |
-| `dev.ucp.shopping.checkout`       | `client.checkout`        | Yes                   |
-| `dev.ucp.shopping.order`          | `client.order`           | Yes                   |
-| `dev.ucp.common.identity_linking` | `client.identityLinking` | Yes                   |
-| _(gateway-specific)_              | `client.products`        | No (always available) |
+| Server Capability                 | Client Property          | Null when absent |
+| --------------------------------- | ------------------------ | ---------------- |
+| `dev.ucp.shopping.checkout`       | `client.checkout`        | Yes              |
+| `dev.ucp.shopping.order`          | `client.order`           | Yes              |
+| `dev.ucp.common.identity_linking` | `client.identityLinking` | Yes              |
 
 Extensions (`fulfillment`, `discount`, `buyerConsent`, `ap2Mandate`) are booleans on `checkout.extensions`.
 
@@ -226,7 +225,7 @@ npm run check:publish # publint (validates package)
 
 | Package                | Purpose                                           |
 | ---------------------- | ------------------------------------------------- |
-| `@ucp-js/sdk`          | UCP spec types and Zod schemas                    |
+| `@omnixhq/ucp-js-sdk`  | UCP spec types and Zod schemas                    |
 | `zod`                  | Runtime validation of gateway responses           |
 | Node 22 native `fetch` | HTTP calls                                        |
 | `node:crypto`          | `randomUUID()` for idempotency-key and request-id |

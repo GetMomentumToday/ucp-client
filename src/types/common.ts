@@ -22,12 +22,3 @@ export interface LocalizationContext {
   readonly address_region?: string;
   readonly postal_code?: string;
 }
-
-export interface SearchFilters {
-  readonly max_price_cents?: number;
-  readonly min_price_cents?: number;
-  readonly in_stock?: boolean;
-  readonly category?: string;
-  readonly limit?: number;
-  readonly page?: number;
-}

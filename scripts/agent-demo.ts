@@ -21,7 +21,7 @@ const GATEWAY_URL = process.env['GATEWAY_URL'] ?? 'http://localhost:3002';
 const AGENT_PROFILE = 'https://agent.example.com/.well-known/ucp';
 const TASK =
   process.env['TASK'] ??
-  'Find me some roses and create a checkout. ' +
+  'Create a checkout with product id "prod_roses" (quantity 1). ' +
     'Update it with buyer info: Jane Doe, jane@example.com. ' +
     'Set shipping fulfillment. ' +
     'Then cancel the checkout.';

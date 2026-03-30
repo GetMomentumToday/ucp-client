@@ -57,7 +57,7 @@ export interface AgentTool {
  * ```
  */
 export function getAgentTools(client: ConnectedClient): readonly AgentTool[] {
-  const tools: AgentTool[] = [...productTools(client)];
+  const tools: AgentTool[] = [];
 
   if (client.checkout) {
     tools.push(...checkoutTools(client));
@@ -80,44 +80,6 @@ export function getAgentTools(client: ConnectedClient): readonly AgentTool[] {
   }
 
   return tools;
-}
-
-function productTools(client: ConnectedClient): AgentTool[] {
-  return [
-    {
-      name: 'search_products',
-      description:
-        'Search the product catalog by query string. Returns matching products with prices, availability, and images.',
-      parameters: {
-        type: 'object',
-        properties: {
-          query: { type: 'string', description: 'Search query (e.g., "running shoes")' },
-          max_price_cents: { type: 'number', description: 'Maximum price in cents' },
-          min_price_cents: { type: 'number', description: 'Minimum price in cents' },
-          in_stock: { type: 'boolean', description: 'Filter to in-stock items only' },
-          category: { type: 'string', description: 'Product category' },
-          limit: { type: 'number', description: 'Max results to return' },
-        },
-        required: ['query'],
-      },
-      execute: async (params) => {
-        const { query, ...filters } = params as { query: string; [key: string]: unknown };
-        return client.products.search(query, filters);
-      },
-    },
-    {
-      name: 'get_product',
-      description: 'Get detailed product information by ID, including variants, images, and stock.',
-      parameters: {
-        type: 'object',
-        properties: {
-          id: { type: 'string', description: 'Product ID' },
-        },
-        required: ['id'],
-      },
-      execute: async (params) => client.products.get(params['id'] as string),
-    },
-  ];
 }
 
 function checkoutTools(client: ConnectedClient): AgentTool[] {
@@ -371,6 +333,30 @@ function orderTools(client: ConnectedClient): AgentTool[] {
         required: ['id'],
       },
       execute: async (params) => client.order!.get(params['id'] as string),
+    },
+    {
+      name: 'update_order',
+      description: 'Update an order with fulfillment events, adjustments, or status changes.',
+      parameters: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'Order ID' },
+          fulfillment: {
+            type: 'object',
+            description: 'Fulfillment update data (events, tracking)',
+          },
+          adjustments: {
+            type: 'array',
+            description: 'Order adjustments (refunds, returns)',
+            items: { type: 'object' },
+          },
+        },
+        required: ['id'],
+      },
+      execute: async (params) => {
+        const { id, ...payload } = params as { id: string; [key: string]: unknown };
+        return client.order!.update(id, payload);
+      },
     },
   ];
 }

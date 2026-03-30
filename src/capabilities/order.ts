@@ -11,4 +11,10 @@ export class OrderCapability {
     const data = await this.http.request('GET', `/orders/${encodeURIComponent(id)}`);
     return this.http.validate(data, UCPSpecOrderSchema);
   }
+
+  /** Update an order with fulfillment events, adjustments, or status changes. */
+  async update(id: string, payload: Record<string, unknown>): Promise<UCPSpecOrder> {
+    const data = await this.http.request('PUT', `/orders/${encodeURIComponent(id)}`, payload);
+    return this.http.validate(data, UCPSpecOrderSchema);
+  }
 }

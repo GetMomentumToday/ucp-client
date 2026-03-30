@@ -4,14 +4,14 @@ import { toAnthropicTools, executeAnthropicToolCall } from './anthropic.js';
 
 const mockTools: readonly AgentTool[] = [
   {
-    name: 'get_product',
-    description: 'Get product by ID',
+    name: 'get_checkout',
+    description: 'Get checkout session by ID',
     parameters: {
       type: 'object',
-      properties: { id: { type: 'string', description: 'Product ID' } },
+      properties: { id: { type: 'string', description: 'Checkout session ID' } },
       required: ['id'],
     },
-    execute: vi.fn().mockResolvedValue({ id: 'prod_1', name: 'Shoe' }),
+    execute: vi.fn().mockResolvedValue({ id: 'chk_1', status: 'incomplete' }),
   },
   {
     name: 'failing_tool',
@@ -26,11 +26,11 @@ describe('toAnthropicTools', () => {
     const result = toAnthropicTools(mockTools);
     expect(result).toHaveLength(2);
     expect(result[0]).toMatchObject({
-      name: 'get_product',
-      description: 'Get product by ID',
+      name: 'get_checkout',
+      description: 'Get checkout session by ID',
       input_schema: {
         type: 'object',
-        properties: { id: { type: 'string', description: 'Product ID' } },
+        properties: { id: { type: 'string', description: 'Checkout session ID' } },
         required: ['id'],
       },
     });
@@ -52,9 +52,9 @@ describe('toAnthropicTools', () => {
 
 describe('executeAnthropicToolCall', () => {
   it('calls the matching tool with the given input', async () => {
-    const result = await executeAnthropicToolCall(mockTools, 'get_product', { id: 'prod_1' });
-    expect(mockTools[0].execute).toHaveBeenCalledWith({ id: 'prod_1' });
-    expect(result).toEqual({ id: 'prod_1', name: 'Shoe' });
+    const result = await executeAnthropicToolCall(mockTools, 'get_checkout', { id: 'chk_1' });
+    expect(mockTools[0].execute).toHaveBeenCalledWith({ id: 'chk_1' });
+    expect(result).toEqual({ id: 'chk_1', status: 'incomplete' });
   });
 
   it('throws when the tool name is not found', async () => {

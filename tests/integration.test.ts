@@ -3,7 +3,6 @@ import { UCPClient } from '../src/UCPClient.js';
 import { UCPError, UCPEscalationError } from '../src/errors.js';
 import type { ConnectedClient } from '../src/UCPClient.js';
 import type { CheckoutSession } from '../src/types/checkout.js';
-import type { UCPProduct } from '../src/types/product.js';
 
 const GATEWAY_URL = process.env['GATEWAY_URL'] ?? 'http://localhost:3000';
 const AGENT_PROFILE = process.env['UCP_AGENT_PROFILE'] ?? 'https://agent.test/profile';
@@ -41,7 +40,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       it('returns profile with capabilities', () => {
         expect(client.profile.ucp).toBeDefined();
         expect(client.profile.ucp.version).toBeDefined();
-        expect(client.profile.ucp.capabilities.length).toBeGreaterThan(0);
+        expect(Object.keys(client.profile.ucp.capabilities ?? {}).length).toBeGreaterThan(0);
       });
 
       it('detects checkout capability', () => {
@@ -53,7 +52,6 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
         expect(tools.length).toBeGreaterThan(0);
 
         const toolNames = tools.map((t) => t.name);
-        expect(toolNames).toContain('search_products');
         expect(toolNames).toContain('create_checkout');
       });
 
@@ -62,41 +60,12 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
       });
     });
 
-    describe('products', () => {
-      let products: readonly UCPProduct[];
-
-      it('search returns results', async () => {
-        products = await client.products.search('roses');
-        expect(products.length).toBeGreaterThan(0);
-      });
-
-      it('products have expected shape', () => {
-        const product = products[0]!;
-        expect(product.id).toBeDefined();
-        expect(product.title).toBeDefined();
-        expect(typeof product.price_cents).toBe('number');
-        expect(typeof product.in_stock).toBe('boolean');
-      });
-
-      it('get returns a single product', async () => {
-        const id = products[0]!.id;
-        const product = await client.products.get(id);
-        expect(product.id).toBe(id);
-        expect(product.title).toBeDefined();
-      });
-    });
-
     describe('full checkout lifecycle', () => {
       let session: CheckoutSession;
-      let products: readonly UCPProduct[];
-
-      beforeAll(async () => {
-        products = await client.products.search('roses');
-      });
 
       it('creates a checkout session', async () => {
         session = await client.checkout!.create({
-          line_items: [{ item: { id: products[0]!.id }, quantity: 1 }],
+          line_items: [{ item: { id: 'prod_roses' }, quantity: 1 }],
         });
 
         expect(session.id).toBeDefined();
@@ -194,9 +163,8 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')(
 
     describe('cancel checkout', () => {
       it('cancels a session', async () => {
-        const products = await client.products.search('roses');
         const sess = await client.checkout!.create({
-          line_items: [{ item: { id: products[0]!.id }, quantity: 1 }],
+          line_items: [{ item: { id: 'prod_roses' }, quantity: 1 }],
         });
 
         try {

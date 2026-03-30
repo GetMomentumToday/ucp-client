@@ -1,12 +1,11 @@
 import { z } from 'zod';
-import type { UcpDiscoveryProfile } from '@ucp-js/sdk';
+import type { UcpDiscoveryProfile } from '@omnixhq/ucp-js-sdk';
 import { HttpClient } from './http.js';
 import type { LogFn } from './http.js';
 import { UCPProfileSchema } from './schemas.js';
 import { CheckoutCapability } from './capabilities/checkout.js';
 import { OrderCapability } from './capabilities/order.js';
 import { IdentityLinkingCapability } from './capabilities/identity-linking.js';
-import { ProductsCapability } from './capabilities/products.js';
 import type { UCPClientConfig } from './types/config.js';
 import { DEFAULT_UCP_VERSION, UCP_CAPABILITIES } from './types/config.js';
 import type { CheckoutExtensions } from './types/checkout.js';
@@ -38,8 +37,6 @@ export interface ConnectedClient {
   readonly order: OrderCapability | null;
   /** OAuth 2.0 identity linking. Null if server does not support `dev.ucp.common.identity_linking`. */
   readonly identityLinking: IdentityLinkingCapability | null;
-  /** Product search and retrieval. Always available (gateway-specific). */
-  readonly products: ProductsCapability;
   /** Payment handlers declared by the server, keyed by namespace. */
   readonly paymentHandlers: PaymentHandlerMap;
   /** Returns only the tools this server supports (name + description only). */
@@ -89,7 +86,6 @@ export async function connect(
   const checkout = buildCheckoutCapability(http, capabilityNames);
   const order = capabilityNames.has(UCP_CAPABILITIES.ORDER) ? new OrderCapability(http) : null;
   const identityLinking = await buildIdentityLinking(config, capabilityNames);
-  const products = new ProductsCapability(http);
   const paymentHandlers = extractPaymentHandlers(profile);
 
   const client: ConnectedClient = {
@@ -97,7 +93,6 @@ export async function connect(
     checkout,
     order,
     identityLinking,
-    products,
     paymentHandlers,
     describeTools: () => buildToolDescriptors(checkout, order, identityLinking),
     getAgentTools: () => getAgentTools(client),
@@ -136,10 +131,8 @@ function validateConfig(config: UCPClientConfig): void {
 
 function extractCapabilityNames(profile: UCPProfile): Set<string> {
   const capabilities = profile.ucp?.capabilities;
-  if (!Array.isArray(capabilities)) return new Set();
-  return new Set(
-    capabilities.map((c: { name?: string }) => c.name).filter((n): n is string => n !== undefined),
-  );
+  if (typeof capabilities !== 'object' || capabilities === null) return new Set();
+  return new Set(Object.keys(capabilities));
 }
 
 const PaymentHandlerInstanceSchema = z
@@ -223,10 +216,7 @@ function buildToolDescriptors(
   order: OrderCapability | null,
   identityLinking: IdentityLinkingCapability | null,
 ): readonly ToolDescriptor[] {
-  const tools: ToolDescriptor[] = [
-    { name: 'search_products', capability: 'products', description: 'Search product catalog' },
-    { name: 'get_product', capability: 'products', description: 'Get product by ID' },
-  ];
+  const tools: ToolDescriptor[] = [];
 
   if (checkout) {
     tools.push(
@@ -287,11 +277,18 @@ function buildToolDescriptors(
   }
 
   if (order) {
-    tools.push({
-      name: 'get_order',
-      capability: 'order',
-      description: 'Get order by ID',
-    });
+    tools.push(
+      {
+        name: 'get_order',
+        capability: 'order',
+        description: 'Get order by ID',
+      },
+      {
+        name: 'update_order',
+        capability: 'order',
+        description: 'Update an order',
+      },
+    );
   }
 
   if (identityLinking) {

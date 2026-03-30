@@ -124,12 +124,11 @@
     "check:exports": "attw --pack .",
     "check:publish": "publint",
     "prepublishOnly": "npm run build && npm run check:exports && npm run check:publish",
-    "postinstall": "patch-package",
     "prepare": "husky",
     "test:types": "vitest run --typecheck.only"
   },
   "dependencies": {
-    "@ucp-js/sdk": "^0.1.0",
+    "@omnixhq/ucp-js-sdk": "^1.0.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
@@ -144,7 +143,6 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
-    "patch-package": "^8.0.1",
     "prettier": "^3.2.0",
     "publint": "^0.3.0",
     "tsdown": "^0.9.0",

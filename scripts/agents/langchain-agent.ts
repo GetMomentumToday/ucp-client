@@ -45,23 +45,15 @@ async function main() {
 
   // Simulate LangChain AgentExecutor calling each tool's call()
   // call() always returns a JSON string (ready for the agent to parse)
-  console.log('Step 1: search_products');
-  const products = JSON.parse(
-    await getTool(tools, 'search_products').call({ query: 'roses' }),
-  ) as Array<{ id: string; title: string; price_cents: number }>;
-  console.log(`  Found ${products.length} products`);
-  const product = products[0]!;
-  console.log(`  Using: ${product.title} (${product.price_cents}c)\n`);
-
-  console.log('Step 2: create_checkout');
+  console.log('Step 1: create_checkout');
   const session = JSON.parse(
     await getTool(tools, 'create_checkout').call({
-      line_items: [{ item: { id: product.id }, quantity: 1 }],
+      line_items: [{ item: { id: 'prod_roses' }, quantity: 1 }],
     }),
   ) as { id: string; status: string };
   console.log(`  Session: ${session.id} (${session.status})\n`);
 
-  console.log('Step 3: update_checkout — add buyer info');
+  console.log('Step 2: update_checkout — add buyer info');
   const updated = JSON.parse(
     await getTool(tools, 'update_checkout').call({
       id: session.id,
@@ -70,7 +62,7 @@ async function main() {
   ) as { id: string; status: string };
   console.log(`  Status: ${updated.status}\n`);
 
-  console.log('Step 4: cancel_checkout');
+  console.log('Step 3: cancel_checkout');
   const cancelled = JSON.parse(
     await getTool(tools, 'cancel_checkout').call({ id: session.id }),
   ) as { status: string };

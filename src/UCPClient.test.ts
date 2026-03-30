@@ -19,7 +19,9 @@ function makeProfile(capabilities: string[] = ['dev.ucp.shopping.checkout']) {
     ucp: {
       version: '2026-01-23',
       services: {},
-      capabilities: capabilities.map((name) => ({ name, version: '2026-01-23' })),
+      capabilities: Object.fromEntries(
+        capabilities.map((name) => [name, [{ version: '2026-01-23' }]]),
+      ),
     },
   };
 }
@@ -115,11 +117,6 @@ describe('capability detection', () => {
     const client = await connectWithCapabilities(['dev.ucp.shopping.order']);
     expect(client.checkout).toBeNull();
   });
-
-  it('always exposes products (gateway-specific)', async () => {
-    const client = await connectWithCapabilities([]);
-    expect(client.products).toBeDefined();
-  });
 });
 
 describe('describeTools', () => {
@@ -128,9 +125,9 @@ describe('describeTools', () => {
     const tools = client.describeTools();
     const toolNames = tools.map((t) => t.name);
 
-    expect(toolNames).toContain('search_products');
     expect(toolNames).toContain('create_checkout');
     expect(toolNames).not.toContain('get_order');
+    expect(toolNames).not.toContain('update_order');
     expect(toolNames).not.toContain('set_fulfillment');
     expect(toolNames).not.toContain('apply_discount_codes');
   });
@@ -165,14 +162,14 @@ describe('describeTools', () => {
     const toolNames = client.describeTools().map((t) => t.name);
 
     expect(toolNames).toContain('get_order');
+    expect(toolNames).toContain('update_order');
   });
 
-  it('returns minimal tools when server has no capabilities', async () => {
+  it('returns no tools when server has no capabilities', async () => {
     const client = await connectWithCapabilities([]);
     const tools = client.describeTools();
 
-    expect(tools).toHaveLength(2);
-    expect(tools.map((t) => t.name)).toEqual(['search_products', 'get_product']);
+    expect(tools).toHaveLength(0);
   });
 });
 
@@ -205,8 +202,8 @@ describe('headers', () => {
 
   it('does NOT attach Content-Type on bodiless requests', async () => {
     const client = await connectWithCapabilities();
-    mockResponse({ products: [] });
-    await client.products.search('shoes');
+    mockResponse(makeSession({ id: 'chk_1' }));
+    await client.checkout!.get('chk_1');
 
     const [, init] = mockFetch.mock.calls[1] as [string, RequestInit];
     const headers = init.headers as Record<string, string>;
@@ -215,8 +212,8 @@ describe('headers', () => {
 
   it('attaches request-id on every request', async () => {
     const client = await connectWithCapabilities();
-    mockResponse({ products: [] });
-    await client.products.search('shoes');
+    mockResponse(makeSession({ id: 'chk_1' }));
+    await client.checkout!.get('chk_1');
 
     const [, init] = mockFetch.mock.calls[1] as [string, RequestInit];
     const headers = init.headers as Record<string, string>;
@@ -225,10 +222,10 @@ describe('headers', () => {
 
   it('generates unique request-id per call', async () => {
     const client = await connectWithCapabilities();
-    mockResponse({ products: [] });
-    mockResponse({ products: [] });
-    await client.products.search('shoes');
-    await client.products.search('boots');
+    mockResponse(makeSession({ id: 'chk_1' }));
+    mockResponse(makeSession({ id: 'chk_2' }));
+    await client.checkout!.get('chk_1');
+    await client.checkout!.get('chk_2');
 
     const h1 = (mockFetch.mock.calls[1] as [string, RequestInit])[1].headers as Record<
       string,
@@ -265,8 +262,8 @@ describe('headers', () => {
 
   it('does NOT attach idempotency-key on GET requests', async () => {
     const client = await connectWithCapabilities();
-    mockResponse({ products: [] });
-    await client.products.search('shoes');
+    mockResponse(makeSession({ id: 'chk_1' }));
+    await client.checkout!.get('chk_1');
 
     const [, init] = mockFetch.mock.calls[1] as [string, RequestInit];
     const headers = init.headers as Record<string, string>;
@@ -277,8 +274,8 @@ describe('headers', () => {
     mockResponse(makeProfile());
     const client = await UCPClient.connect({ ...CONFIG, requestSignature: 'sig_abc123' });
 
-    mockResponse({ products: [] });
-    await client.products.search('shoes');
+    mockResponse(makeSession({ id: 'chk_1' }));
+    await client.checkout!.get('chk_1');
 
     const [, init] = mockFetch.mock.calls[1] as [string, RequestInit];
     const headers = init.headers as Record<string, string>;
@@ -471,73 +468,13 @@ describe('order capability', () => {
       ],
       fulfillment: {},
       totals: [{ type: 'total', amount: 5000 }],
-      ucp: { version: '2026-01-23', capabilities: [] },
+      ucp: { version: '2026-01-23', capabilities: {} },
     });
     const order = await client.order!.get('order/123');
 
     const [url] = mockFetch.mock.calls[1] as [string];
     expect(url).toContain('order%2F123');
     expect(order.id).toBe('order/123');
-  });
-});
-
-describe('products capability', () => {
-  it('passes query as q param', async () => {
-    const client = await connectWithCapabilities();
-    mockResponse({ products: [] });
-    await client.products.search('waterproof jacket');
-
-    const [url] = mockFetch.mock.calls[1] as [string];
-    expect(url).toContain('q=waterproof+jacket');
-  });
-
-  it('passes all filters as URL params', async () => {
-    const client = await connectWithCapabilities();
-    mockResponse({ products: [] });
-    await client.products.search('shoes', {
-      max_price_cents: 10000,
-      min_price_cents: 500,
-      in_stock: true,
-      category: 'footwear',
-      limit: 5,
-      page: 2,
-    });
-
-    const [url] = mockFetch.mock.calls[1] as [string];
-    expect(url).toContain('max_price_cents=10000');
-    expect(url).toContain('in_stock=true');
-    expect(url).toContain('category=footwear');
-  });
-
-  it('returns products from envelope', async () => {
-    const client = await connectWithCapabilities();
-    mockResponse({
-      products: [
-        {
-          id: 'prod-001',
-          title: 'Shoes',
-          price_cents: 9999,
-          currency: 'USD',
-          in_stock: true,
-          stock_quantity: 5,
-          images: [],
-          variants: [],
-          description: null,
-        },
-      ],
-    });
-    const products = await client.products.search('shoes');
-    expect(products).toHaveLength(1);
-    expect(products[0]?.id).toBe('prod-001');
-  });
-
-  it('URL-encodes product ID', async () => {
-    const client = await connectWithCapabilities();
-    mockResponse({ id: 'prod/special', title: 'Special' });
-    await client.products.get('prod/special');
-
-    const [url] = mockFetch.mock.calls[1] as [string];
-    expect(url).toContain('prod%2Fspecial');
   });
 });
 
@@ -549,10 +486,10 @@ describe('error handling', () => {
         messages: [
           {
             type: 'error',
-            code: 'PRODUCT_NOT_FOUND',
-            content: 'Product xyz not found',
+            code: 'CHECKOUT_NOT_FOUND',
+            content: 'Checkout xyz not found',
             severity: 'recoverable',
-            path: '$.items[0]',
+            path: '$.checkout',
             content_type: 'plain',
           },
           { type: 'warning', code: 'LOW_STOCK', content: 'Nearly out of stock' },
@@ -562,13 +499,13 @@ describe('error handling', () => {
     );
 
     try {
-      await client.products.get('xyz');
+      await client.checkout!.get('xyz');
       expect.unreachable('should have thrown');
     } catch (err) {
       expect(err).toBeInstanceOf(UCPError);
       const ucpErr = err as UCPError;
-      expect(ucpErr.code).toBe('PRODUCT_NOT_FOUND');
-      expect(ucpErr.path).toBe('$.items[0]');
+      expect(ucpErr.code).toBe('CHECKOUT_NOT_FOUND');
+      expect(ucpErr.path).toBe('$.checkout');
       expect(ucpErr.contentType).toBe('plain');
       expect(ucpErr.messages).toHaveLength(2);
       expect(ucpErr.messages[1]!.code).toBe('LOW_STOCK');
@@ -595,7 +532,7 @@ describe('error handling', () => {
     mockResponse({}, 500);
 
     try {
-      await client.products.get('xyz');
+      await client.checkout!.get('xyz');
       expect.unreachable('should have thrown');
     } catch (err) {
       expect(err).toBeInstanceOf(UCPError);
@@ -612,7 +549,7 @@ describe('error handling', () => {
     });
 
     try {
-      await client.products.get('xyz');
+      await client.checkout!.get('xyz');
       expect.unreachable('should have thrown');
     } catch (err) {
       expect(err).toBeInstanceOf(UCPError);

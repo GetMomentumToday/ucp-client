@@ -3,8 +3,6 @@
  *
  * Implements the full UCP REST binding:
  *   GET  /.well-known/ucp
- *   GET  /ucp/products
- *   GET  /ucp/products/:id
  *   POST /checkout-sessions
  *   GET  /checkout-sessions/:id
  *   PUT  /checkout-sessions/:id
@@ -25,25 +23,17 @@ const UCP_VERSION = '2026-01-23';
 
 // ─── In-memory store ─────────────────────────────────────────────────────────
 
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  price_cents: number;
-  currency: string;
-  in_stock: boolean;
-  stock_quantity: number;
-  images: string[];
-  variants: ProductVariant[];
+interface CatalogItem {
+  readonly title: string;
+  readonly price_cents: number;
 }
 
-interface ProductVariant {
-  id: string;
-  title: string;
-  price_cents: number;
-  in_stock: boolean;
-  attributes: Record<string, string>;
-}
+const CATALOG = new Map<string, CatalogItem>([
+  ['prod_roses', { title: 'Red Roses Bouquet', price_cents: 2999 }],
+  ['prod_lilies', { title: 'White Lilies Arrangement', price_cents: 3499 }],
+  ['prod_tulips', { title: 'Spring Tulip Mix', price_cents: 1999 }],
+  ['prod_sunflowers', { title: 'Sunflower Bunch', price_cents: 2499 }],
+]);
 
 interface Session {
   id: string;
@@ -74,82 +64,6 @@ type CheckoutStatus =
   | 'canceled'
   | 'requires_escalation';
 
-// ─── Seed data ───────────────────────────────────────────────────────────────
-
-const PRODUCTS = new Map<string, Product>([
-  [
-    'prod_roses',
-    {
-      id: 'prod_roses',
-      title: 'Red Roses Bouquet',
-      description: 'A classic bouquet of 12 fresh red roses',
-      price_cents: 2999,
-      currency: 'USD',
-      in_stock: true,
-      stock_quantity: 50,
-      images: [],
-      variants: [
-        {
-          id: 'var_roses_12',
-          title: '12 stems',
-          price_cents: 2999,
-          in_stock: true,
-          attributes: { stems: '12' },
-        },
-        {
-          id: 'var_roses_24',
-          title: '24 stems',
-          price_cents: 4999,
-          in_stock: true,
-          attributes: { stems: '24' },
-        },
-      ],
-    },
-  ],
-  [
-    'prod_lilies',
-    {
-      id: 'prod_lilies',
-      title: 'White Lilies Arrangement',
-      description: 'Elegant white lilies in a ceramic vase',
-      price_cents: 3499,
-      currency: 'USD',
-      in_stock: true,
-      stock_quantity: 30,
-      images: [],
-      variants: [],
-    },
-  ],
-  [
-    'prod_tulips',
-    {
-      id: 'prod_tulips',
-      title: 'Spring Tulip Mix',
-      description: 'Colorful mix of seasonal tulips',
-      price_cents: 1999,
-      currency: 'USD',
-      in_stock: true,
-      stock_quantity: 75,
-      images: [],
-      variants: [],
-    },
-  ],
-  [
-    'prod_sunflowers',
-    {
-      id: 'prod_sunflowers',
-      title: 'Sunflower Bunch',
-      description: 'Bright sunflowers to bring joy',
-      price_cents: 2499,
-      currency: 'USD',
-      in_stock: false,
-      stock_quantity: 0,
-      images: [],
-      variants: [],
-    },
-  ],
-]);
-
 const SESSIONS = new Map<string, Session>();
 const ORDERS = new Map<string, object>();
 
@@ -171,43 +85,46 @@ const UCP_PROFILE = {
   ucp: {
     version: UCP_VERSION,
     services: {
-      'dev.ucp.shopping': {
-        version: UCP_VERSION,
-        spec: 'https://ucp.dev/specification/reference',
-        rest: {
+      'dev.ucp.shopping': [
+        {
+          version: UCP_VERSION,
+          spec: 'https://ucp.dev/specification/reference',
           schema: 'https://ucp.dev/services/shopping/rest.openapi.json',
-          endpoint: `http://localhost:${PORT}`,
         },
-      },
+      ],
     },
-    capabilities: [
-      {
-        name: 'dev.ucp.shopping.checkout',
-        version: UCP_VERSION,
-        spec: 'https://ucp.dev/specification/checkout',
-        schema: 'https://ucp.dev/schemas/shopping/checkout.json',
-      },
-      {
-        name: 'dev.ucp.shopping.fulfillment',
-        version: UCP_VERSION,
-        spec: 'https://ucp.dev/specification/fulfillment',
-        schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
-        extends: 'dev.ucp.shopping.checkout',
-      },
-      {
-        name: 'dev.ucp.shopping.discount',
-        version: UCP_VERSION,
-        spec: 'https://ucp.dev/specification/discount',
-        schema: 'https://ucp.dev/schemas/shopping/discount.json',
-        extends: 'dev.ucp.shopping.checkout',
-      },
-      {
-        name: 'dev.ucp.shopping.order',
-        version: UCP_VERSION,
-        spec: 'https://ucp.dev/specification/order',
-        schema: 'https://ucp.dev/schemas/shopping/order.json',
-      },
-    ],
+    capabilities: {
+      'dev.ucp.shopping.checkout': [
+        {
+          version: UCP_VERSION,
+          spec: 'https://ucp.dev/specification/checkout',
+          schema: 'https://ucp.dev/schemas/shopping/checkout.json',
+        },
+      ],
+      'dev.ucp.shopping.fulfillment': [
+        {
+          version: UCP_VERSION,
+          spec: 'https://ucp.dev/specification/fulfillment',
+          schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
+          extends: 'dev.ucp.shopping.checkout',
+        },
+      ],
+      'dev.ucp.shopping.discount': [
+        {
+          version: UCP_VERSION,
+          spec: 'https://ucp.dev/specification/discount',
+          schema: 'https://ucp.dev/schemas/shopping/discount.json',
+          extends: 'dev.ucp.shopping.checkout',
+        },
+      ],
+      'dev.ucp.shopping.order': [
+        {
+          version: UCP_VERSION,
+          spec: 'https://ucp.dev/specification/order',
+          schema: 'https://ucp.dev/schemas/shopping/order.json',
+        },
+      ],
+    },
   },
   // Spec-compliant: namespace-keyed map at top level (not array under payment.handlers)
   payment_handlers: {
@@ -221,7 +138,7 @@ function sessionToResponse(session: Session): object {
   const lineItemIds = session.line_items.map((li) => `li_${li.product_id}`);
 
   const lineItems = session.line_items.map((li) => {
-    const product = PRODUCTS.get(li.product_id);
+    const product = CATALOG.get(li.product_id);
     const price = product?.price_cents ?? 0;
     const lineTotal = price * li.quantity;
     return {
@@ -251,11 +168,11 @@ function sessionToResponse(session: Session): object {
     ],
     ucp: {
       version: UCP_VERSION,
-      capabilities: [
-        { name: 'dev.ucp.shopping.checkout', version: UCP_VERSION },
-        { name: 'dev.ucp.shopping.fulfillment', version: UCP_VERSION },
-        { name: 'dev.ucp.shopping.discount', version: UCP_VERSION },
-      ],
+      capabilities: {
+        'dev.ucp.shopping.checkout': [{ version: UCP_VERSION }],
+        'dev.ucp.shopping.fulfillment': [{ version: UCP_VERSION }],
+        'dev.ucp.shopping.discount': [{ version: UCP_VERSION }],
+      },
     },
   };
 
@@ -321,28 +238,6 @@ function handleDiscovery(res: ServerResponse): void {
   respond(res, 200, UCP_PROFILE);
 }
 
-function handleSearchProducts(url: URL, res: ServerResponse): void {
-  const q = (url.searchParams.get('q') ?? '').toLowerCase();
-  const limit = Number(url.searchParams.get('limit') ?? '20');
-
-  const results = [...PRODUCTS.values()]
-    .filter(
-      (p) => !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q),
-    )
-    .slice(0, limit);
-
-  respond(res, 200, results);
-}
-
-function handleGetProduct(id: string, res: ServerResponse): void {
-  const product = PRODUCTS.get(id);
-  if (!product) {
-    respondError(res, 404, 'PRODUCT_NOT_FOUND', `Product ${id} not found`);
-    return;
-  }
-  respond(res, 200, product);
-}
-
 async function handleCreateCheckout(req: IncomingMessage, res: ServerResponse): Promise<void> {
   const body = (await readBody(req)) as Record<string, unknown>;
   const lineItemsRaw = body['line_items'] as Array<Record<string, unknown>> | undefined;
@@ -359,13 +254,6 @@ async function handleCreateCheckout(req: IncomingMessage, res: ServerResponse): 
       quantity: Number(li['quantity'] ?? 1),
     };
   });
-
-  for (const li of lineItems) {
-    if (!PRODUCTS.has(li.product_id)) {
-      respondError(res, 400, 'PRODUCT_NOT_FOUND', `Product ${li.product_id} not found`);
-      return;
-    }
-  }
 
   const session: Session = {
     id: `sess_${randomUUID()}`,
@@ -484,7 +372,7 @@ function handleGetOrder(id: string, res: ServerResponse): void {
 
 function buildOrder(session: Session, orderId: string): object {
   const total = session.line_items.reduce((sum, li) => {
-    const product = PRODUCTS.get(li.product_id);
+    const product = CATALOG.get(li.product_id);
     return sum + (product?.price_cents ?? 0) * li.quantity;
   }, 0);
 
@@ -495,7 +383,7 @@ function buildOrder(session: Session, orderId: string): object {
     currency: session.currency,
     created_at_iso: new Date().toISOString(),
     line_items: session.line_items.map((li) => {
-      const product = PRODUCTS.get(li.product_id);
+      const product = CATALOG.get(li.product_id);
       return {
         id: `oli_${li.product_id}`,
         product_id: li.product_id,
@@ -525,17 +413,6 @@ async function router(req: IncomingMessage, res: ServerResponse): Promise<void> 
   // GET /.well-known/ucp
   if (method === 'GET' && path === '/.well-known/ucp') {
     return handleDiscovery(res);
-  }
-
-  // GET /ucp/products
-  if (method === 'GET' && path === '/ucp/products') {
-    return handleSearchProducts(url, res);
-  }
-
-  // GET /ucp/products/:id
-  const productMatch = /^\/ucp\/products\/([^/]+)$/.exec(path);
-  if (method === 'GET' && productMatch) {
-    return handleGetProduct(decodeURIComponent(productMatch[1]!), res);
   }
 
   // POST /checkout-sessions
@@ -589,7 +466,6 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, () => {
   console.log(`Mock UCP server running at http://localhost:${PORT}`);
   console.log(`  GET /.well-known/ucp`);
-  console.log(`  GET /ucp/products?q=roses`);
   console.log(`  POST /checkout-sessions`);
   console.log(`  PUT /checkout-sessions/:id`);
   console.log(`  POST /checkout-sessions/:id/complete`);

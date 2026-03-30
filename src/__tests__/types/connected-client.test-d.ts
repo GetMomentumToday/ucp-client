@@ -3,7 +3,6 @@ import type { ConnectedClient, ToolDescriptor } from '../../UCPClient.js';
 import type { CheckoutCapability } from '../../capabilities/checkout.js';
 import type { OrderCapability } from '../../capabilities/order.js';
 import type { IdentityLinkingCapability } from '../../capabilities/identity-linking.js';
-import type { ProductsCapability } from '../../capabilities/products.js';
 import type { AgentTool } from '../../agent-tools.js';
 
 describe('ConnectedClient types', () => {
@@ -21,10 +20,6 @@ describe('ConnectedClient types', () => {
     >().toEqualTypeOf<IdentityLinkingCapability | null>();
   });
 
-  it('products is always present (not nullable)', () => {
-    expectTypeOf<ConnectedClient['products']>().toEqualTypeOf<ProductsCapability>();
-  });
-
   it('describeTools returns readonly ToolDescriptor array', () => {
     expectTypeOf<ConnectedClient['describeTools']>().returns.toEqualTypeOf<
       readonly ToolDescriptor[]
@@ -40,7 +35,6 @@ describe('ConnectedClient types', () => {
       readonly checkout: CheckoutCapability | null;
       readonly order: OrderCapability | null;
       readonly identityLinking: IdentityLinkingCapability | null;
-      readonly products: ProductsCapability;
     }>();
   });
 });

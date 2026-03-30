@@ -4,14 +4,14 @@ import { toOpenAITools, executeOpenAIToolCall } from './openai.js';
 
 const mockTools: readonly AgentTool[] = [
   {
-    name: 'search_products',
-    description: 'Search for products',
+    name: 'get_checkout',
+    description: 'Get a checkout session by ID',
     parameters: {
       type: 'object',
-      properties: { query: { type: 'string', description: 'Search query' } },
-      required: ['query'],
+      properties: { id: { type: 'string', description: 'Checkout session ID' } },
+      required: ['id'],
     },
-    execute: vi.fn().mockResolvedValue({ products: [] }),
+    execute: vi.fn().mockResolvedValue({ id: 'chk_1', status: 'incomplete' }),
   },
   {
     name: 'failing_tool',
@@ -28,8 +28,8 @@ describe('toOpenAITools', () => {
     expect(result[0]).toEqual({
       type: 'function',
       function: {
-        name: 'search_products',
-        description: 'Search for products',
+        name: 'get_checkout',
+        description: 'Get a checkout session by ID',
         parameters: mockTools[0].parameters,
       },
     });
@@ -51,9 +51,9 @@ describe('toOpenAITools', () => {
 
 describe('executeOpenAIToolCall', () => {
   it('calls the matching tool with the given input', async () => {
-    const result = await executeOpenAIToolCall(mockTools, 'search_products', { query: 'shoes' });
-    expect(mockTools[0].execute).toHaveBeenCalledWith({ query: 'shoes' });
-    expect(result).toEqual({ products: [] });
+    const result = await executeOpenAIToolCall(mockTools, 'get_checkout', { id: 'chk_1' });
+    expect(mockTools[0].execute).toHaveBeenCalledWith({ id: 'chk_1' });
+    expect(result).toEqual({ id: 'chk_1', status: 'incomplete' });
   });
 
   it('throws when the tool name is not found', async () => {

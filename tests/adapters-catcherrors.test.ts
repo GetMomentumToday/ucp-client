@@ -37,7 +37,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')('adapter catchErrors — 
     it('returns result for a real tool call', async () => {
       const result = await executeOpenAIToolCall(
         agentTools,
-        'search_products',
+        'create_checkout',
         {},
         { catchErrors: true },
       );
@@ -69,7 +69,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')('adapter catchErrors — 
     it('returns result for a real tool call', async () => {
       const result = await executeAnthropicToolCall(
         agentTools,
-        'search_products',
+        'create_checkout',
         {},
         { catchErrors: true },
       );
@@ -101,7 +101,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')('adapter catchErrors — 
     it('returns result for a real tool call', async () => {
       const result = await executeMCPToolCall(
         agentTools,
-        'search_products',
+        'create_checkout',
         {},
         { catchErrors: true },
       );
@@ -132,7 +132,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')('adapter catchErrors — 
   describe('toVercelAITools', () => {
     it('returns JSON result for a real tool call', async () => {
       const tools = toVercelAITools(agentTools, { catchErrors: true });
-      const result = await tools['search_products']!.execute({});
+      const result = await tools['create_checkout']!.execute({});
       expect(() => JSON.parse(result)).not.toThrow();
     });
 
@@ -153,7 +153,7 @@ describe.skipIf(process.env['INTEGRATION'] !== 'true')('adapter catchErrors — 
   describe('toLangChainTools', () => {
     it('returns JSON result for a real tool call', async () => {
       const tools = toLangChainTools(agentTools, { catchErrors: true });
-      const searchTool = tools.find((t) => t.name === 'search_products')!;
+      const searchTool = tools.find((t) => t.name === 'create_checkout')!;
       const result = await searchTool.call({});
       expect(() => JSON.parse(result)).not.toThrow();
     });

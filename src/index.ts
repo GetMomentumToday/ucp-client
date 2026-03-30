@@ -17,17 +17,19 @@ export type { UCPMessage, MessageType, MessageSeverity, ContentType } from './er
 export { CheckoutCapability } from './capabilities/checkout.js';
 export { OrderCapability } from './capabilities/order.js';
 export { IdentityLinkingCapability } from './capabilities/identity-linking.js';
-export { ProductsCapability } from './capabilities/products.js';
 
 export {
+  // Gateway-specific schemas
   CheckoutSessionSchema,
   UCPProfileSchema,
-  UCPProductSchema,
-  UCPOrderSchema,
   CreateCheckoutRequestSchema,
   UpdateCheckoutRequestSchema,
   CompleteCheckoutRequestSchema,
+
+  // Enums / status
   CheckoutResponseStatusSchema,
+
+  // Sub-entity schemas (checkout internals)
   BuyerSchema,
   TotalResponseSchema,
   LineItemResponseSchema,
@@ -41,11 +43,121 @@ export {
   FulfillmentMethodResponseSchema,
   ItemResponseSchema,
   UCPSpecOrderSchema,
+
+  // Checkout (base)
+  CheckoutSchema,
+  CheckoutResponseSchema,
+  CheckoutCreateRequestSchema,
+  CheckoutUpdateRequestSchema,
+  CheckoutCompleteRequestSchema,
+
+  // AP2 Mandate
+  Ap2MandateAp2WithCheckoutMandateSchema,
+  Ap2MandateAp2WithMerchantAuthorizationSchema,
+  Ap2MandateCheckoutMandateSchema,
+  Ap2MandateErrorCodeSchema,
+  Ap2MandateMerchantAuthorizationSchema,
+
+  // Buyer Consent
+  BuyerConsentBuyerSchema,
+  BuyerConsentConsentSchema,
+
+  // Discount
+  DiscountAllocationSchema,
+  DiscountAppliedDiscountSchema,
+  DiscountDiscountsObjectSchema,
+
+  // Fulfillment (core)
+  FulfillmentSchema,
+  FulfillmentOptionSchema,
+  FulfillmentGroupSchema,
+  FulfillmentMethodSchema,
+  FulfillmentAvailableMethodSchema,
+  FulfillmentDestinationSchema,
+  FulfillmentEventSchema,
+
+  // Fulfillment (extension)
+  FulfillmentExtensionFulfillmentSchema,
+  FulfillmentExtensionFulfillmentOptionSchema,
+  FulfillmentExtensionFulfillmentGroupSchema,
+  FulfillmentExtensionFulfillmentMethodSchema,
+  FulfillmentExtensionFulfillmentAvailableMethodSchema,
+
+  // Fulfillment (config)
+  BusinessFulfillmentConfigSchema,
+  MerchantFulfillmentConfigSchema,
+  PlatformFulfillmentConfigSchema,
+
+  // Fulfillment (requests)
+  FulfillmentMethodCreateRequestSchema,
+  FulfillmentMethodUpdateRequestSchema,
+  FulfillmentGroupUpdateRequestSchema,
+
+  // Payment
+  PaymentSchema,
+  PaymentCredentialSchema,
+  ExtendedPaymentCredentialSchema,
+  PaymentIdentitySchema,
+  PaymentInstrumentResponseSchema,
+  CardCredentialSchema,
+  CardPaymentInstrumentSchema,
+  TokenCredentialSchema,
+
+  // Payment Handler (roles)
+  PaymentHandlerBaseSchema,
+  PaymentHandlerBusinessSchema,
+  PaymentHandlerPlatformSchema,
+
+  // Order (sub-entities)
+  OrderConfirmationSchema,
+  OrderLineItemSchema,
+  OrderUpdateSchema,
+
+  // Item / LineItem
+  ItemSchema,
+  LineItemSchema,
+  LineItemUpdateRequestSchema,
+
+  // Message
+  MessageInfoSchema,
+  MessageWarningSchema,
+
+  // UCP protocol
+  UcpBaseSchema,
+  UcpBusinessSchema,
+  UcpPlatformSchema,
+  UcpEntitySchema,
+  UcpResponseCheckoutSchema,
+  UcpResponseOrderSchema,
+  UcpVersionSchema,
+  UcpReverseDomainNameSchema,
+
+  // Capability / Service
+  CapabilityBaseSchema,
+  CapabilityBusinessSchema,
+  CapabilityPlatformSchema,
+  CapabilityResponseSchema,
+  ServiceBaseSchema,
+  ServiceBusinessSchema,
+  ServicePlatformSchema,
+  ServiceResponseSchema,
+
+  // Misc
+  AccountInfoSchema,
+  AdjustmentSchema,
+  BindingSchema,
+  ContextSchema,
+  EmbeddedConfigSchema,
+  ExpectationSchema,
+  LinkSchema,
+  PlatformConfigSchema,
+  RetailLocationSchema,
+  ShippingDestinationSchema,
+  TotalSchema,
 } from './schemas.js';
 
 export type {
   UCPClientConfig,
-  SearchFilters,
   PostalAddress,
   BuyerConsent,
   LocalizationContext,
@@ -62,7 +174,6 @@ export type {
   PaymentHandlerInstance,
   PaymentHandlerMap,
   UCPSpecOrder,
-  UCPOrder,
   WebhookEvent,
   OAuthServerMetadata,
   AuthorizationParams,
@@ -70,7 +181,6 @@ export type {
   TokenExchangeParams,
   TokenRefreshParams,
   TokenRevokeParams,
-  UCPProduct,
 } from './types/index.js';
 
 export { UCP_CAPABILITIES, DEFAULT_UCP_VERSION } from './types/config.js';

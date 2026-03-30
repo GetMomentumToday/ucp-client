@@ -4,14 +4,14 @@ import { toVercelAITools } from './vercel-ai.js';
 
 const mockTools: readonly AgentTool[] = [
   {
-    name: 'search_products',
-    description: 'Search for products',
+    name: 'get_checkout',
+    description: 'Get a checkout session by ID',
     parameters: {
       type: 'object',
-      properties: { query: { type: 'string', description: 'Search query' } },
-      required: ['query'],
+      properties: { id: { type: 'string', description: 'Checkout session ID' } },
+      required: ['id'],
     },
-    execute: vi.fn().mockResolvedValue({ products: [{ id: 'p1' }] }),
+    execute: vi.fn().mockResolvedValue({ id: 'chk_1', status: 'incomplete' }),
   },
   {
     name: 'failing_tool',
@@ -24,17 +24,17 @@ const mockTools: readonly AgentTool[] = [
 describe('toVercelAITools', () => {
   it('returns a record keyed by tool name', () => {
     const result = toVercelAITools(mockTools);
-    expect(Object.keys(result)).toEqual(['search_products', 'failing_tool']);
+    expect(Object.keys(result)).toEqual(['get_checkout', 'failing_tool']);
   });
 
   it('maps description and wraps inputSchema as Standard Schema v1', () => {
     const result = toVercelAITools(mockTools);
-    const schema = result['search_products'].inputSchema;
-    expect(result['search_products'].description).toBe('Search for products');
+    const schema = result['get_checkout'].inputSchema;
+    expect(result['get_checkout'].description).toBe('Get a checkout session by ID');
     // Standard Schema v1 contract
     expect(schema['~standard'].version).toBe(1);
     expect(schema['~standard'].vendor).toBe('ucp-client');
-    expect(schema['~standard'].validate({ query: 'test' })).toEqual({ value: { query: 'test' } });
+    expect(schema['~standard'].validate({ id: 'chk_1' })).toEqual({ value: { id: 'chk_1' } });
     // AI SDK reads jsonSchema via ~standard.jsonSchema.input/output
     expect(schema['~standard'].jsonSchema.input({ target: 'input' })).toEqual(
       mockTools[0].parameters,
@@ -46,8 +46,8 @@ describe('toVercelAITools', () => {
 
   it('execute returns JSON stringified result', async () => {
     const result = toVercelAITools(mockTools);
-    const output = await result['search_products'].execute({ query: 'boots' });
-    expect(output).toBe(JSON.stringify({ products: [{ id: 'p1' }] }));
+    const output = await result['get_checkout'].execute({ id: 'chk_1' });
+    expect(output).toBe(JSON.stringify({ id: 'chk_1', status: 'incomplete' }));
     expect(typeof output).toBe('string');
   });
 

@@ -38,27 +38,16 @@ async function main() {
   console.log('');
 
   // Simulate an MCP host executing tool calls in sequence (tools/call)
-  console.log('Step 1: search_products');
-  const products = (await executeMCPToolCall(
-    agentTools,
-    'search_products',
-    { query: 'roses' },
-    { catchErrors: true },
-  )) as Array<{ id: string; title: string; price_cents: number }>;
-  console.log(`  Found ${products.length} products`);
-  const product = products[0]!;
-  console.log(`  Using: ${product.title} (${product.price_cents}c)\n`);
-
-  console.log('Step 2: create_checkout');
+  console.log('Step 1: create_checkout');
   const session = (await executeMCPToolCall(
     agentTools,
     'create_checkout',
-    { line_items: [{ item: { id: product.id }, quantity: 1 }] },
+    { line_items: [{ item: { id: 'prod_roses' }, quantity: 1 }] },
     { catchErrors: true },
   )) as { id: string; status: string };
   console.log(`  Session: ${session.id} (${session.status})\n`);
 
-  console.log('Step 3: update_checkout — add buyer info');
+  console.log('Step 2: update_checkout — add buyer info');
   const updated = (await executeMCPToolCall(
     agentTools,
     'update_checkout',
@@ -70,7 +59,7 @@ async function main() {
   )) as { id: string; status: string };
   console.log(`  Status: ${updated.status}\n`);
 
-  console.log('Step 4: cancel_checkout');
+  console.log('Step 3: cancel_checkout');
   const cancelled = (await executeMCPToolCall(
     agentTools,
     'cancel_checkout',

@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import type { ZodType } from 'zod';
 import { UCPError, UCPIdempotencyConflictError } from './errors.js';
 import type { UCPMessage, MessageType, MessageSeverity, ContentType } from './errors.js';
+import { MessageErrorSchema, MessageInfoSchema, MessageWarningSchema } from './schemas.js';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -125,6 +126,53 @@ function parseMessages(rawMessages: unknown[]): UCPMessage[] {
   return rawMessages.map((m: unknown) => {
     const record = m as Record<string, unknown>;
     const rawType = String(record['type'] ?? 'error');
+
+    if (rawType === 'error') {
+      const parsed = MessageErrorSchema.safeParse(m);
+      if (parsed.success) {
+        return {
+          type: 'error' as const,
+          code: parsed.data.code,
+          content: parsed.data.content,
+          severity: parsed.data.severity,
+          ...(parsed.data.path !== undefined ? { path: parsed.data.path } : {}),
+          ...(parsed.data.content_type !== undefined
+            ? { content_type: parsed.data.content_type }
+            : {}),
+        };
+      }
+    }
+
+    if (rawType === 'warning') {
+      const parsed = MessageWarningSchema.safeParse(m);
+      if (parsed.success) {
+        return {
+          type: 'warning' as const,
+          code: parsed.data.code,
+          content: parsed.data.content,
+          ...(parsed.data.path !== undefined ? { path: parsed.data.path } : {}),
+          ...(parsed.data.content_type !== undefined
+            ? { content_type: parsed.data.content_type }
+            : {}),
+        };
+      }
+    }
+
+    if (rawType === 'info') {
+      const parsed = MessageInfoSchema.safeParse(m);
+      if (parsed.success) {
+        return {
+          type: 'info' as const,
+          content: parsed.data.content,
+          ...(parsed.data.code !== undefined ? { code: parsed.data.code } : {}),
+          ...(parsed.data.path !== undefined ? { path: parsed.data.path } : {}),
+          ...(parsed.data.content_type !== undefined
+            ? { content_type: parsed.data.content_type }
+            : {}),
+        };
+      }
+    }
+
     const validTypes: readonly string[] = ['error', 'warning', 'info'];
     const type: MessageType = validTypes.includes(rawType) ? (rawType as MessageType) : 'error';
 

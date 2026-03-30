@@ -3,8 +3,6 @@ import {
   // Response schemas
   CheckoutSessionSchema,
   UCPProfileSchema,
-  UCPProductSchema,
-  UCPOrderSchema,
 
   // Request schemas
   CreateCheckoutRequestSchema,
@@ -29,115 +27,6 @@ import {
 } from './schemas.js';
 
 describe('Response schemas', () => {
-  describe('UCPProductSchema', () => {
-    it('validates a valid product', () => {
-      const result = UCPProductSchema.safeParse({
-        id: 'prod-001',
-        title: 'Running Shoes',
-        description: 'Lightweight shoes',
-        price_cents: 9999,
-        currency: 'USD',
-        in_stock: true,
-        stock_quantity: 42,
-        images: ['https://example.com/shoe.jpg'],
-        variants: [
-          {
-            id: 'var-001',
-            title: 'Size 10',
-            price_cents: 9999,
-            in_stock: true,
-            attributes: { size: '10', color: 'blue' },
-          },
-        ],
-      });
-      expect(result.success).toBe(true);
-    });
-
-    it('rejects invalid currency (too short)', () => {
-      const result = UCPProductSchema.safeParse({
-        id: 'prod-001',
-        title: 'Shoes',
-        description: null,
-        price_cents: 100,
-        currency: 'US',
-        in_stock: true,
-        stock_quantity: 5,
-        images: [],
-        variants: [],
-      });
-      expect(result.success).toBe(false);
-    });
-
-    it('rejects negative stock quantity', () => {
-      const result = UCPProductSchema.safeParse({
-        id: 'prod-001',
-        title: 'Shoes',
-        description: null,
-        price_cents: 100,
-        currency: 'USD',
-        in_stock: true,
-        stock_quantity: -1,
-        images: [],
-        variants: [],
-      });
-      expect(result.success).toBe(false);
-    });
-
-    it('allows extra fields via passthrough', () => {
-      const result = UCPProductSchema.safeParse({
-        id: 'prod-001',
-        title: 'Shoes',
-        description: null,
-        price_cents: 100,
-        currency: 'USD',
-        in_stock: true,
-        stock_quantity: 5,
-        images: [],
-        variants: [],
-        extra_field: 'should be preserved',
-      });
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect((result.data as Record<string, unknown>)['extra_field']).toBe('should be preserved');
-      }
-    });
-  });
-
-  describe('UCPOrderSchema', () => {
-    it('validates a valid order', () => {
-      const result = UCPOrderSchema.safeParse({
-        id: 'order-001',
-        status: 'processing',
-        total_cents: 5000,
-        currency: 'EUR',
-        created_at_iso: '2026-03-25T12:00:00Z',
-      });
-      expect(result.success).toBe(true);
-    });
-
-    it('rejects invalid status', () => {
-      const result = UCPOrderSchema.safeParse({
-        id: 'order-001',
-        status: 'unknown_status',
-        total_cents: 5000,
-        currency: 'EUR',
-        created_at_iso: '2026-03-25T12:00:00Z',
-      });
-      expect(result.success).toBe(false);
-    });
-
-    it('rejects invalid datetime', () => {
-      const result = UCPOrderSchema.safeParse({
-        id: 'order-001',
-        status: 'pending',
-        total_cents: 5000,
-        currency: 'EUR',
-        created_at_iso: 'not-a-date',
-      });
-      expect(result.success).toBe(false);
-    });
-  });
-
   describe('CheckoutResponseStatusSchema', () => {
     it('accepts all valid statuses', () => {
       const statuses = [
@@ -223,6 +112,7 @@ describe('SDK sub-entity schemas are importable and functional', () => {
       type: 'error',
       code: 'OUT_OF_STOCK',
       content: 'Product is out of stock',
+      severity: 'recoverable',
     });
     expect(result.success).toBe(true);
   });
@@ -252,7 +142,7 @@ describe('SDK sub-entity schemas are importable and functional', () => {
     const result = ItemResponseSchema.safeParse({
       id: 'item-001',
       title: 'Shoes',
-      price: 49.99,
+      price: 4999,
     });
     expect(result.success).toBe(true);
   });
@@ -260,7 +150,7 @@ describe('SDK sub-entity schemas are importable and functional', () => {
   it('LineItemResponseSchema validates line items', () => {
     const result = LineItemResponseSchema.safeParse({
       id: 'li-001',
-      item: { id: 'item-001', title: 'Shoes', price: 49.99 },
+      item: { id: 'item-001', title: 'Shoes', price: 4999 },
       quantity: 2,
       totals: [],
     });
@@ -271,7 +161,7 @@ describe('SDK sub-entity schemas are importable and functional', () => {
     const result = PaymentHandlerResponseSchema.safeParse({
       id: 'handler_mock',
       name: 'Mock Payment',
-      version: '1.0',
+      version: '2026-01-23',
       config: {},
       config_schema: '{}',
       instrument_schemas: [],
@@ -288,7 +178,7 @@ describe('SDK sub-entity schemas are importable and functional', () => {
       totals: [],
       fulfillment: {},
       permalink_url: 'https://store.com/orders/001',
-      ucp: { version: '2026-01-23', capabilities: [] },
+      ucp: { version: '2026-01-23', capabilities: {} },
     });
     expect(result.success).toBe(true);
   });
@@ -297,8 +187,6 @@ describe('SDK sub-entity schemas are importable and functional', () => {
     const schemas = [
       CheckoutSessionSchema,
       UCPProfileSchema,
-      UCPProductSchema,
-      UCPOrderSchema,
       CreateCheckoutRequestSchema,
       UpdateCheckoutRequestSchema,
       CompleteCheckoutRequestSchema,

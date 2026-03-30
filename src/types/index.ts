@@ -1,7 +1,7 @@
 export type { UCPClientConfig } from './config.js';
 export { DEFAULT_UCP_VERSION, UCP_CAPABILITIES } from './config.js';
 
-export type { PostalAddress, BuyerConsent, LocalizationContext, SearchFilters } from './common.js';
+export type { PostalAddress, BuyerConsent, LocalizationContext } from './common.js';
 
 export type {
   TokenCredential,
@@ -21,7 +21,7 @@ export type {
   CompleteCheckoutPayload,
 } from './checkout.js';
 
-export type { UCPSpecOrder, UCPOrder, WebhookEvent } from './order.js';
+export type { UCPSpecOrder, WebhookEvent } from './order.js';
 
 export type {
   OAuthServerMetadata,
@@ -31,5 +31,3 @@ export type {
   TokenRefreshParams,
   TokenRevokeParams,
 } from './identity-linking.js';
-
-export type { UCPProduct } from './product.js';
