@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import {
-  // Response schemas
+  // ─── Response schemas ───────────────────────────────────────────────────────
   ExtendedCheckoutResponseSchema,
   UcpDiscoveryProfileSchema,
   CheckoutResponseStatusSchema,
 
-  // Sub-entity schemas (checkout internals)
+  // ─── Sub-entity schemas (checkout internals) ────────────────────────────────
   BuyerSchema,
   TotalResponseSchema,
   LineItemResponseSchema,
@@ -19,12 +19,123 @@ import {
   FulfillmentMethodResponseSchema,
   ItemResponseSchema,
 
-  // Request schemas
+  // ─── Request schemas ────────────────────────────────────────────────────────
   ExtendedCheckoutCreateRequestSchema,
   ExtendedCheckoutUpdateRequestSchema,
 
-  // Order
+  // ─── Order ──────────────────────────────────────────────────────────────────
   OrderSchema,
+
+  // ─── Checkout (base) ────────────────────────────────────────────────────────
+  CheckoutSchema,
+  CheckoutResponseSchema,
+  CheckoutCreateRequestSchema,
+  CheckoutUpdateRequestSchema,
+  CheckoutCompleteRequestSchema,
+
+  // ─── AP2 Mandate ────────────────────────────────────────────────────────────
+  Ap2MandateAp2WithCheckoutMandateSchema,
+  Ap2MandateAp2WithMerchantAuthorizationSchema,
+  Ap2MandateCheckoutMandateSchema,
+  Ap2MandateErrorCodeSchema,
+  Ap2MandateMerchantAuthorizationSchema,
+
+  // ─── Buyer Consent ──────────────────────────────────────────────────────────
+  BuyerConsentBuyerSchema,
+  BuyerConsentConsentSchema,
+
+  // ─── Discount ───────────────────────────────────────────────────────────────
+  DiscountAllocationSchema,
+  DiscountAppliedDiscountSchema,
+  DiscountDiscountsObjectSchema,
+
+  // ─── Fulfillment (core) ─────────────────────────────────────────────────────
+  FulfillmentSchema,
+  FulfillmentOptionSchema,
+  FulfillmentGroupSchema,
+  FulfillmentMethodSchema,
+  FulfillmentAvailableMethodSchema,
+  FulfillmentDestinationSchema,
+  FulfillmentEventSchema,
+
+  // ─── Fulfillment (extension) ────────────────────────────────────────────────
+  FulfillmentExtensionFulfillmentSchema,
+  FulfillmentExtensionFulfillmentOptionSchema,
+  FulfillmentExtensionFulfillmentGroupSchema,
+  FulfillmentExtensionFulfillmentMethodSchema,
+  FulfillmentExtensionFulfillmentAvailableMethodSchema,
+
+  // ─── Fulfillment (config) ───────────────────────────────────────────────────
+  BusinessFulfillmentConfigSchema,
+  MerchantFulfillmentConfigSchema,
+  PlatformFulfillmentConfigSchema,
+
+  // ─── Fulfillment (requests) ─────────────────────────────────────────────────
+  FulfillmentMethodCreateRequestSchema,
+  FulfillmentMethodUpdateRequestSchema,
+  FulfillmentGroupUpdateRequestSchema,
+
+  // ─── Payment ────────────────────────────────────────────────────────────────
+  PaymentSchema,
+  PaymentCredentialSchema,
+  ExtendedPaymentCredentialSchema,
+  PaymentIdentitySchema,
+  PaymentInstrumentResponseSchema,
+  CardCredentialSchema,
+  CardPaymentInstrumentSchema,
+  TokenCredentialSchema,
+
+  // ─── Payment Handler (roles) ────────────────────────────────────────────────
+  PaymentHandlerBaseSchema,
+  PaymentHandlerBusinessSchema,
+  PaymentHandlerPlatformSchema,
+
+  // ─── Order (sub-entities) ───────────────────────────────────────────────────
+  OrderConfirmationSchema,
+  OrderLineItemSchema,
+  OrderUpdateSchema,
+
+  // ─── Item / LineItem ────────────────────────────────────────────────────────
+  ItemSchema,
+  LineItemSchema,
+  LineItemUpdateRequestSchema,
+
+  // ─── Message ────────────────────────────────────────────────────────────────
+  MessageInfoSchema,
+  MessageWarningSchema,
+
+  // ─── UCP protocol ───────────────────────────────────────────────────────────
+  UcpBaseSchema,
+  UcpBusinessSchema,
+  UcpPlatformSchema,
+  UcpEntitySchema,
+  UcpResponseCheckoutSchema,
+  UcpResponseOrderSchema,
+  UcpVersionSchema,
+  UcpReverseDomainNameSchema,
+
+  // ─── Capability / Service ───────────────────────────────────────────────────
+  CapabilityBaseSchema,
+  CapabilityBusinessSchema,
+  CapabilityPlatformSchema,
+  CapabilityResponseSchema,
+  ServiceBaseSchema,
+  ServiceBusinessSchema,
+  ServicePlatformSchema,
+  ServiceResponseSchema,
+
+  // ─── Misc ───────────────────────────────────────────────────────────────────
+  AccountInfoSchema,
+  AdjustmentSchema,
+  BindingSchema,
+  ContextSchema,
+  EmbeddedConfigSchema,
+  ExpectationSchema,
+  LinkSchema,
+  PlatformConfigSchema,
+  RetailLocationSchema,
+  ShippingDestinationSchema,
+  TotalSchema,
 } from '@omnixhq/ucp-js-sdk';
 
 // ─── Response validation ────────────────────────────────────────────────────
@@ -102,14 +213,14 @@ export const CompleteCheckoutRequestSchema = z.object({
 });
 
 // ─── SDK re-exports ─────────────────────────────────────────────────────────
-// Re-export SDK schemas so consumers (AI Brain) can use them for tool
-// definitions, Zod-to-JSON-Schema conversion, etc.
+// Re-export all SDK schemas so consumers can use them for tool definitions,
+// Zod-to-JSON-Schema conversion, validation, etc.
 
 export {
-  // Enums
+  // Enums / status
   CheckoutResponseStatusSchema,
 
-  // Sub-entity schemas
+  // Sub-entity schemas (checkout internals)
   BuyerSchema,
   TotalResponseSchema,
   LineItemResponseSchema,
@@ -117,18 +228,129 @@ export {
   MessageErrorSchema,
   PostalAddressSchema,
 
-  // Payment
+  // Payment (response)
   PaymentResponseSchema,
   PaymentHandlerResponseSchema,
   PaymentInstrumentSchema,
 
-  // Fulfillment
+  // Fulfillment (response)
   FulfillmentResponseSchema,
   FulfillmentMethodResponseSchema,
 
-  // Items
+  // Items (response)
   ItemResponseSchema,
 
   // Order (UCP spec order — different from gateway's UCPOrderSchema)
   OrderSchema as UCPSpecOrderSchema,
+
+  // ─── Checkout (base) ────────────────────────────────────────────────────────
+  CheckoutSchema,
+  CheckoutResponseSchema,
+  CheckoutCreateRequestSchema,
+  CheckoutUpdateRequestSchema,
+  CheckoutCompleteRequestSchema,
+
+  // ─── AP2 Mandate ────────────────────────────────────────────────────────────
+  Ap2MandateAp2WithCheckoutMandateSchema,
+  Ap2MandateAp2WithMerchantAuthorizationSchema,
+  Ap2MandateCheckoutMandateSchema,
+  Ap2MandateErrorCodeSchema,
+  Ap2MandateMerchantAuthorizationSchema,
+
+  // ─── Buyer Consent ──────────────────────────────────────────────────────────
+  BuyerConsentBuyerSchema,
+  BuyerConsentConsentSchema,
+
+  // ─── Discount ───────────────────────────────────────────────────────────────
+  DiscountAllocationSchema,
+  DiscountAppliedDiscountSchema,
+  DiscountDiscountsObjectSchema,
+
+  // ─── Fulfillment (core) ─────────────────────────────────────────────────────
+  FulfillmentSchema,
+  FulfillmentOptionSchema,
+  FulfillmentGroupSchema,
+  FulfillmentMethodSchema,
+  FulfillmentAvailableMethodSchema,
+  FulfillmentDestinationSchema,
+  FulfillmentEventSchema,
+
+  // ─── Fulfillment (extension) ────────────────────────────────────────────────
+  FulfillmentExtensionFulfillmentSchema,
+  FulfillmentExtensionFulfillmentOptionSchema,
+  FulfillmentExtensionFulfillmentGroupSchema,
+  FulfillmentExtensionFulfillmentMethodSchema,
+  FulfillmentExtensionFulfillmentAvailableMethodSchema,
+
+  // ─── Fulfillment (config) ───────────────────────────────────────────────────
+  BusinessFulfillmentConfigSchema,
+  MerchantFulfillmentConfigSchema,
+  PlatformFulfillmentConfigSchema,
+
+  // ─── Fulfillment (requests) ─────────────────────────────────────────────────
+  FulfillmentMethodCreateRequestSchema,
+  FulfillmentMethodUpdateRequestSchema,
+  FulfillmentGroupUpdateRequestSchema,
+
+  // ─── Payment ────────────────────────────────────────────────────────────────
+  PaymentSchema,
+  PaymentCredentialSchema,
+  ExtendedPaymentCredentialSchema,
+  PaymentIdentitySchema,
+  PaymentInstrumentResponseSchema,
+  CardCredentialSchema,
+  CardPaymentInstrumentSchema,
+  TokenCredentialSchema,
+
+  // ─── Payment Handler (roles) ────────────────────────────────────────────────
+  PaymentHandlerBaseSchema,
+  PaymentHandlerBusinessSchema,
+  PaymentHandlerPlatformSchema,
+
+  // ─── Order (sub-entities) ───────────────────────────────────────────────────
+  OrderConfirmationSchema,
+  OrderLineItemSchema,
+  OrderUpdateSchema,
+
+  // ─── Item / LineItem ────────────────────────────────────────────────────────
+  ItemSchema,
+  LineItemSchema,
+  LineItemUpdateRequestSchema,
+
+  // ─── Message ────────────────────────────────────────────────────────────────
+  MessageInfoSchema,
+  MessageWarningSchema,
+
+  // ─── UCP protocol ───────────────────────────────────────────────────────────
+  UcpBaseSchema,
+  UcpBusinessSchema,
+  UcpPlatformSchema,
+  UcpEntitySchema,
+  UcpResponseCheckoutSchema,
+  UcpResponseOrderSchema,
+  UcpVersionSchema,
+  UcpReverseDomainNameSchema,
+
+  // ─── Capability / Service ───────────────────────────────────────────────────
+  CapabilityBaseSchema,
+  CapabilityBusinessSchema,
+  CapabilityPlatformSchema,
+  CapabilityResponseSchema,
+  ServiceBaseSchema,
+  ServiceBusinessSchema,
+  ServicePlatformSchema,
+  ServiceResponseSchema,
+
+  // ─── Misc ───────────────────────────────────────────────────────────────────
+  AccountInfoSchema,
+  AdjustmentSchema,
+  BindingSchema,
+  ContextSchema,
+  EmbeddedConfigSchema,
+  ExpectationSchema,
+  LinkSchema,
+  PlatformConfigSchema,
+  RetailLocationSchema,
+  ShippingDestinationSchema,
+  TotalSchema,
 };

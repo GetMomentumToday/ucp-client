@@ -4,32 +4,115 @@
 
 ```ts
 
+import { AccountInfoSchema } from '@omnixhq/ucp-js-sdk';
+import { AdjustmentSchema } from '@omnixhq/ucp-js-sdk';
+import { Ap2MandateAp2WithCheckoutMandateSchema } from '@omnixhq/ucp-js-sdk';
+import { Ap2MandateAp2WithMerchantAuthorizationSchema } from '@omnixhq/ucp-js-sdk';
+import { Ap2MandateCheckoutMandateSchema } from '@omnixhq/ucp-js-sdk';
+import { Ap2MandateErrorCodeSchema } from '@omnixhq/ucp-js-sdk';
+import { Ap2MandateMerchantAuthorizationSchema } from '@omnixhq/ucp-js-sdk';
+import { BindingSchema } from '@omnixhq/ucp-js-sdk';
+import { BusinessFulfillmentConfigSchema } from '@omnixhq/ucp-js-sdk';
+import { BuyerConsentBuyerSchema } from '@omnixhq/ucp-js-sdk';
+import { BuyerConsentConsentSchema } from '@omnixhq/ucp-js-sdk';
 import { BuyerSchema } from '@omnixhq/ucp-js-sdk';
+import { CapabilityBaseSchema } from '@omnixhq/ucp-js-sdk';
+import { CapabilityBusinessSchema } from '@omnixhq/ucp-js-sdk';
+import { CapabilityPlatformSchema } from '@omnixhq/ucp-js-sdk';
+import { CapabilityResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { CardCredentialSchema } from '@omnixhq/ucp-js-sdk';
+import { CardPaymentInstrumentSchema } from '@omnixhq/ucp-js-sdk';
+import { CheckoutCompleteRequestSchema } from '@omnixhq/ucp-js-sdk';
+import { CheckoutCreateRequestSchema } from '@omnixhq/ucp-js-sdk';
+import { CheckoutResponseSchema } from '@omnixhq/ucp-js-sdk';
 import { CheckoutResponseStatus } from '@omnixhq/ucp-js-sdk';
 import { CheckoutResponseStatusSchema } from '@omnixhq/ucp-js-sdk';
+import { CheckoutSchema } from '@omnixhq/ucp-js-sdk';
+import { CheckoutUpdateRequestSchema } from '@omnixhq/ucp-js-sdk';
+import { ContextSchema } from '@omnixhq/ucp-js-sdk';
+import { DiscountAllocationSchema } from '@omnixhq/ucp-js-sdk';
+import { DiscountAppliedDiscountSchema } from '@omnixhq/ucp-js-sdk';
+import { DiscountDiscountsObjectSchema } from '@omnixhq/ucp-js-sdk';
+import { EmbeddedConfigSchema } from '@omnixhq/ucp-js-sdk';
+import { ExpectationSchema } from '@omnixhq/ucp-js-sdk';
 import { ExtendedCheckoutResponse } from '@omnixhq/ucp-js-sdk';
+import { ExtendedPaymentCredentialSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentAvailableMethodSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentDestinationSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentEventSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentExtensionFulfillmentAvailableMethodSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentExtensionFulfillmentGroupSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentExtensionFulfillmentMethodSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentExtensionFulfillmentOptionSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentExtensionFulfillmentSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentGroupSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentGroupUpdateRequestSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentMethodCreateRequestSchema } from '@omnixhq/ucp-js-sdk';
 import { FulfillmentMethodResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentMethodSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentMethodUpdateRequestSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentOptionSchema } from '@omnixhq/ucp-js-sdk';
 import { FulfillmentResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { FulfillmentSchema } from '@omnixhq/ucp-js-sdk';
 import { ItemResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { ItemSchema } from '@omnixhq/ucp-js-sdk';
 import { LineItemResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { LineItemSchema } from '@omnixhq/ucp-js-sdk';
+import { LineItemUpdateRequestSchema } from '@omnixhq/ucp-js-sdk';
+import { LinkSchema } from '@omnixhq/ucp-js-sdk';
+import { MerchantFulfillmentConfigSchema } from '@omnixhq/ucp-js-sdk';
 import { MessageErrorSchema } from '@omnixhq/ucp-js-sdk';
+import { MessageInfoSchema } from '@omnixhq/ucp-js-sdk';
 import { MessageSchema } from '@omnixhq/ucp-js-sdk';
+import { MessageWarningSchema } from '@omnixhq/ucp-js-sdk';
 import { Order } from '@omnixhq/ucp-js-sdk';
+import { OrderConfirmationSchema } from '@omnixhq/ucp-js-sdk';
+import { OrderLineItemSchema } from '@omnixhq/ucp-js-sdk';
+import { OrderUpdateSchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentCredentialSchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentHandlerBaseSchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentHandlerBusinessSchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentHandlerPlatformSchema } from '@omnixhq/ucp-js-sdk';
 import { PaymentHandlerResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentIdentitySchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentInstrumentResponseSchema } from '@omnixhq/ucp-js-sdk';
 import { PaymentInstrumentSchema } from '@omnixhq/ucp-js-sdk';
 import { PaymentResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { PaymentSchema } from '@omnixhq/ucp-js-sdk';
+import { PlatformConfigSchema } from '@omnixhq/ucp-js-sdk';
+import { PlatformFulfillmentConfigSchema } from '@omnixhq/ucp-js-sdk';
 import { PostalAddressSchema } from '@omnixhq/ucp-js-sdk';
+import { RetailLocationSchema } from '@omnixhq/ucp-js-sdk';
+import { ServiceBaseSchema } from '@omnixhq/ucp-js-sdk';
+import { ServiceBusinessSchema } from '@omnixhq/ucp-js-sdk';
+import { ServicePlatformSchema } from '@omnixhq/ucp-js-sdk';
+import { ServiceResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { ShippingDestinationSchema } from '@omnixhq/ucp-js-sdk';
+import { TokenCredentialSchema } from '@omnixhq/ucp-js-sdk';
 import { TotalResponseSchema } from '@omnixhq/ucp-js-sdk';
+import { TotalSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpBaseSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpBusinessSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpDiscoveryProfile } from '@omnixhq/ucp-js-sdk';
+import { UcpEntitySchema } from '@omnixhq/ucp-js-sdk';
+import { UcpPlatformSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpResponseCheckoutSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpResponseOrderSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpReverseDomainNameSchema } from '@omnixhq/ucp-js-sdk';
 import { OrderSchema as UCPSpecOrderSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpVersionSchema } from '@omnixhq/ucp-js-sdk';
 import { z } from 'zod';
 import { ZodType } from 'zod';
+
+export { AccountInfoSchema }
 
 // @public (undocumented)
 export interface AdapterOptions {
     // (undocumented)
     readonly catchErrors?: boolean;
 }
+
+export { AdjustmentSchema }
 
 // @public
 export interface AgentTool {
@@ -43,6 +126,16 @@ export interface AgentTool {
     readonly parameters: JsonSchema;
 }
 
+export { Ap2MandateAp2WithCheckoutMandateSchema }
+
+export { Ap2MandateAp2WithMerchantAuthorizationSchema }
+
+export { Ap2MandateCheckoutMandateSchema }
+
+export { Ap2MandateErrorCodeSchema }
+
+export { Ap2MandateMerchantAuthorizationSchema }
+
 // @public (undocumented)
 export interface AuthorizationParams {
     // (undocumented)
@@ -54,6 +147,10 @@ export interface AuthorizationParams {
     // (undocumented)
     readonly state?: string;
 }
+
+export { BindingSchema }
+
+export { BusinessFulfillmentConfigSchema }
 
 // @public (undocumented)
 export interface BuyerConsent {
@@ -67,7 +164,19 @@ export interface BuyerConsent {
     readonly sale_of_data?: boolean;
 }
 
+export { BuyerConsentBuyerSchema }
+
+export { BuyerConsentConsentSchema }
+
 export { BuyerSchema }
+
+export { CapabilityBaseSchema }
+
+export { CapabilityBusinessSchema }
+
+export { CapabilityPlatformSchema }
+
+export { CapabilityResponseSchema }
 
 // @public (undocumented)
 export interface CardCredential {
@@ -90,6 +199,10 @@ export interface CardCredential {
     // (undocumented)
     readonly type: 'card';
 }
+
+export { CardCredentialSchema }
+
+export { CardPaymentInstrumentSchema }
 
 // @public
 export class CheckoutCapability {
@@ -118,6 +231,10 @@ export class CheckoutCapability {
     update(id: string, patch: UpdateCheckoutPayload): Promise<CheckoutSession>;
 }
 
+export { CheckoutCompleteRequestSchema }
+
+export { CheckoutCreateRequestSchema }
+
 // @public (undocumented)
 export interface CheckoutExtensions {
     // (undocumented)
@@ -130,7 +247,11 @@ export interface CheckoutExtensions {
     readonly fulfillment: boolean;
 }
 
+export { CheckoutResponseSchema }
+
 export { CheckoutResponseStatusSchema }
+
+export { CheckoutSchema }
 
 // @public (undocumented)
 export type CheckoutSession = ExtendedCheckoutResponse;
@@ -2652,6 +2773,8 @@ export const CheckoutSessionSchema: z.ZodObject<{
 // @public (undocumented)
 export type CheckoutSessionStatus = CheckoutResponseStatus;
 
+export { CheckoutUpdateRequestSchema }
+
 // @public (undocumented)
 export interface CompleteCheckoutPayload {
     // (undocumented)
@@ -2818,6 +2941,8 @@ export interface ConnectedClient {
 
 // @public (undocumented)
 export type ContentType = 'plain' | 'markdown';
+
+export { ContextSchema }
 
 // @public (undocumented)
 export interface CreateCheckoutPayload {
@@ -4065,9 +4190,51 @@ export const CreateCheckoutRequestSchema: z.ZodObject<{
 // @public (undocumented)
 export const DEFAULT_UCP_VERSION = "2026-01-23";
 
+export { DiscountAllocationSchema }
+
+export { DiscountAppliedDiscountSchema }
+
+export { DiscountDiscountsObjectSchema }
+
+export { EmbeddedConfigSchema }
+
+export { ExpectationSchema }
+
+export { ExtendedPaymentCredentialSchema }
+
+export { FulfillmentAvailableMethodSchema }
+
+export { FulfillmentDestinationSchema }
+
+export { FulfillmentEventSchema }
+
+export { FulfillmentExtensionFulfillmentAvailableMethodSchema }
+
+export { FulfillmentExtensionFulfillmentGroupSchema }
+
+export { FulfillmentExtensionFulfillmentMethodSchema }
+
+export { FulfillmentExtensionFulfillmentOptionSchema }
+
+export { FulfillmentExtensionFulfillmentSchema }
+
+export { FulfillmentGroupSchema }
+
+export { FulfillmentGroupUpdateRequestSchema }
+
+export { FulfillmentMethodCreateRequestSchema }
+
 export { FulfillmentMethodResponseSchema }
 
+export { FulfillmentMethodSchema }
+
+export { FulfillmentMethodUpdateRequestSchema }
+
+export { FulfillmentOptionSchema }
+
 export { FulfillmentResponseSchema }
+
+export { FulfillmentSchema }
 
 // @public
 export function getAgentTools(client: ConnectedClient): readonly AgentTool[];
@@ -4087,6 +4254,8 @@ export class IdentityLinkingCapability {
 }
 
 export { ItemResponseSchema }
+
+export { ItemSchema }
 
 // @public
 export interface JsonSchema {
@@ -4108,6 +4277,12 @@ export interface JsonSchema {
 
 export { LineItemResponseSchema }
 
+export { LineItemSchema }
+
+export { LineItemUpdateRequestSchema }
+
+export { LinkSchema }
+
 // @public (undocumented)
 export interface LocalizationContext {
     // (undocumented)
@@ -4118,7 +4293,11 @@ export interface LocalizationContext {
     readonly postal_code?: string;
 }
 
+export { MerchantFulfillmentConfigSchema }
+
 export { MessageErrorSchema }
+
+export { MessageInfoSchema }
 
 export { MessageSchema }
 
@@ -4127,6 +4306,8 @@ export type MessageSeverity = 'recoverable' | 'requires_buyer_input' | 'requires
 
 // @public (undocumented)
 export type MessageType = 'error' | 'warning' | 'info';
+
+export { MessageWarningSchema }
 
 // @public (undocumented)
 export interface OAuthServerMetadata {
@@ -4156,8 +4337,20 @@ export class OrderCapability {
     get(id: string): Promise<UCPSpecOrder>;
 }
 
+export { OrderConfirmationSchema }
+
+export { OrderLineItemSchema }
+
+export { OrderUpdateSchema }
+
 // @public (undocumented)
 export type PaymentCredential = TokenCredential | CardCredential;
+
+export { PaymentCredentialSchema }
+
+export { PaymentHandlerBaseSchema }
+
+export { PaymentHandlerBusinessSchema }
 
 // @public (undocumented)
 export interface PaymentHandlerInstance {
@@ -4179,7 +4372,11 @@ export interface PaymentHandlerMap {
     readonly [namespace: string]: readonly PaymentHandlerInstance[];
 }
 
+export { PaymentHandlerPlatformSchema }
+
 export { PaymentHandlerResponseSchema }
+
+export { PaymentIdentitySchema }
 
 // @public (undocumented)
 export interface PaymentInstrument {
@@ -4205,9 +4402,17 @@ export interface PaymentInstrument {
     readonly type: string;
 }
 
+export { PaymentInstrumentResponseSchema }
+
 export { PaymentInstrumentSchema }
 
 export { PaymentResponseSchema }
+
+export { PaymentSchema }
+
+export { PlatformConfigSchema }
+
+export { PlatformFulfillmentConfigSchema }
 
 // @public (undocumented)
 export interface PostalAddress {
@@ -4241,6 +4446,8 @@ export class ProductsCapability {
     search(query: string, filters?: SearchFilters): Promise<readonly UCPProduct[]>;
 }
 
+export { RetailLocationSchema }
+
 // @public (undocumented)
 export interface SearchFilters {
     // (undocumented)
@@ -4257,6 +4464,16 @@ export interface SearchFilters {
     readonly page?: number;
 }
 
+export { ServiceBaseSchema }
+
+export { ServiceBusinessSchema }
+
+export { ServicePlatformSchema }
+
+export { ServiceResponseSchema }
+
+export { ShippingDestinationSchema }
+
 // @public (undocumented)
 export interface TokenCredential {
     // (undocumented)
@@ -4264,6 +4481,8 @@ export interface TokenCredential {
     // (undocumented)
     readonly type: string;
 }
+
+export { TokenCredentialSchema }
 
 // @public (undocumented)
 export interface TokenExchangeParams {
@@ -4333,6 +4552,8 @@ export type ToolErrorResult = {
 
 export { TotalResponseSchema }
 
+export { TotalSchema }
+
 // @public (undocumented)
 export const UCP_CAPABILITIES: {
     readonly CHECKOUT: "dev.ucp.shopping.checkout";
@@ -4343,6 +4564,10 @@ export const UCP_CAPABILITIES: {
     readonly IDENTITY_LINKING: "dev.ucp.common.identity_linking";
     readonly AP2_MANDATE: "dev.ucp.shopping.ap2_mandate";
 };
+
+export { UcpBaseSchema }
+
+export { UcpBusinessSchema }
 
 // @public
 export class UCPClient {
@@ -4361,6 +4586,8 @@ export interface UCPClientConfig {
     // (undocumented)
     readonly ucpVersion?: string;
 }
+
+export { UcpEntitySchema }
 
 // @public
 export class UCPError extends Error {
@@ -4448,6 +4675,8 @@ export const UCPOrderSchema: z.ZodObject<{
     currency: z.ZodString;
     created_at_iso: z.ZodString;
 }, z.ZodTypeAny, "passthrough">>;
+
+export { UcpPlatformSchema }
 
 // @public (undocumented)
 export interface UCPProduct {
@@ -4891,10 +5120,18 @@ export const UCPProfileSchema: z.ZodObject<{
     }>;
 }, z.ZodTypeAny, "passthrough">>;
 
+export { UcpResponseCheckoutSchema }
+
+export { UcpResponseOrderSchema }
+
+export { UcpReverseDomainNameSchema }
+
 // @public (undocumented)
 export type UCPSpecOrder = Order;
 
 export { UCPSpecOrderSchema }
+
+export { UcpVersionSchema }
 
 // @public (undocumented)
 export interface UpdateCheckoutPayload {
