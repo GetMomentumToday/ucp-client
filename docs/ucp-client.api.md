@@ -4645,6 +4645,9 @@ export { OrderLineItemSchema }
 
 export { OrderUpdateSchema }
 
+// @public
+export function parseWebhookEvent(body: string): WebhookEvent;
+
 // @public (undocumented)
 export type PaymentCredential = TokenCredential | CardCredential;
 
@@ -6530,7 +6533,4686 @@ export interface WebhookEvent {
     readonly created_time: string;
     // (undocumented)
     readonly event_id: string;
+    // (undocumented)
+    readonly order: UCPSpecOrder;
 }
+
+// @public (undocumented)
+export const WebhookEventSchema: z.ZodObject<{
+    event_id: z.ZodString;
+    created_time: z.ZodString;
+    order: z.ZodObject<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, z.ZodTypeAny, "passthrough">>;
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    event_id: z.ZodString;
+    created_time: z.ZodString;
+    order: z.ZodObject<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, z.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    event_id: z.ZodString;
+    created_time: z.ZodString;
+    order: z.ZodObject<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        ucp: z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+                endpoint: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }, {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            }>>, "many">>>;
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+            payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }, {
+            version: string;
+            services?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                transport: "rest" | "mcp" | "a2a" | "embedded";
+                endpoint?: string | undefined;
+            })[]> | undefined;
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+            payment_handlers?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & Record<string, unknown>)[]> | undefined;
+        }>, z.ZodObject<{
+            capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+                version: z.ZodString;
+                spec: z.ZodOptional<z.ZodString>;
+                schema: z.ZodOptional<z.ZodString>;
+                id: z.ZodOptional<z.ZodString>;
+                config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+            }, "strip", z.ZodTypeAny, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }, {
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            }>, z.ZodObject<{
+                extends: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                extends?: string | undefined;
+            }, {
+                extends?: string | undefined;
+            }>>, "many">>>;
+        }, "strip", z.ZodTypeAny, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }, {
+            capabilities?: Record<string, ({
+                version: string;
+                spec?: string | undefined;
+                schema?: string | undefined;
+                id?: string | undefined;
+                config?: Record<string, unknown> | undefined;
+            } & {
+                extends?: string | undefined;
+            })[]> | undefined;
+        }>>;
+        id: z.ZodString;
+        checkout_id: z.ZodString;
+        permalink_url: z.ZodString;
+        line_items: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            item: z.ZodObject<{
+                id: z.ZodString;
+                title: z.ZodString;
+                price: z.ZodNumber;
+                image_url: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }, {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            }>;
+            quantity: z.ZodObject<{
+                total: z.ZodNumber;
+                fulfilled: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                total: number;
+                fulfilled: number;
+            }, {
+                total: number;
+                fulfilled: number;
+            }>;
+            totals: z.ZodArray<z.ZodObject<{
+                type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                display_text: z.ZodOptional<z.ZodString>;
+                amount: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }, {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }>, "many">;
+            status: z.ZodEnum<["processing", "partial", "fulfilled"]>;
+            parent_id: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }, {
+            id: string;
+            status: "fulfilled" | "processing" | "partial";
+            item: {
+                id: string;
+                title: string;
+                price: number;
+                image_url?: string | undefined;
+            };
+            quantity: {
+                total: number;
+                fulfilled: number;
+            };
+            totals: {
+                type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+                amount: number;
+                display_text?: string | undefined;
+            }[];
+            parent_id?: string | undefined;
+        }>, "many">;
+        fulfillment: z.ZodObject<{
+            expectations: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                method_type: z.ZodEnum<["shipping", "pickup", "digital"]>;
+                destination: z.ZodObject<{
+                    extended_address: z.ZodOptional<z.ZodString>;
+                    street_address: z.ZodOptional<z.ZodString>;
+                    address_locality: z.ZodOptional<z.ZodString>;
+                    address_region: z.ZodOptional<z.ZodString>;
+                    address_country: z.ZodOptional<z.ZodString>;
+                    postal_code: z.ZodOptional<z.ZodString>;
+                    first_name: z.ZodOptional<z.ZodString>;
+                    last_name: z.ZodOptional<z.ZodString>;
+                    phone_number: z.ZodOptional<z.ZodString>;
+                }, "strip", z.ZodTypeAny, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }, {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                }>;
+                description: z.ZodOptional<z.ZodString>;
+                fulfillable_on: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }, {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }>, "many">>;
+            events: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                occurred_at: z.ZodString;
+                type: z.ZodString;
+                line_items: z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    quantity: z.ZodNumber;
+                }, "strip", z.ZodTypeAny, {
+                    id: string;
+                    quantity: number;
+                }, {
+                    id: string;
+                    quantity: number;
+                }>, "many">;
+                tracking_number: z.ZodOptional<z.ZodString>;
+                tracking_url: z.ZodOptional<z.ZodString>;
+                carrier: z.ZodOptional<z.ZodString>;
+                description: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }, {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }>, "many">>;
+        }, "strip", z.ZodTypeAny, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }, {
+            expectations?: {
+                id: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                method_type: "shipping" | "pickup" | "digital";
+                destination: {
+                    first_name?: string | undefined;
+                    last_name?: string | undefined;
+                    phone_number?: string | undefined;
+                    address_country?: string | undefined;
+                    address_region?: string | undefined;
+                    postal_code?: string | undefined;
+                    extended_address?: string | undefined;
+                    street_address?: string | undefined;
+                    address_locality?: string | undefined;
+                };
+                description?: string | undefined;
+                fulfillable_on?: string | undefined;
+            }[] | undefined;
+            events?: {
+                id: string;
+                type: string;
+                line_items: {
+                    id: string;
+                    quantity: number;
+                }[];
+                occurred_at: string;
+                description?: string | undefined;
+                carrier?: string | undefined;
+                tracking_number?: string | undefined;
+                tracking_url?: string | undefined;
+            }[] | undefined;
+        }>;
+        adjustments: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodString;
+            occurred_at: z.ZodString;
+            status: z.ZodEnum<["pending", "completed", "failed"]>;
+            line_items: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                quantity: z.ZodNumber;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+                quantity: number;
+            }, {
+                id: string;
+                quantity: number;
+            }>, "many">>;
+            amount: z.ZodOptional<z.ZodNumber>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }, {
+            id: string;
+            type: string;
+            status: "completed" | "pending" | "failed";
+            occurred_at: string;
+            amount?: number | undefined;
+            line_items?: {
+                id: string;
+                quantity: number;
+            }[] | undefined;
+            description?: string | undefined;
+        }>, "many">>;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }, {
+            type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
+            amount: number;
+            display_text?: string | undefined;
+        }>, "many">;
+    }, z.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">>;
 
 // @public
 export interface WebhookVerifier {

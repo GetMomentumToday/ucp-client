@@ -296,6 +296,17 @@ export {
   TotalSchema,
 };
 
+// ─── Webhook event schema ────────────────────────────────────────────────────
+// Not in the SDK — wraps the Order entity with event metadata.
+
+export const WebhookEventSchema = z
+  .object({
+    event_id: z.string(),
+    created_time: z.string(),
+    order: OrderSchema.passthrough(),
+  })
+  .passthrough();
+
 // ─── JWK schema ─────────────────────────────────────────────────────────────
 // Not yet in the SDK — defined here until the SDK adds signing_keys support.
 

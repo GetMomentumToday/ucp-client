@@ -4,6 +4,8 @@ export type { ConnectedClient, ToolDescriptor, UCPProfile } from './UCPClient.js
 export { verifyRequestSignature, createWebhookVerifier } from './verify-signature.js';
 export type { WebhookVerifier } from './verify-signature.js';
 
+export { parseWebhookEvent } from './parse-webhook-event.js';
+
 export { getAgentTools } from './agent-tools.js';
 export type { AgentTool, JsonSchema } from './agent-tools.js';
 
@@ -26,6 +28,7 @@ export {
   CheckoutSessionSchema,
   UCPProfileSchema,
   JWKSchema,
+  WebhookEventSchema,
   CreateCheckoutRequestSchema,
   UpdateCheckoutRequestSchema,
   CompleteCheckoutRequestSchema,

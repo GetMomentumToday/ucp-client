@@ -5,5 +5,6 @@ export type UCPSpecOrder = Order;
 export interface WebhookEvent {
   readonly event_id: string;
   readonly created_time: string;
+  readonly order: UCPSpecOrder;
   readonly [key: string]: unknown;
 }

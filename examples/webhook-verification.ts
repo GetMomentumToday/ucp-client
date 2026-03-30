@@ -13,7 +13,7 @@
  */
 
 import { createServer } from 'node:http';
-import { createWebhookVerifier } from '../src/index.js';
+import { createWebhookVerifier, parseWebhookEvent } from '../src/index.js';
 
 const GATEWAY_URL = process.env['GATEWAY_URL'] ?? 'http://localhost:3000';
 const WEBHOOK_PORT = Number(process.env['WEBHOOK_PORT'] ?? '4000');
@@ -50,9 +50,9 @@ async function main() {
           return;
         }
 
-        // Signature verified — safe to process the event
-        const event = JSON.parse(rawBody) as Record<string, unknown>;
-        console.log('Verified webhook event:', JSON.stringify(event, null, 2));
+        // Signature verified — parse and validate the event payload
+        const event = parseWebhookEvent(rawBody);
+        console.log(`Order event: ${event.event_id} — order ${event.order.id}`);
 
         // MUST respond quickly with 2xx — process asynchronously
         res.writeHead(200).end('OK');
