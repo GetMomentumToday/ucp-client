@@ -2,7 +2,8 @@ import { z } from 'zod';
 import type { UcpDiscoveryProfile } from '@omnixhq/ucp-js-sdk';
 import { HttpClient } from './http.js';
 import type { LogFn } from './http.js';
-import { UCPProfileSchema } from './schemas.js';
+import { UCPProfileSchema, JWKSchema } from './schemas.js';
+import type { JWK } from './types/common.js';
 import { CheckoutCapability } from './capabilities/checkout.js';
 import { OrderCapability } from './capabilities/order.js';
 import { IdentityLinkingCapability } from './capabilities/identity-linking.js';
@@ -31,6 +32,8 @@ export interface ToolDescriptor {
 export interface ConnectedClient {
   /** The server's UCP discovery profile. */
   readonly profile: UCPProfile;
+  /** JWK signing keys from the discovery profile. Used for verifying incoming webhook signatures. */
+  readonly signingKeys: readonly JWK[];
   /** Checkout operations. Null if server does not support `dev.ucp.shopping.checkout`. */
   readonly checkout: CheckoutCapability | null;
   /** Order operations. Null if server does not support `dev.ucp.shopping.order`. */
@@ -87,9 +90,11 @@ export async function connect(
   const order = capabilityNames.has(UCP_CAPABILITIES.ORDER) ? new OrderCapability(http) : null;
   const identityLinking = await buildIdentityLinking(config, capabilityNames);
   const paymentHandlers = extractPaymentHandlers(profile);
+  const signingKeys = extractSigningKeys(profile);
 
   const client: ConnectedClient = {
     profile,
+    signingKeys,
     checkout,
     order,
     identityLinking,
@@ -153,6 +158,17 @@ function extractPaymentHandlers(profile: UCPProfile): PaymentHandlerMap {
   const result = PaymentHandlerMapSchema.safeParse(raw);
   if (!result.success) return {};
   return result.data as PaymentHandlerMap;
+}
+
+function extractSigningKeys(profile: UCPProfile): readonly JWK[] {
+  const raw = (profile as Record<string, unknown>)['signing_keys'];
+  if (!Array.isArray(raw)) return [];
+  const keys: JWK[] = [];
+  for (const item of raw) {
+    const result = JWKSchema.safeParse(item);
+    if (result.success) keys.push(result.data as JWK);
+  }
+  return keys;
 }
 
 function buildCheckoutCapability(

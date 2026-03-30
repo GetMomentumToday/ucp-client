@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
   // ─── Response schemas ───────────────────────────────────────────────────────
   ExtendedCheckoutResponseSchema,
@@ -294,3 +295,18 @@ export {
   ShippingDestinationSchema,
   TotalSchema,
 };
+
+// ─── JWK schema ─────────────────────────────────────────────────────────────
+// Not yet in the SDK — defined here until the SDK adds signing_keys support.
+
+export const JWKSchema = z
+  .object({
+    kty: z.string(),
+    kid: z.string().optional(),
+    use: z.string().optional(),
+    alg: z.string().optional(),
+    crv: z.string().optional(),
+    x: z.string().optional(),
+    y: z.string().optional(),
+  })
+  .passthrough();

@@ -103,7 +103,7 @@ import { UcpResponseOrderSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpReverseDomainNameSchema } from '@omnixhq/ucp-js-sdk';
 import { OrderSchema as UCPSpecOrderSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpVersionSchema } from '@omnixhq/ucp-js-sdk';
-import * as zod1181 from 'zod';
+import { z } from 'zod';
 import { ZodType } from 'zod';
 
 export { AccountInfoSchema }
@@ -240,16 +240,16 @@ export { CheckoutSchema }
 export type CheckoutSession = ExtendedCheckoutResponse;
 
 // @public (undocumented)
-export const CheckoutSessionSchema: zod1181.ZodObject<{
-    ucp: zod1181.ZodIntersection<zod1181.ZodObject<{
-        version: zod1181.ZodString;
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+export const CheckoutSessionSchema: z.ZodObject<{
+    ucp: z.ZodIntersection<z.ZodObject<{
+        version: z.ZodString;
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -261,23 +261,23 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
-            endpoint: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+            endpoint: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }>>, "many">>>;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -289,20 +289,20 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            extends: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            extends: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             extends?: string | undefined;
         }, {
             extends?: string | undefined;
         }>>, "many">>>;
-        payment_handlers: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -314,8 +314,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+    }, "strip", z.ZodTypeAny, {
         version: string;
         services?: Record<string, ({
             version: string;
@@ -371,14 +371,14 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         } & Record<string, unknown>)[]> | undefined;
-    }>, zod1181.ZodObject<{
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+    }>, z.ZodObject<{
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -390,43 +390,43 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
-            endpoint: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+            endpoint: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
-        }>>, zod1181.ZodUnion<[zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"rest">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>>, z.ZodUnion<[z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"rest">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "rest" | undefined;
         }, {
             transport?: "rest" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"mcp">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"mcp">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "mcp" | undefined;
         }, {
             transport?: "mcp" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"a2a">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"a2a">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "a2a" | undefined;
         }, {
             transport?: "a2a" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"embedded">>;
-            config: zod1181.ZodOptional<zod1181.ZodObject<{
-                delegate: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-            }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"embedded">>;
+            config: z.ZodOptional<z.ZodObject<{
+                delegate: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+            }, "strip", z.ZodTypeAny, {
                 delegate?: string[] | undefined;
             }, {
                 delegate?: string[] | undefined;
             }>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }, "strip", z.ZodTypeAny, {
             config?: {
                 delegate?: string[] | undefined;
             } | undefined;
@@ -437,13 +437,13 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             } | undefined;
             transport?: "embedded" | undefined;
         }>]>>, "many">>>;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -455,20 +455,20 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            extends: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            extends: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             extends?: string | undefined;
         }, {
             extends?: string | undefined;
         }>>, "many">>>;
-        payment_handlers: zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -480,8 +480,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>;
+    }, "strip", z.ZodTypeAny, {
         payment_handlers: Record<string, ({
             version: string;
             spec?: string | undefined;
@@ -558,15 +558,15 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             extends?: string | undefined;
         })[]> | undefined;
     }>>;
-    id: zod1181.ZodString;
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+    id: z.ZodString;
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -577,12 +577,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -591,8 +591,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -623,12 +623,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
@@ -639,11 +639,11 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         email?: string | undefined;
         phone_number?: string | undefined;
     }>>;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -652,13 +652,13 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    status: zod1181.ZodEnum<["incomplete", "requires_escalation", "ready_for_complete", "complete_in_progress", "completed", "canceled"]>;
-    currency: zod1181.ZodString;
-    totals: zod1181.ZodArray<zod1181.ZodObject<{
-        type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-        display_text: zod1181.ZodOptional<zod1181.ZodString>;
-        amount: zod1181.ZodNumber;
-    }, "strip", zod1181.ZodTypeAny, {
+    status: z.ZodEnum<["incomplete", "requires_escalation", "ready_for_complete", "complete_in_progress", "completed", "canceled"]>;
+    currency: z.ZodString;
+    totals: z.ZodArray<z.ZodObject<{
+        type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+        display_text: z.ZodOptional<z.ZodString>;
+        amount: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
         type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
         amount: number;
         display_text?: string | undefined;
@@ -667,12 +667,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         amount: number;
         display_text?: string | undefined;
     }>, "many">;
-    messages: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>, zod1181.ZodEffects<zod1181.ZodUnknown, unknown, unknown>>, "many">>;
-    links: zod1181.ZodArray<zod1181.ZodObject<{
-        type: zod1181.ZodString;
-        url: zod1181.ZodString;
-        title: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    messages: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodEffects<z.ZodUnknown, unknown, unknown>>, "many">>;
+    links: z.ZodArray<z.ZodObject<{
+        type: z.ZodString;
+        url: z.ZodString;
+        title: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         type: string;
         url: string;
         title?: string | undefined;
@@ -681,24 +681,24 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         url: string;
         title?: string | undefined;
     }>, "many">;
-    expires_at: zod1181.ZodOptional<zod1181.ZodString>;
-    continue_url: zod1181.ZodOptional<zod1181.ZodString>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    expires_at: z.ZodOptional<z.ZodString>;
+    continue_url: z.ZodOptional<z.ZodString>;
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -719,15 +719,15 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -765,14 +765,14 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -819,10 +819,10 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             selected?: boolean | undefined;
         })[] | undefined;
     }>>;
-    order: zod1181.ZodOptional<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        permalink_url: zod1181.ZodString;
-    }, "strip", zod1181.ZodTypeAny, {
+    order: z.ZodOptional<z.ZodObject<{
+        id: z.ZodString;
+        permalink_url: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         permalink_url: string;
     }, {
@@ -830,28 +830,28 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         permalink_url: string;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            destinations: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>, zod1181.ZodEffects<zod1181.ZodUnknown, unknown, unknown>>, "many">>;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-                options: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                    id: zod1181.ZodString;
-                    title: zod1181.ZodString;
-                    description: zod1181.ZodOptional<zod1181.ZodString>;
-                    carrier: zod1181.ZodOptional<zod1181.ZodString>;
-                    earliest_fulfillment_time: zod1181.ZodOptional<zod1181.ZodString>;
-                    latest_fulfillment_time: zod1181.ZodOptional<zod1181.ZodString>;
-                    totals: zod1181.ZodArray<zod1181.ZodObject<{
-                        type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-                        display_text: zod1181.ZodOptional<zod1181.ZodString>;
-                        amount: zod1181.ZodNumber;
-                    }, "strip", zod1181.ZodTypeAny, {
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            destinations: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodEffects<z.ZodUnknown, unknown, unknown>>, "many">>;
+            selected_destination_id: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_item_ids: z.ZodArray<z.ZodString, "many">;
+                options: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    title: z.ZodString;
+                    description: z.ZodOptional<z.ZodString>;
+                    carrier: z.ZodOptional<z.ZodString>;
+                    earliest_fulfillment_time: z.ZodOptional<z.ZodString>;
+                    latest_fulfillment_time: z.ZodOptional<z.ZodString>;
+                    totals: z.ZodArray<z.ZodObject<{
+                        type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                        display_text: z.ZodOptional<z.ZodString>;
+                        amount: z.ZodNumber;
+                    }, "strip", z.ZodTypeAny, {
                         type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
                         amount: number;
                         display_text?: string | undefined;
@@ -860,7 +860,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                         amount: number;
                         display_text?: string | undefined;
                     }>, "many">;
-                }, "strip", zod1181.ZodTypeAny, {
+                }, "strip", z.ZodTypeAny, {
                     id: string;
                     title: string;
                     totals: {
@@ -885,8 +885,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                     earliest_fulfillment_time?: string | undefined;
                     latest_fulfillment_time?: string | undefined;
                 }>, "many">>;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            }, "strip", zod1181.ZodTypeAny, {
+                selected_option_id: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            }, "strip", z.ZodTypeAny, {
                 id: string;
                 line_item_ids: string[];
                 options?: {
@@ -921,7 +921,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 }[] | undefined;
                 selected_option_id?: string | null | undefined;
             }>, "many">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: "shipping" | "pickup";
             line_item_ids: string[];
@@ -970,12 +970,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 selected_option_id?: string | null | undefined;
             }[] | undefined;
         }>, "many">>;
-        available_methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            fulfillable_on: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            description: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        available_methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            fulfillable_on: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             type: "shipping" | "pickup";
             line_item_ids: string[];
             description?: string | undefined;
@@ -986,7 +986,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             description?: string | undefined;
             fulfillable_on?: string | null | undefined;
         }>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         methods?: {
             id: string;
             type: "shipping" | "pickup";
@@ -1051,42 +1051,42 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             fulfillable_on?: string | null | undefined;
         }[] | undefined;
     }>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    ap2: zod1181.ZodOptional<zod1181.ZodObject<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    order_id: zod1181.ZodOptional<zod1181.ZodString>;
-    order_permalink_url: zod1181.ZodOptional<zod1181.ZodString>;
-    platform: zod1181.ZodOptional<zod1181.ZodObject<{
-        webhook_url: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    ap2: z.ZodOptional<z.ZodObject<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    order_id: z.ZodOptional<z.ZodString>;
+    order_permalink_url: z.ZodOptional<z.ZodString>;
+    platform: z.ZodOptional<z.ZodObject<{
+        webhook_url: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         webhook_url?: string | undefined;
     }, {
         webhook_url?: string | undefined;
     }>>;
-}, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-    ucp: zod1181.ZodIntersection<zod1181.ZodObject<{
-        version: zod1181.ZodString;
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    ucp: z.ZodIntersection<z.ZodObject<{
+        version: z.ZodString;
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1098,23 +1098,23 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
-            endpoint: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+            endpoint: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }>>, "many">>>;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1126,20 +1126,20 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            extends: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            extends: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             extends?: string | undefined;
         }, {
             extends?: string | undefined;
         }>>, "many">>>;
-        payment_handlers: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1151,8 +1151,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+    }, "strip", z.ZodTypeAny, {
         version: string;
         services?: Record<string, ({
             version: string;
@@ -1208,14 +1208,14 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         } & Record<string, unknown>)[]> | undefined;
-    }>, zod1181.ZodObject<{
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+    }>, z.ZodObject<{
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1227,43 +1227,43 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
-            endpoint: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+            endpoint: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
-        }>>, zod1181.ZodUnion<[zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"rest">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>>, z.ZodUnion<[z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"rest">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "rest" | undefined;
         }, {
             transport?: "rest" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"mcp">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"mcp">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "mcp" | undefined;
         }, {
             transport?: "mcp" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"a2a">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"a2a">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "a2a" | undefined;
         }, {
             transport?: "a2a" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"embedded">>;
-            config: zod1181.ZodOptional<zod1181.ZodObject<{
-                delegate: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-            }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"embedded">>;
+            config: z.ZodOptional<z.ZodObject<{
+                delegate: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+            }, "strip", z.ZodTypeAny, {
                 delegate?: string[] | undefined;
             }, {
                 delegate?: string[] | undefined;
             }>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }, "strip", z.ZodTypeAny, {
             config?: {
                 delegate?: string[] | undefined;
             } | undefined;
@@ -1274,13 +1274,13 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             } | undefined;
             transport?: "embedded" | undefined;
         }>]>>, "many">>>;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1292,20 +1292,20 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            extends: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            extends: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             extends?: string | undefined;
         }, {
             extends?: string | undefined;
         }>>, "many">>>;
-        payment_handlers: zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1317,8 +1317,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>;
+    }, "strip", z.ZodTypeAny, {
         payment_handlers: Record<string, ({
             version: string;
             spec?: string | undefined;
@@ -1395,15 +1395,15 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             extends?: string | undefined;
         })[]> | undefined;
     }>>;
-    id: zod1181.ZodString;
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+    id: z.ZodString;
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -1414,12 +1414,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -1428,8 +1428,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -1460,12 +1460,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
@@ -1476,11 +1476,11 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         email?: string | undefined;
         phone_number?: string | undefined;
     }>>;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -1489,13 +1489,13 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    status: zod1181.ZodEnum<["incomplete", "requires_escalation", "ready_for_complete", "complete_in_progress", "completed", "canceled"]>;
-    currency: zod1181.ZodString;
-    totals: zod1181.ZodArray<zod1181.ZodObject<{
-        type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-        display_text: zod1181.ZodOptional<zod1181.ZodString>;
-        amount: zod1181.ZodNumber;
-    }, "strip", zod1181.ZodTypeAny, {
+    status: z.ZodEnum<["incomplete", "requires_escalation", "ready_for_complete", "complete_in_progress", "completed", "canceled"]>;
+    currency: z.ZodString;
+    totals: z.ZodArray<z.ZodObject<{
+        type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+        display_text: z.ZodOptional<z.ZodString>;
+        amount: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
         type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
         amount: number;
         display_text?: string | undefined;
@@ -1504,12 +1504,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         amount: number;
         display_text?: string | undefined;
     }>, "many">;
-    messages: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>, zod1181.ZodEffects<zod1181.ZodUnknown, unknown, unknown>>, "many">>;
-    links: zod1181.ZodArray<zod1181.ZodObject<{
-        type: zod1181.ZodString;
-        url: zod1181.ZodString;
-        title: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    messages: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodEffects<z.ZodUnknown, unknown, unknown>>, "many">>;
+    links: z.ZodArray<z.ZodObject<{
+        type: z.ZodString;
+        url: z.ZodString;
+        title: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         type: string;
         url: string;
         title?: string | undefined;
@@ -1518,24 +1518,24 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         url: string;
         title?: string | undefined;
     }>, "many">;
-    expires_at: zod1181.ZodOptional<zod1181.ZodString>;
-    continue_url: zod1181.ZodOptional<zod1181.ZodString>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    expires_at: z.ZodOptional<z.ZodString>;
+    continue_url: z.ZodOptional<z.ZodString>;
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -1556,15 +1556,15 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -1602,14 +1602,14 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -1656,10 +1656,10 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             selected?: boolean | undefined;
         })[] | undefined;
     }>>;
-    order: zod1181.ZodOptional<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        permalink_url: zod1181.ZodString;
-    }, "strip", zod1181.ZodTypeAny, {
+    order: z.ZodOptional<z.ZodObject<{
+        id: z.ZodString;
+        permalink_url: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         permalink_url: string;
     }, {
@@ -1667,28 +1667,28 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         permalink_url: string;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            destinations: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>, zod1181.ZodEffects<zod1181.ZodUnknown, unknown, unknown>>, "many">>;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-                options: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                    id: zod1181.ZodString;
-                    title: zod1181.ZodString;
-                    description: zod1181.ZodOptional<zod1181.ZodString>;
-                    carrier: zod1181.ZodOptional<zod1181.ZodString>;
-                    earliest_fulfillment_time: zod1181.ZodOptional<zod1181.ZodString>;
-                    latest_fulfillment_time: zod1181.ZodOptional<zod1181.ZodString>;
-                    totals: zod1181.ZodArray<zod1181.ZodObject<{
-                        type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-                        display_text: zod1181.ZodOptional<zod1181.ZodString>;
-                        amount: zod1181.ZodNumber;
-                    }, "strip", zod1181.ZodTypeAny, {
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            destinations: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodEffects<z.ZodUnknown, unknown, unknown>>, "many">>;
+            selected_destination_id: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_item_ids: z.ZodArray<z.ZodString, "many">;
+                options: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    title: z.ZodString;
+                    description: z.ZodOptional<z.ZodString>;
+                    carrier: z.ZodOptional<z.ZodString>;
+                    earliest_fulfillment_time: z.ZodOptional<z.ZodString>;
+                    latest_fulfillment_time: z.ZodOptional<z.ZodString>;
+                    totals: z.ZodArray<z.ZodObject<{
+                        type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                        display_text: z.ZodOptional<z.ZodString>;
+                        amount: z.ZodNumber;
+                    }, "strip", z.ZodTypeAny, {
                         type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
                         amount: number;
                         display_text?: string | undefined;
@@ -1697,7 +1697,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                         amount: number;
                         display_text?: string | undefined;
                     }>, "many">;
-                }, "strip", zod1181.ZodTypeAny, {
+                }, "strip", z.ZodTypeAny, {
                     id: string;
                     title: string;
                     totals: {
@@ -1722,8 +1722,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                     earliest_fulfillment_time?: string | undefined;
                     latest_fulfillment_time?: string | undefined;
                 }>, "many">>;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            }, "strip", zod1181.ZodTypeAny, {
+                selected_option_id: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            }, "strip", z.ZodTypeAny, {
                 id: string;
                 line_item_ids: string[];
                 options?: {
@@ -1758,7 +1758,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 }[] | undefined;
                 selected_option_id?: string | null | undefined;
             }>, "many">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: "shipping" | "pickup";
             line_item_ids: string[];
@@ -1807,12 +1807,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 selected_option_id?: string | null | undefined;
             }[] | undefined;
         }>, "many">>;
-        available_methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            fulfillable_on: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            description: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        available_methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            fulfillable_on: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             type: "shipping" | "pickup";
             line_item_ids: string[];
             description?: string | undefined;
@@ -1823,7 +1823,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             description?: string | undefined;
             fulfillable_on?: string | null | undefined;
         }>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         methods?: {
             id: string;
             type: "shipping" | "pickup";
@@ -1888,42 +1888,42 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             fulfillable_on?: string | null | undefined;
         }[] | undefined;
     }>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    ap2: zod1181.ZodOptional<zod1181.ZodObject<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    order_id: zod1181.ZodOptional<zod1181.ZodString>;
-    order_permalink_url: zod1181.ZodOptional<zod1181.ZodString>;
-    platform: zod1181.ZodOptional<zod1181.ZodObject<{
-        webhook_url: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    ap2: z.ZodOptional<z.ZodObject<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    order_id: z.ZodOptional<z.ZodString>;
+    order_permalink_url: z.ZodOptional<z.ZodString>;
+    platform: z.ZodOptional<z.ZodObject<{
+        webhook_url: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         webhook_url?: string | undefined;
     }, {
         webhook_url?: string | undefined;
     }>>;
-}, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-    ucp: zod1181.ZodIntersection<zod1181.ZodObject<{
-        version: zod1181.ZodString;
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    ucp: z.ZodIntersection<z.ZodObject<{
+        version: z.ZodString;
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1935,23 +1935,23 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
-            endpoint: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+            endpoint: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }>>, "many">>>;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1963,20 +1963,20 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            extends: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            extends: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             extends?: string | undefined;
         }, {
             extends?: string | undefined;
         }>>, "many">>>;
-        payment_handlers: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -1988,8 +1988,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>>;
+    }, "strip", z.ZodTypeAny, {
         version: string;
         services?: Record<string, ({
             version: string;
@@ -2045,14 +2045,14 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         } & Record<string, unknown>)[]> | undefined;
-    }>, zod1181.ZodObject<{
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+    }>, z.ZodObject<{
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -2064,43 +2064,43 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
-            endpoint: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodEnum<["rest", "mcp", "a2a", "embedded"]>;
+            endpoint: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
         }, {
             transport: "rest" | "mcp" | "a2a" | "embedded";
             endpoint?: string | undefined;
-        }>>, zod1181.ZodUnion<[zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"rest">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>>, z.ZodUnion<[z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"rest">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "rest" | undefined;
         }, {
             transport?: "rest" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"mcp">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"mcp">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "mcp" | undefined;
         }, {
             transport?: "mcp" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"a2a">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"a2a">>;
+        }, "strip", z.ZodTypeAny, {
             transport?: "a2a" | undefined;
         }, {
             transport?: "a2a" | undefined;
-        }>, zod1181.ZodObject<{
-            transport: zod1181.ZodOptional<zod1181.ZodLiteral<"embedded">>;
-            config: zod1181.ZodOptional<zod1181.ZodObject<{
-                delegate: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-            }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            transport: z.ZodOptional<z.ZodLiteral<"embedded">>;
+            config: z.ZodOptional<z.ZodObject<{
+                delegate: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+            }, "strip", z.ZodTypeAny, {
                 delegate?: string[] | undefined;
             }, {
                 delegate?: string[] | undefined;
             }>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }, "strip", z.ZodTypeAny, {
             config?: {
                 delegate?: string[] | undefined;
             } | undefined;
@@ -2111,13 +2111,13 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             } | undefined;
             transport?: "embedded" | undefined;
         }>]>>, "many">>>;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -2129,20 +2129,20 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            extends: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            extends: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             extends?: string | undefined;
         }, {
             extends?: string | undefined;
         }>>, "many">>>;
-        payment_handlers: zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodRecord<z.ZodString, z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -2154,8 +2154,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>;
+    }, "strip", z.ZodTypeAny, {
         payment_handlers: Record<string, ({
             version: string;
             spec?: string | undefined;
@@ -2232,15 +2232,15 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             extends?: string | undefined;
         })[]> | undefined;
     }>>;
-    id: zod1181.ZodString;
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+    id: z.ZodString;
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -2251,12 +2251,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -2265,8 +2265,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -2297,12 +2297,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
@@ -2313,11 +2313,11 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         email?: string | undefined;
         phone_number?: string | undefined;
     }>>;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -2326,13 +2326,13 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    status: zod1181.ZodEnum<["incomplete", "requires_escalation", "ready_for_complete", "complete_in_progress", "completed", "canceled"]>;
-    currency: zod1181.ZodString;
-    totals: zod1181.ZodArray<zod1181.ZodObject<{
-        type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-        display_text: zod1181.ZodOptional<zod1181.ZodString>;
-        amount: zod1181.ZodNumber;
-    }, "strip", zod1181.ZodTypeAny, {
+    status: z.ZodEnum<["incomplete", "requires_escalation", "ready_for_complete", "complete_in_progress", "completed", "canceled"]>;
+    currency: z.ZodString;
+    totals: z.ZodArray<z.ZodObject<{
+        type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+        display_text: z.ZodOptional<z.ZodString>;
+        amount: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
         type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
         amount: number;
         display_text?: string | undefined;
@@ -2341,12 +2341,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         amount: number;
         display_text?: string | undefined;
     }>, "many">;
-    messages: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>, zod1181.ZodEffects<zod1181.ZodUnknown, unknown, unknown>>, "many">>;
-    links: zod1181.ZodArray<zod1181.ZodObject<{
-        type: zod1181.ZodString;
-        url: zod1181.ZodString;
-        title: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    messages: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodEffects<z.ZodUnknown, unknown, unknown>>, "many">>;
+    links: z.ZodArray<z.ZodObject<{
+        type: z.ZodString;
+        url: z.ZodString;
+        title: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         type: string;
         url: string;
         title?: string | undefined;
@@ -2355,24 +2355,24 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         url: string;
         title?: string | undefined;
     }>, "many">;
-    expires_at: zod1181.ZodOptional<zod1181.ZodString>;
-    continue_url: zod1181.ZodOptional<zod1181.ZodString>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    expires_at: z.ZodOptional<z.ZodString>;
+    continue_url: z.ZodOptional<z.ZodString>;
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -2393,15 +2393,15 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -2439,14 +2439,14 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -2493,10 +2493,10 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             selected?: boolean | undefined;
         })[] | undefined;
     }>>;
-    order: zod1181.ZodOptional<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        permalink_url: zod1181.ZodString;
-    }, "strip", zod1181.ZodTypeAny, {
+    order: z.ZodOptional<z.ZodObject<{
+        id: z.ZodString;
+        permalink_url: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         permalink_url: string;
     }, {
@@ -2504,28 +2504,28 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
         permalink_url: string;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            destinations: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>, zod1181.ZodEffects<zod1181.ZodUnknown, unknown, unknown>>, "many">>;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-                options: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                    id: zod1181.ZodString;
-                    title: zod1181.ZodString;
-                    description: zod1181.ZodOptional<zod1181.ZodString>;
-                    carrier: zod1181.ZodOptional<zod1181.ZodString>;
-                    earliest_fulfillment_time: zod1181.ZodOptional<zod1181.ZodString>;
-                    latest_fulfillment_time: zod1181.ZodOptional<zod1181.ZodString>;
-                    totals: zod1181.ZodArray<zod1181.ZodObject<{
-                        type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-                        display_text: zod1181.ZodOptional<zod1181.ZodString>;
-                        amount: zod1181.ZodNumber;
-                    }, "strip", zod1181.ZodTypeAny, {
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            destinations: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodEffects<z.ZodUnknown, unknown, unknown>>, "many">>;
+            selected_destination_id: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                line_item_ids: z.ZodArray<z.ZodString, "many">;
+                options: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                    id: z.ZodString;
+                    title: z.ZodString;
+                    description: z.ZodOptional<z.ZodString>;
+                    carrier: z.ZodOptional<z.ZodString>;
+                    earliest_fulfillment_time: z.ZodOptional<z.ZodString>;
+                    latest_fulfillment_time: z.ZodOptional<z.ZodString>;
+                    totals: z.ZodArray<z.ZodObject<{
+                        type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+                        display_text: z.ZodOptional<z.ZodString>;
+                        amount: z.ZodNumber;
+                    }, "strip", z.ZodTypeAny, {
                         type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
                         amount: number;
                         display_text?: string | undefined;
@@ -2534,7 +2534,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                         amount: number;
                         display_text?: string | undefined;
                     }>, "many">;
-                }, "strip", zod1181.ZodTypeAny, {
+                }, "strip", z.ZodTypeAny, {
                     id: string;
                     title: string;
                     totals: {
@@ -2559,8 +2559,8 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                     earliest_fulfillment_time?: string | undefined;
                     latest_fulfillment_time?: string | undefined;
                 }>, "many">>;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            }, "strip", zod1181.ZodTypeAny, {
+                selected_option_id: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            }, "strip", z.ZodTypeAny, {
                 id: string;
                 line_item_ids: string[];
                 options?: {
@@ -2595,7 +2595,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 }[] | undefined;
                 selected_option_id?: string | null | undefined;
             }>, "many">>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: "shipping" | "pickup";
             line_item_ids: string[];
@@ -2644,12 +2644,12 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
                 selected_option_id?: string | null | undefined;
             }[] | undefined;
         }>, "many">>;
-        available_methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            fulfillable_on: zod1181.ZodOptional<zod1181.ZodUnion<[zod1181.ZodString, zod1181.ZodNull]>>;
-            description: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+        available_methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            fulfillable_on: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodNull]>>;
+            description: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             type: "shipping" | "pickup";
             line_item_ids: string[];
             description?: string | undefined;
@@ -2660,7 +2660,7 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             description?: string | undefined;
             fulfillable_on?: string | null | undefined;
         }>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         methods?: {
             id: string;
             type: "shipping" | "pickup";
@@ -2725,33 +2725,33 @@ export const CheckoutSessionSchema: zod1181.ZodObject<{
             fulfillable_on?: string | null | undefined;
         }[] | undefined;
     }>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    ap2: zod1181.ZodOptional<zod1181.ZodObject<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        mandate: zod1181.ZodOptional<zod1181.ZodString>;
-        status: zod1181.ZodOptional<zod1181.ZodString>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    order_id: zod1181.ZodOptional<zod1181.ZodString>;
-    order_permalink_url: zod1181.ZodOptional<zod1181.ZodString>;
-    platform: zod1181.ZodOptional<zod1181.ZodObject<{
-        webhook_url: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    ap2: z.ZodOptional<z.ZodObject<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        mandate: z.ZodOptional<z.ZodString>;
+        status: z.ZodOptional<z.ZodString>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    order_id: z.ZodOptional<z.ZodString>;
+    order_permalink_url: z.ZodOptional<z.ZodString>;
+    platform: z.ZodOptional<z.ZodObject<{
+        webhook_url: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         webhook_url?: string | undefined;
     }, {
         webhook_url?: string | undefined;
     }>>;
-}, zod1181.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">>;
 
 // @public (undocumented)
 export type CheckoutSessionStatus = CheckoutResponseStatus;
@@ -2775,23 +2775,23 @@ export interface CompleteCheckoutPayload {
 }
 
 // @public (undocumented)
-export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
-    payment: zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+export const CompleteCheckoutRequestSchema: z.ZodObject<{
+    payment: z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -2812,15 +2812,15 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -2858,14 +2858,14 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -2912,23 +2912,23 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
             selected?: boolean | undefined;
         })[] | undefined;
     }>;
-}, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-    payment: zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    payment: z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -2949,15 +2949,15 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -2995,14 +2995,14 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -3049,23 +3049,23 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
             selected?: boolean | undefined;
         })[] | undefined;
     }>;
-}, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-    payment: zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    payment: z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -3086,15 +3086,15 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -3132,14 +3132,14 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -3186,7 +3186,7 @@ export const CompleteCheckoutRequestSchema: zod1181.ZodObject<{
             selected?: boolean | undefined;
         })[] | undefined;
     }>;
-}, zod1181.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">>;
 
 // @public
 export function connect(config: UCPClientConfig, options?: {
@@ -3202,6 +3202,7 @@ export interface ConnectedClient {
     readonly order: OrderCapability | null;
     readonly paymentHandlers: PaymentHandlerMap;
     readonly profile: UCPProfile;
+    readonly signingKeys: readonly JWK[];
 }
 
 // @public (undocumented)
@@ -3238,15 +3239,15 @@ export interface CreateCheckoutPayload {
 }
 
 // @public (undocumented)
-export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+export const CreateCheckoutRequestSchema: z.ZodObject<{
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -3257,12 +3258,12 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -3271,8 +3272,8 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -3303,11 +3304,11 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -3316,22 +3317,22 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -3352,15 +3353,15 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -3398,14 +3399,14 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -3453,204 +3454,204 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         })[] | undefined;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
     } & {
-        consent: zod1181.ZodOptional<zod1181.ZodObject<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        consent: z.ZodOptional<z.ZodObject<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">>>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }>>;
-}, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -3661,12 +3662,12 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -3675,8 +3676,8 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -3707,11 +3708,11 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -3720,22 +3721,22 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -3756,15 +3757,15 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -3802,14 +3803,14 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -3857,204 +3858,204 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         })[] | undefined;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
     } & {
-        consent: zod1181.ZodOptional<zod1181.ZodObject<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        consent: z.ZodOptional<z.ZodObject<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">>>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }>>;
-}, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -4065,12 +4066,12 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -4079,8 +4080,8 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -4111,11 +4112,11 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -4124,22 +4125,22 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -4160,15 +4161,15 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -4206,14 +4207,14 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -4261,196 +4262,196 @@ export const CreateCheckoutRequestSchema: zod1181.ZodObject<{
         })[] | undefined;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
     } & {
-        consent: zod1181.ZodOptional<zod1181.ZodObject<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        consent: z.ZodOptional<z.ZodObject<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">>>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }>>;
-}, zod1181.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">>;
 
 // @public (undocumented)
 export const DEFAULT_UCP_VERSION = "2026-01-23";
@@ -4539,6 +4540,53 @@ export interface JsonSchema {
     // (undocumented)
     readonly type: string;
 }
+
+// @public
+export interface JWK {
+    // (undocumented)
+    readonly [key: string]: unknown;
+    // (undocumented)
+    readonly alg?: string;
+    // (undocumented)
+    readonly crv?: string;
+    // (undocumented)
+    readonly kid?: string;
+    // (undocumented)
+    readonly kty: string;
+    // (undocumented)
+    readonly use?: string;
+    // (undocumented)
+    readonly x?: string;
+    // (undocumented)
+    readonly y?: string;
+}
+
+// @public (undocumented)
+export const JWKSchema: z.ZodObject<{
+    kty: z.ZodString;
+    kid: z.ZodOptional<z.ZodString>;
+    use: z.ZodOptional<z.ZodString>;
+    alg: z.ZodOptional<z.ZodString>;
+    crv: z.ZodOptional<z.ZodString>;
+    x: z.ZodOptional<z.ZodString>;
+    y: z.ZodOptional<z.ZodString>;
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    kty: z.ZodString;
+    kid: z.ZodOptional<z.ZodString>;
+    use: z.ZodOptional<z.ZodString>;
+    alg: z.ZodOptional<z.ZodString>;
+    crv: z.ZodOptional<z.ZodString>;
+    x: z.ZodOptional<z.ZodString>;
+    y: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    kty: z.ZodString;
+    kid: z.ZodOptional<z.ZodString>;
+    use: z.ZodOptional<z.ZodString>;
+    alg: z.ZodOptional<z.ZodString>;
+    crv: z.ZodOptional<z.ZodString>;
+    x: z.ZodOptional<z.ZodString>;
+    y: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">>;
 
 export { LineItemResponseSchema }
 
@@ -4884,16 +4932,16 @@ export { UcpPlatformSchema }
 export type UCPProfile = UcpDiscoveryProfile;
 
 // @public (undocumented)
-export const UCPProfileSchema: zod1181.ZodObject<{
-    ucp: zod1181.ZodObject<{
-        version: zod1181.ZodString;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+export const UCPProfileSchema: z.ZodObject<{
+    ucp: z.ZodObject<{
+        version: z.ZodString;
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -4906,13 +4954,13 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         }>, "many">>>;
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -4925,13 +4973,13 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         }>, "many">>>;
-        payment_handlers: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -4943,8 +4991,8 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>;
+    }, "strip", z.ZodTypeAny, {
         version: string;
         services?: Record<string, {
             version: string;
@@ -4991,16 +5039,16 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             config?: Record<string, unknown> | undefined;
         } & Record<string, unknown>)[] | undefined;
     }>;
-}, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-    ucp: zod1181.ZodObject<{
-        version: zod1181.ZodString;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    ucp: z.ZodObject<{
+        version: z.ZodString;
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -5013,13 +5061,13 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         }>, "many">>>;
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -5032,13 +5080,13 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         }>, "many">>>;
-        payment_handlers: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -5050,8 +5098,8 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>;
+    }, "strip", z.ZodTypeAny, {
         version: string;
         services?: Record<string, {
             version: string;
@@ -5098,16 +5146,16 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             config?: Record<string, unknown> | undefined;
         } & Record<string, unknown>)[] | undefined;
     }>;
-}, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-    ucp: zod1181.ZodObject<{
-        version: zod1181.ZodString;
-        capabilities: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    ucp: z.ZodObject<{
+        version: z.ZodString;
+        capabilities: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -5120,13 +5168,13 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         }>, "many">>>;
-        services: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodArray<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        services: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodArray<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -5139,13 +5187,13 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
         }>, "many">>>;
-        payment_handlers: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            version: zod1181.ZodString;
-            spec: zod1181.ZodOptional<zod1181.ZodString>;
-            schema: zod1181.ZodOptional<zod1181.ZodString>;
-            id: zod1181.ZodOptional<zod1181.ZodString>;
-            config: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+        payment_handlers: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            version: z.ZodString;
+            spec: z.ZodOptional<z.ZodString>;
+            schema: z.ZodOptional<z.ZodString>;
+            id: z.ZodOptional<z.ZodString>;
+            config: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             version: string;
             spec?: string | undefined;
             schema?: string | undefined;
@@ -5157,8 +5205,8 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             schema?: string | undefined;
             id?: string | undefined;
             config?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodRecord<z.ZodString, z.ZodUnknown>>, "many">>;
+    }, "strip", z.ZodTypeAny, {
         version: string;
         services?: Record<string, {
             version: string;
@@ -5205,7 +5253,7 @@ export const UCPProfileSchema: zod1181.ZodObject<{
             config?: Record<string, unknown> | undefined;
         } & Record<string, unknown>)[] | undefined;
     }>;
-}, zod1181.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">>;
 
 export { UcpResponseCheckoutSchema }
 
@@ -5266,16 +5314,16 @@ export interface UpdateCheckoutPayload {
 }
 
 // @public (undocumented)
-export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
-    id: zod1181.ZodString;
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+export const UpdateCheckoutRequestSchema: z.ZodObject<{
+    id: z.ZodString;
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -5286,12 +5334,12 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -5300,8 +5348,8 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -5332,11 +5380,11 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -5345,22 +5393,22 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -5381,15 +5429,15 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -5427,14 +5475,14 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -5482,205 +5530,205 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         })[] | undefined;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
     } & {
-        consent: zod1181.ZodOptional<zod1181.ZodObject<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        consent: z.ZodOptional<z.ZodObject<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">>>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }>>;
-}, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-    id: zod1181.ZodString;
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+    id: z.ZodString;
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -5691,12 +5739,12 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -5705,8 +5753,8 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -5737,11 +5785,11 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -5750,22 +5798,22 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -5786,15 +5834,15 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -5832,14 +5880,14 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -5887,205 +5935,205 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         })[] | undefined;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
     } & {
-        consent: zod1181.ZodOptional<zod1181.ZodObject<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        consent: z.ZodOptional<z.ZodObject<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">>>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }>>;
-}, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-    id: zod1181.ZodString;
-    line_items: zod1181.ZodArray<zod1181.ZodObject<{
-        id: zod1181.ZodString;
-        item: zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            title: zod1181.ZodString;
-            price: zod1181.ZodNumber;
-            image_url: zod1181.ZodOptional<zod1181.ZodString>;
-        }, "strip", zod1181.ZodTypeAny, {
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
+    line_items: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        item: z.ZodObject<{
+            id: z.ZodString;
+            title: z.ZodString;
+            price: z.ZodNumber;
+            image_url: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             title: string;
             price: number;
@@ -6096,12 +6144,12 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
             price: number;
             image_url?: string | undefined;
         }>;
-        quantity: zod1181.ZodNumber;
-        totals: zod1181.ZodArray<zod1181.ZodObject<{
-            type: zod1181.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
-            display_text: zod1181.ZodOptional<zod1181.ZodString>;
-            amount: zod1181.ZodNumber;
-        }, "strip", zod1181.ZodTypeAny, {
+        quantity: z.ZodNumber;
+        totals: z.ZodArray<z.ZodObject<{
+            type: z.ZodEnum<["items_discount", "subtotal", "discount", "fulfillment", "tax", "fee", "total"]>;
+            display_text: z.ZodOptional<z.ZodString>;
+            amount: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
             type: "items_discount" | "subtotal" | "discount" | "fulfillment" | "tax" | "fee" | "total";
             amount: number;
             display_text?: string | undefined;
@@ -6110,8 +6158,8 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
             amount: number;
             display_text?: string | undefined;
         }>, "many">;
-        parent_id: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+        parent_id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         id: string;
         item: {
             id: string;
@@ -6142,11 +6190,11 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         }[];
         parent_id?: string | undefined;
     }>, "many">;
-    context: zod1181.ZodOptional<zod1181.ZodObject<{
-        address_country: zod1181.ZodOptional<zod1181.ZodString>;
-        address_region: zod1181.ZodOptional<zod1181.ZodString>;
-        postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-    }, "strip", zod1181.ZodTypeAny, {
+    context: z.ZodOptional<z.ZodObject<{
+        address_country: z.ZodOptional<z.ZodString>;
+        address_region: z.ZodOptional<z.ZodString>;
+        postal_code: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
         address_country?: string | undefined;
         address_region?: string | undefined;
         postal_code?: string | undefined;
@@ -6155,22 +6203,22 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         address_region?: string | undefined;
         postal_code?: string | undefined;
     }>>;
-    payment: zod1181.ZodOptional<zod1181.ZodObject<{
-        instruments: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodIntersection<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            handler_id: zod1181.ZodString;
-            type: zod1181.ZodString;
-            billing_address: zod1181.ZodOptional<zod1181.ZodObject<{
-                extended_address: zod1181.ZodOptional<zod1181.ZodString>;
-                street_address: zod1181.ZodOptional<zod1181.ZodString>;
-                address_locality: zod1181.ZodOptional<zod1181.ZodString>;
-                address_region: zod1181.ZodOptional<zod1181.ZodString>;
-                address_country: zod1181.ZodOptional<zod1181.ZodString>;
-                postal_code: zod1181.ZodOptional<zod1181.ZodString>;
-                first_name: zod1181.ZodOptional<zod1181.ZodString>;
-                last_name: zod1181.ZodOptional<zod1181.ZodString>;
-                phone_number: zod1181.ZodOptional<zod1181.ZodString>;
-            }, "strip", zod1181.ZodTypeAny, {
+    payment: z.ZodOptional<z.ZodObject<{
+        instruments: z.ZodOptional<z.ZodArray<z.ZodIntersection<z.ZodObject<{
+            id: z.ZodString;
+            handler_id: z.ZodString;
+            type: z.ZodString;
+            billing_address: z.ZodOptional<z.ZodObject<{
+                extended_address: z.ZodOptional<z.ZodString>;
+                street_address: z.ZodOptional<z.ZodString>;
+                address_locality: z.ZodOptional<z.ZodString>;
+                address_region: z.ZodOptional<z.ZodString>;
+                address_country: z.ZodOptional<z.ZodString>;
+                postal_code: z.ZodOptional<z.ZodString>;
+                first_name: z.ZodOptional<z.ZodString>;
+                last_name: z.ZodOptional<z.ZodString>;
+                phone_number: z.ZodOptional<z.ZodString>;
+            }, "strip", z.ZodTypeAny, {
                 first_name?: string | undefined;
                 last_name?: string | undefined;
                 phone_number?: string | undefined;
@@ -6191,15 +6239,15 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
                 street_address?: string | undefined;
                 address_locality?: string | undefined;
             }>>;
-            credential: zod1181.ZodOptional<zod1181.ZodObject<{
-                type: zod1181.ZodString;
-            }, "strip", zod1181.ZodTypeAny, {
+            credential: z.ZodOptional<z.ZodObject<{
+                type: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
                 type: string;
             }, {
                 type: string;
             }>>;
-            display: zod1181.ZodOptional<zod1181.ZodRecord<zod1181.ZodString, zod1181.ZodUnknown>>;
-        }, "strip", zod1181.ZodTypeAny, {
+            display: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
+        }, "strip", z.ZodTypeAny, {
             id: string;
             type: string;
             handler_id: string;
@@ -6237,14 +6285,14 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
                 type: string;
             } | undefined;
             display?: Record<string, unknown> | undefined;
-        }>, zod1181.ZodObject<{
-            selected: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "strip", zod1181.ZodTypeAny, {
+        }>, z.ZodObject<{
+            selected: z.ZodOptional<z.ZodBoolean>;
+        }, "strip", z.ZodTypeAny, {
             selected?: boolean | undefined;
         }, {
             selected?: boolean | undefined;
         }>>, "many">>;
-    }, "strip", zod1181.ZodTypeAny, {
+    }, "strip", z.ZodTypeAny, {
         instruments?: ({
             id: string;
             type: string;
@@ -6292,196 +6340,199 @@ export const UpdateCheckoutRequestSchema: zod1181.ZodObject<{
         })[] | undefined;
     }>>;
 } & {
-    fulfillment: zod1181.ZodOptional<zod1181.ZodObject<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        methods: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            id: zod1181.ZodString;
-            type: zod1181.ZodEnum<["shipping", "pickup"]>;
-            line_item_ids: zod1181.ZodArray<zod1181.ZodString, "many">;
-            selected_destination_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            groups: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodObject<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-                id: zod1181.ZodString;
-                selected_option_id: zod1181.ZodOptional<zod1181.ZodNullable<zod1181.ZodString>>;
-            }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-        }, zod1181.ZodTypeAny, "passthrough">>, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    discounts: zod1181.ZodOptional<zod1181.ZodObject<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-        codes: zod1181.ZodOptional<zod1181.ZodArray<zod1181.ZodString, "many">>;
-    }, zod1181.ZodTypeAny, "passthrough">>>;
-    buyer: zod1181.ZodOptional<zod1181.ZodObject<{
-        first_name: zod1181.ZodOptional<zod1181.ZodString>;
-        last_name: zod1181.ZodOptional<zod1181.ZodString>;
-        email: zod1181.ZodOptional<zod1181.ZodString>;
-        phone_number: zod1181.ZodOptional<zod1181.ZodString>;
+    fulfillment: z.ZodOptional<z.ZodObject<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        methods: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            id: z.ZodString;
+            type: z.ZodEnum<["shipping", "pickup"]>;
+            line_item_ids: z.ZodArray<z.ZodString, "many">;
+            selected_destination_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            groups: z.ZodOptional<z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                id: z.ZodString;
+                selected_option_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+            }, z.ZodTypeAny, "passthrough">>, "many">>;
+        }, z.ZodTypeAny, "passthrough">>, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    discounts: z.ZodOptional<z.ZodObject<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+        codes: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, z.ZodTypeAny, "passthrough">>>;
+    buyer: z.ZodOptional<z.ZodObject<{
+        first_name: z.ZodOptional<z.ZodString>;
+        last_name: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+        phone_number: z.ZodOptional<z.ZodString>;
     } & {
-        consent: zod1181.ZodOptional<zod1181.ZodObject<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, "passthrough", zod1181.ZodTypeAny, zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">, zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough">>>;
-    }, "strip", zod1181.ZodTypeAny, {
+        consent: z.ZodOptional<z.ZodObject<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough">>>;
+    }, "strip", z.ZodTypeAny, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectOutputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectOutputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }, {
         first_name?: string | undefined;
         last_name?: string | undefined;
         email?: string | undefined;
         phone_number?: string | undefined;
-        consent?: zod1181.objectInputType<{
-            marketing: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            sms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-            terms: zod1181.ZodOptional<zod1181.ZodBoolean>;
-        }, zod1181.ZodTypeAny, "passthrough"> | undefined;
+        consent?: z.objectInputType<{
+            marketing: z.ZodOptional<z.ZodBoolean>;
+            sms: z.ZodOptional<z.ZodBoolean>;
+            terms: z.ZodOptional<z.ZodBoolean>;
+        }, z.ZodTypeAny, "passthrough"> | undefined;
     }>>;
-}, zod1181.ZodTypeAny, "passthrough">>;
+}, z.ZodTypeAny, "passthrough">>;
+
+// @public
+export function verifyRequestSignature(body: string, signature: string, signingKeys: readonly JWK[]): Promise<boolean>;
 
 // @public (undocumented)
 export interface WebhookEvent {
@@ -6495,7 +6546,7 @@ export interface WebhookEvent {
 
 // Warnings were encountered during analysis:
 //
-// src/types/checkout.ts:16:37 - (ae-forgotten-export) The symbol "LogFn" needs to be exported by the entry point index.d.ts
+// src/types/checkout.ts:26:36 - (ae-forgotten-export) The symbol "LogFn" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

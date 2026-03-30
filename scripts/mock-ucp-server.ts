@@ -130,6 +130,18 @@ const UCP_PROFILE = {
   payment_handlers: {
     'dev.ucp.payment.mock': [PAYMENT_HANDLER],
   },
+  // EC P-256 public key for webhook signature verification (test fixture only)
+  signing_keys: [
+    {
+      kty: 'EC',
+      crv: 'P-256',
+      alg: 'ES256',
+      use: 'sig',
+      kid: 'mock-signing-key-1',
+      x: 'f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU',
+      y: 'x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0',
+    },
+  ],
 };
 
 // ─── Session → API response ──────────────────────────────────────────────────

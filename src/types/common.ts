@@ -22,3 +22,15 @@ export interface LocalizationContext {
   readonly address_region?: string;
   readonly postal_code?: string;
 }
+
+/** A JSON Web Key (RFC 7517). Used for webhook signature verification. */
+export interface JWK {
+  readonly kty: string;
+  readonly kid?: string;
+  readonly use?: string;
+  readonly alg?: string;
+  readonly crv?: string;
+  readonly x?: string;
+  readonly y?: string;
+  readonly [key: string]: unknown;
+}
