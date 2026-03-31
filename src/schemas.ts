@@ -205,6 +205,7 @@ import {
 
 export const CheckoutSessionSchema = CheckoutResponseSchema.passthrough();
 export const UCPProfileSchema = UcpDiscoveryProfileSchema.passthrough();
+export const CartResponseSchema = CartSchema.passthrough();
 
 // ─── Request validation ─────────────────────────────────────────────────────
 // Used to validate outgoing payloads before sending to gateway.

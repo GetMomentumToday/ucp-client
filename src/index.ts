@@ -21,6 +21,8 @@ export type { UCPMessage, MessageType, MessageSeverity, ContentType } from './er
 
 export { CheckoutCapability } from './capabilities/checkout.js';
 export { OrderCapability } from './capabilities/order.js';
+export { CatalogCapability } from './capabilities/catalog.js';
+export { CartCapability } from './capabilities/cart.js';
 export { IdentityLinkingCapability } from './capabilities/identity-linking.js';
 
 export {
@@ -32,6 +34,7 @@ export {
   CreateCheckoutRequestSchema,
   UpdateCheckoutRequestSchema,
   CompleteCheckoutRequestSchema,
+  CartResponseSchema,
 
   // Backward-compat (deprecated)
   ExtendedPaymentCredentialSchema,
@@ -259,6 +262,15 @@ export type {
   TokenExchangeParams,
   TokenRefreshParams,
   TokenRevokeParams,
+  Product,
+  Variant,
+  CatalogSearchResponse,
+  CatalogLookupResponse,
+  SearchFilters,
+  Pagination,
+  Cart,
+  CartCreatePayload,
+  CartUpdatePayload,
 } from './types/index.js';
 
 export { UCP_CAPABILITIES, DEFAULT_UCP_VERSION } from './types/config.js';

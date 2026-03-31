@@ -75,6 +75,14 @@ export function getAgentTools(client: ConnectedClient): readonly AgentTool[] {
     tools.push(...orderTools(client));
   }
 
+  if (client.catalog) {
+    tools.push(...catalogTools(client));
+  }
+
+  if (client.cart) {
+    tools.push(...cartTools(client));
+  }
+
   if (client.identityLinking) {
     tools.push(...identityLinkingTools(client));
   }
@@ -356,6 +364,161 @@ function orderTools(client: ConnectedClient): AgentTool[] {
       execute: async (params) => {
         const { id, ...payload } = params as { id: string; [key: string]: unknown };
         return client.order!.update(id, payload);
+      },
+    },
+  ];
+}
+
+function catalogTools(client: ConnectedClient): AgentTool[] {
+  return [
+    {
+      name: 'search_catalog',
+      description:
+        'Search the product catalog by query. Returns matching products with pagination.',
+      parameters: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Search query string' },
+          filters: {
+            type: 'object',
+            description: 'Optional search filters',
+            properties: {
+              categories: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    value: { type: 'string' },
+                    taxonomy: { type: 'string' },
+                  },
+                },
+                description: 'Category filters',
+              },
+              price: {
+                type: 'object',
+                description: 'Price range filter',
+                properties: {
+                  min: { type: 'number' },
+                  max: { type: 'number' },
+                },
+              },
+            },
+          },
+          pagination: {
+            type: 'object',
+            description: 'Pagination parameters',
+          },
+        },
+        required: ['query'],
+      },
+      execute: async (params) =>
+        client.catalog!.search(
+          params['query'] as string,
+          params['filters'] as Parameters<NonNullable<typeof client.catalog>['search']>[1],
+          params['pagination'] as Parameters<NonNullable<typeof client.catalog>['search']>[2],
+        ),
+    },
+    {
+      name: 'lookup_product',
+      description:
+        'Look up a single product by its ID. Returns full product details including variants, pricing, and media.',
+      parameters: {
+        type: 'object',
+        properties: {
+          product_id: { type: 'string', description: 'Product ID to look up' },
+        },
+        required: ['product_id'],
+      },
+      execute: async (params) => client.catalog!.lookup(params['product_id'] as string),
+    },
+  ];
+}
+
+function cartTools(client: ConnectedClient): AgentTool[] {
+  return [
+    {
+      name: 'create_cart',
+      description:
+        'Create a new cart with line items. Returns the cart with an ID for subsequent operations.',
+      parameters: {
+        type: 'object',
+        properties: {
+          line_items: {
+            type: 'array',
+            description: 'Items to add to the cart',
+            items: {
+              type: 'object',
+              properties: {
+                item: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string', description: 'Product or variant ID' },
+                  },
+                  required: ['id'],
+                },
+                quantity: { type: 'number', description: 'Quantity' },
+              },
+              required: ['item', 'quantity'],
+            },
+          },
+          context: { type: 'object', description: 'Localization context' },
+          buyer: { type: 'object', description: 'Buyer information' },
+        },
+        required: ['line_items'],
+      },
+      execute: async (params) =>
+        client.cart!.create(
+          params as unknown as Parameters<NonNullable<typeof client.cart>['create']>[0],
+        ),
+    },
+    {
+      name: 'get_cart',
+      description:
+        'Get the current state of a cart by ID, including line items, totals, and messages.',
+      parameters: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'Cart ID' },
+        },
+        required: ['id'],
+      },
+      execute: async (params) => client.cart!.get(params['id'] as string),
+    },
+    {
+      name: 'update_cart',
+      description:
+        'Update an existing cart with changed line items, context, or buyer information.',
+      parameters: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'Cart ID' },
+          line_items: {
+            type: 'array',
+            description: 'Updated line items',
+            items: {
+              type: 'object',
+              properties: {
+                item: {
+                  type: 'object',
+                  properties: { id: { type: 'string' } },
+                  required: ['id'],
+                },
+                quantity: { type: 'number' },
+              },
+              required: ['item', 'quantity'],
+            },
+          },
+          context: { type: 'object', description: 'Updated localization context' },
+          buyer: { type: 'object', description: 'Updated buyer information' },
+        },
+        required: ['id'],
+      },
+      execute: async (params) => {
+        const { id, ...payload } = params as { id: string; [key: string]: unknown };
+        return client.cart!.update(
+          id,
+          payload as unknown as Parameters<NonNullable<typeof client.cart>['update']>[1],
+        );
       },
     },
   ];

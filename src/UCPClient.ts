@@ -5,6 +5,8 @@ import { UCPProfileSchema, JWKSchema } from './schemas.js';
 import type { JWK } from './types/common.js';
 import { CheckoutCapability } from './capabilities/checkout.js';
 import { OrderCapability } from './capabilities/order.js';
+import { CatalogCapability } from './capabilities/catalog.js';
+import { CartCapability } from './capabilities/cart.js';
 import { IdentityLinkingCapability } from './capabilities/identity-linking.js';
 import type { UCPClientConfig } from './types/config.js';
 import { DEFAULT_UCP_VERSION, UCP_CAPABILITIES } from './types/config.js';
@@ -37,6 +39,10 @@ export interface ConnectedClient {
   readonly checkout: CheckoutCapability | null;
   /** Order operations. Null if server does not support `dev.ucp.shopping.order`. */
   readonly order: OrderCapability | null;
+  /** Catalog operations. Null if server does not support `dev.ucp.shopping.catalog`. */
+  readonly catalog: CatalogCapability | null;
+  /** Cart operations. Null if server does not support `dev.ucp.shopping.cart`. */
+  readonly cart: CartCapability | null;
   /** OAuth 2.0 identity linking. Null if server does not support `dev.ucp.common.identity_linking`. */
   readonly identityLinking: IdentityLinkingCapability | null;
   /** Payment handlers declared by the server, keyed by namespace. */
@@ -87,6 +93,10 @@ export async function connect(
 
   const checkout = buildCheckoutCapability(http, capabilityNames);
   const order = capabilityNames.has(UCP_CAPABILITIES.ORDER) ? new OrderCapability(http) : null;
+  const catalog = capabilityNames.has(UCP_CAPABILITIES.CATALOG)
+    ? new CatalogCapability(http)
+    : null;
+  const cart = capabilityNames.has(UCP_CAPABILITIES.CART) ? new CartCapability(http) : null;
   const identityLinking = await buildIdentityLinking(config, capabilityNames);
   const paymentHandlers = extractPaymentHandlers(profile);
   const signingKeys = extractSigningKeys(profile);
@@ -96,9 +106,11 @@ export async function connect(
     signingKeys,
     checkout,
     order,
+    catalog,
+    cart,
     identityLinking,
     paymentHandlers,
-    describeTools: () => buildToolDescriptors(checkout, order, identityLinking),
+    describeTools: () => buildToolDescriptors(checkout, order, catalog, cart, identityLinking),
     getAgentTools: () => getAgentTools(client),
   };
 
@@ -229,6 +241,8 @@ async function buildIdentityLinking(
 function buildToolDescriptors(
   checkout: CheckoutCapability | null,
   order: OrderCapability | null,
+  catalog: CatalogCapability | null,
+  cart: CartCapability | null,
   identityLinking: IdentityLinkingCapability | null,
 ): readonly ToolDescriptor[] {
   const tools: ToolDescriptor[] = [];
@@ -302,6 +316,41 @@ function buildToolDescriptors(
         name: 'update_order',
         capability: 'order',
         description: 'Update an order',
+      },
+    );
+  }
+
+  if (catalog) {
+    tools.push(
+      {
+        name: 'search_catalog',
+        capability: 'catalog',
+        description: 'Search the product catalog',
+      },
+      {
+        name: 'lookup_product',
+        capability: 'catalog',
+        description: 'Look up a product by ID',
+      },
+    );
+  }
+
+  if (cart) {
+    tools.push(
+      {
+        name: 'create_cart',
+        capability: 'cart',
+        description: 'Create a new cart',
+      },
+      {
+        name: 'get_cart',
+        capability: 'cart',
+        description: 'Get cart by ID',
+      },
+      {
+        name: 'update_cart',
+        capability: 'cart',
+        description: 'Update an existing cart',
       },
     );
   }
