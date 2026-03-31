@@ -373,7 +373,7 @@ describe('Payment schemas', () => {
     expect(PaymentCredentialSchema.safeParse({ type: 'token' }).success).toBe(true);
   });
 
-  it('ExtendedPaymentCredentialSchema', () => {
+  it('ExtendedPaymentCredentialSchema (deprecated)', () => {
     expect(
       ExtendedPaymentCredentialSchema.safeParse({ type: 'token', token: 'tok_123' }).success,
     ).toBe(true);
@@ -652,7 +652,7 @@ describe('Misc schemas', () => {
     ).toBe(true);
   });
 
-  it('PlatformConfigSchema', () => {
+  it('PlatformConfigSchema (deprecated)', () => {
     expect(PlatformConfigSchema.safeParse({}).success).toBe(true);
   });
 

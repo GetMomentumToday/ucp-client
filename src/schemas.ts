@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import {
   // ─── Response schemas ───────────────────────────────────────────────────────
-  ExtendedCheckoutResponseSchema,
   UcpDiscoveryProfileSchema,
   CheckoutResponseStatusSchema,
 
@@ -19,14 +18,10 @@ import {
   FulfillmentMethodResponseSchema,
   ItemResponseSchema,
 
-  // ─── Request schemas ────────────────────────────────────────────────────────
-  ExtendedCheckoutCreateRequestSchema,
-  ExtendedCheckoutUpdateRequestSchema,
-
   // ─── Order ──────────────────────────────────────────────────────────────────
   OrderSchema,
 
-  // ─── Checkout (base) ────────────────────────────────────────────────────────
+  // ─── Checkout ───────────────────────────────────────────────────────────────
   CheckoutSchema,
   CheckoutResponseSchema,
   CheckoutCreateRequestSchema,
@@ -78,7 +73,6 @@ import {
   // ─── Payment ────────────────────────────────────────────────────────────────
   PaymentSchema,
   PaymentCredentialSchema,
-  ExtendedPaymentCredentialSchema,
   PaymentIdentitySchema,
   PaymentInstrumentResponseSchema,
   CardCredentialSchema,
@@ -132,7 +126,6 @@ import {
   EmbeddedConfigSchema,
   ExpectationSchema,
   LinkSchema,
-  PlatformConfigSchema,
   RetailLocationSchema,
   ShippingDestinationSchema,
   TotalSchema,
@@ -142,16 +135,34 @@ import {
 // Used internally by UCPClient to validate gateway responses.
 // `.passthrough()` allows extra fields the gateway may add beyond the spec.
 
-export const CheckoutSessionSchema = ExtendedCheckoutResponseSchema.passthrough();
+export const CheckoutSessionSchema = CheckoutResponseSchema.passthrough();
 export const UCPProfileSchema = UcpDiscoveryProfileSchema.passthrough();
 
 // ─── Request validation ─────────────────────────────────────────────────────
 // Used to validate outgoing payloads before sending to gateway.
 // `.passthrough()` allows extra fields the caller may include.
 
-export const CreateCheckoutRequestSchema = ExtendedCheckoutCreateRequestSchema.passthrough();
-export const UpdateCheckoutRequestSchema = ExtendedCheckoutUpdateRequestSchema.passthrough();
+export const CreateCheckoutRequestSchema = CheckoutCreateRequestSchema.passthrough();
+export const UpdateCheckoutRequestSchema = CheckoutUpdateRequestSchema.passthrough();
 export const CompleteCheckoutRequestSchema = CheckoutCompleteRequestSchema.passthrough();
+
+// ─── Backward-compat schemas ────────────────────────────────────────────────
+// Removed from ucp-js-sdk 1.0.2 — kept here so downstream consumers don't break.
+
+/** @deprecated Removed from ucp-js-sdk 1.0.2. Use PaymentCredentialSchema instead. */
+export const ExtendedPaymentCredentialSchema = z
+  .object({
+    type: z.string(),
+    token: z.string().optional(),
+  })
+  .passthrough();
+
+/** @deprecated Removed from ucp-js-sdk 1.0.2. Will be removed in a future major version. */
+export const PlatformConfigSchema = z
+  .object({
+    webhook_url: z.string().optional(),
+  })
+  .passthrough();
 
 // ─── SDK re-exports ─────────────────────────────────────────────────────────
 // Re-export all SDK schemas so consumers can use them for tool definitions,
@@ -184,7 +195,7 @@ export {
   // Order (UCP spec order — different from gateway's UCPOrderSchema)
   OrderSchema as UCPSpecOrderSchema,
 
-  // ─── Checkout (base) ────────────────────────────────────────────────────────
+  // ─── Checkout ───────────────────────────────────────────────────────────────
   CheckoutSchema,
   CheckoutResponseSchema,
   CheckoutCreateRequestSchema,
@@ -236,7 +247,6 @@ export {
   // ─── Payment ────────────────────────────────────────────────────────────────
   PaymentSchema,
   PaymentCredentialSchema,
-  ExtendedPaymentCredentialSchema,
   PaymentIdentitySchema,
   PaymentInstrumentResponseSchema,
   CardCredentialSchema,
@@ -290,7 +300,6 @@ export {
   EmbeddedConfigSchema,
   ExpectationSchema,
   LinkSchema,
-  PlatformConfigSchema,
   RetailLocationSchema,
   ShippingDestinationSchema,
   TotalSchema,

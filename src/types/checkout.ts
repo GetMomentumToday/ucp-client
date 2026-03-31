@@ -1,8 +1,8 @@
-import type { ExtendedCheckoutResponse, CheckoutResponseStatus } from '@omnixhq/ucp-js-sdk';
+import type { CheckoutResponse, CheckoutResponseStatus } from '@omnixhq/ucp-js-sdk';
 import type { BuyerConsent, LocalizationContext } from './common.js';
 import type { PaymentInstrument } from './payment.js';
 
-export type CheckoutSession = ExtendedCheckoutResponse;
+export type CheckoutSession = CheckoutResponse;
 export type CheckoutSessionStatus = CheckoutResponseStatus;
 
 export interface CheckoutExtensions {
