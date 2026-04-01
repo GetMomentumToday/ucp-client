@@ -230,6 +230,21 @@ function buildToolDescriptors(
           capability: 'checkout.fulfillment',
           description: 'Select fulfillment option (e.g., express shipping)',
         },
+        {
+          name: 'create_fulfillment_method',
+          capability: 'checkout.fulfillment',
+          description: 'Add a new fulfillment method to a checkout session',
+        },
+        {
+          name: 'update_fulfillment_method',
+          capability: 'checkout.fulfillment',
+          description: 'Update an existing fulfillment method on a checkout session',
+        },
+        {
+          name: 'update_fulfillment_group',
+          capability: 'checkout.fulfillment',
+          description: 'Update a fulfillment group within a fulfillment method',
+        },
       );
     }
 

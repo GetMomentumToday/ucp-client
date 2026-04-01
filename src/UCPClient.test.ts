@@ -142,6 +142,9 @@ describe('describeTools', () => {
     expect(toolNames).toContain('set_fulfillment');
     expect(toolNames).toContain('select_destination');
     expect(toolNames).toContain('select_fulfillment_option');
+    expect(toolNames).toContain('create_fulfillment_method');
+    expect(toolNames).toContain('update_fulfillment_method');
+    expect(toolNames).toContain('update_fulfillment_group');
   });
 
   it('includes discount tools when extension is available', async () => {
