@@ -43,7 +43,7 @@ export async function verifyRequestSignature(
   try {
     cryptoKey = await crypto.subtle.importKey(
       'jwk',
-      key,
+      key as JsonWebKey,
       { name: 'ECDSA', namedCurve: 'P-256' },
       false,
       ['verify'],
@@ -122,8 +122,8 @@ export function createWebhookVerifier(gatewayUrl: string): WebhookVerifier {
     keyCache.clear();
     for (const item of rawKeys) {
       const parsed = JWKSchema.safeParse(item);
-      if (parsed.success && typeof (parsed.data as JWK).kid === 'string') {
-        keyCache.set((parsed.data as JWK).kid!, parsed.data as JWK);
+      if (parsed.success && typeof parsed.data.kid === 'string') {
+        keyCache.set(parsed.data.kid, parsed.data);
       }
     }
     fetched = true;

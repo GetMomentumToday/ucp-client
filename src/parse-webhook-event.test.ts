@@ -26,19 +26,19 @@ describe('parseWebhookEvent', () => {
     expect(event.order.id).toBe('ord_123');
   });
 
-  it('preserves extra fields on the event (passthrough)', () => {
+  it('strips unknown fields on the event (strict spec compliance)', () => {
     const body = JSON.stringify({ ...VALID_EVENT, custom_field: 'value' });
     const event = parseWebhookEvent(body);
-    expect((event as Record<string, unknown>)['custom_field']).toBe('value');
+    expect((event as Record<string, unknown>)['custom_field']).toBeUndefined();
   });
 
-  it('preserves extra fields on the order (passthrough)', () => {
+  it('strips unknown fields on the order (strict spec compliance)', () => {
     const body = JSON.stringify({
       ...VALID_EVENT,
       order: { ...MINIMAL_ORDER, extra: 'data' },
     });
     const event = parseWebhookEvent(body);
-    expect((event.order as Record<string, unknown>)['extra']).toBe('data');
+    expect((event.order as Record<string, unknown>)['extra']).toBeUndefined();
   });
 
   it('throws UCPError with code INVALID_WEBHOOK_PAYLOAD for invalid JSON', () => {

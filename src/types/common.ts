@@ -23,9 +23,8 @@ export interface LocalizationContext {
   readonly postal_code?: string;
 }
 
-/**
- * A JSON Web Key (RFC 7517).
- * Extends the TypeScript stdlib `JsonWebKey` with the `kid` claim required by UCP for webhook
- * signature verification (the stdlib definition omits `kid`).
- */
-export type JWK = JsonWebKey & { readonly kid?: string };
+import type { z } from 'zod';
+import type { UcpSigningKeySchema } from '../schemas.js';
+
+/** A UCP signing key as defined by the SDK spec. */
+export type JWK = z.output<typeof UcpSigningKeySchema>;

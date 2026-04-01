@@ -155,38 +155,16 @@ import {
   TotalTypeEnumSchema,
 } from '@omnixhq/ucp-js-sdk';
 
-// ─── Response validation ────────────────────────────────────────────────────
-// Used internally by UCPClient to validate gateway responses.
-// `.passthrough()` allows extra fields the gateway may add beyond the spec.
+// ─── Response / request schema aliases ─────────────────────────────────────
+// Aliases used internally by UCPClient for validation. No passthrough — strict
+// spec compliance only.
 
-export const CheckoutSessionSchema = CheckoutResponseSchema.passthrough();
-export const UCPProfileSchema = UcpDiscoveryProfileSchema.passthrough();
+export const CheckoutSessionSchema = CheckoutResponseSchema;
+export const UCPProfileSchema = UcpDiscoveryProfileSchema;
 
-// ─── Request validation ─────────────────────────────────────────────────────
-// Used to validate outgoing payloads before sending to gateway.
-// `.passthrough()` allows extra fields the caller may include.
-
-export const CreateCheckoutRequestSchema = CheckoutCreateRequestSchema.passthrough();
-export const UpdateCheckoutRequestSchema = CheckoutUpdateRequestSchema.passthrough();
-export const CompleteCheckoutRequestSchema = CheckoutCompleteRequestSchema.passthrough();
-
-// ─── Backward-compat schemas ────────────────────────────────────────────────
-// Removed from ucp-js-sdk 1.0.2 — kept here so downstream consumers don't break.
-
-/** @deprecated Removed from ucp-js-sdk 1.0.2. Use PaymentCredentialSchema instead. */
-export const ExtendedPaymentCredentialSchema = z
-  .object({
-    type: z.string(),
-    token: z.string().optional(),
-  })
-  .passthrough();
-
-/** @deprecated Removed from ucp-js-sdk 1.0.2. Will be removed in a future major version. */
-export const PlatformConfigSchema = z
-  .object({
-    webhook_url: z.string().optional(),
-  })
-  .passthrough();
+export const CreateCheckoutRequestSchema = CheckoutCreateRequestSchema;
+export const UpdateCheckoutRequestSchema = CheckoutUpdateRequestSchema;
+export const CompleteCheckoutRequestSchema = CheckoutCompleteRequestSchema;
 
 // ─── SDK re-exports ─────────────────────────────────────────────────────────
 // Re-export all SDK schemas so consumers can use them for tool definitions,
@@ -356,25 +334,12 @@ export {
 // ─── Webhook event schema ────────────────────────────────────────────────────
 // Not in the SDK — wraps the Order entity with event metadata.
 
-export const WebhookEventSchema = z
-  .object({
-    event_id: z.string(),
-    created_time: z.string(),
-    order: OrderSchema.passthrough(),
-  })
-  .passthrough();
+export const WebhookEventSchema = z.object({
+  event_id: z.string(),
+  created_time: z.string(),
+  order: OrderSchema,
+});
 
 // ─── JWK schema ─────────────────────────────────────────────────────────────
-// Not yet in the SDK — defined here until the SDK adds signing_keys support.
-
-export const JWKSchema = z
-  .object({
-    kty: z.string(),
-    kid: z.string().optional(),
-    use: z.string().optional(),
-    alg: z.string().optional(),
-    crv: z.string().optional(),
-    x: z.string().optional(),
-    y: z.string().optional(),
-  })
-  .passthrough();
+// Use the SDK's UcpSigningKeySchema as the canonical signing key schema.
+export { UcpSigningKeySchema as JWKSchema };

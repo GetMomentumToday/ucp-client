@@ -33,10 +33,6 @@ export {
   UpdateCheckoutRequestSchema,
   CompleteCheckoutRequestSchema,
 
-  // Backward-compat (deprecated)
-  ExtendedPaymentCredentialSchema,
-  PlatformConfigSchema,
-
   // Enums / status
   CheckoutResponseStatusSchema,
   CheckoutStatusEnumSchema,

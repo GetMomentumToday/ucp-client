@@ -138,7 +138,7 @@ function extractSigningKeys(profile: UCPProfile): readonly JWK[] {
   const keys: JWK[] = [];
   for (const item of raw) {
     const result = JWKSchema.safeParse(item);
-    if (result.success) keys.push(result.data as JWK);
+    if (result.success) keys.push(result.data);
   }
   return keys;
 }

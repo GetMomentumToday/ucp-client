@@ -2,10 +2,7 @@ import { randomUUID } from 'node:crypto';
 import type { ZodType } from 'zod';
 import { UCPError, UCPIdempotencyConflictError } from './errors.js';
 import type { UCPMessage, MessageType, MessageSeverity, ContentType } from './errors.js';
-import { z } from 'zod';
 import { MessageErrorSchema, MessageInfoSchema, MessageWarningSchema } from './schemas.js';
-
-const ErrorMessagesSchema = z.object({ messages: z.array(z.unknown()).min(1) });
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -103,18 +100,23 @@ export class HttpClient {
   }
 
   private throwFromResponse(data: unknown, statusCode: number): never {
-    const parsed = ErrorMessagesSchema.safeParse(data);
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      Array.isArray((data as Record<string, unknown>)['messages'])
+    ) {
+      const rawMessages = (data as Record<string, unknown>)['messages'] as unknown[];
+      if (rawMessages.length > 0) {
+        const allMessages = parseMessages(rawMessages);
+        const first = allMessages[0]!;
+        const code = first.code ?? 'UNKNOWN';
 
-    if (parsed.success) {
-      const allMessages = parseMessages(parsed.data.messages);
-      const first = allMessages[0]!;
-      const code = first.code ?? 'UNKNOWN';
-
-      throw new UCPError(code, first.content, first.type, statusCode, {
-        ...(first.path !== undefined ? { path: first.path } : {}),
-        ...(first.content_type !== undefined ? { contentType: first.content_type } : {}),
-        messages: allMessages,
-      });
+        throw new UCPError(code, first.content, first.type, statusCode, {
+          ...(first.path !== undefined ? { path: first.path } : {}),
+          ...(first.content_type !== undefined ? { contentType: first.content_type } : {}),
+          messages: allMessages,
+        });
+      }
     }
 
     if (statusCode === 409) throw new UCPIdempotencyConflictError();
