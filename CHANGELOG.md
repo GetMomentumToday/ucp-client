@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0](https://github.com/OmnixHQ/ucp-client/compare/v2.3.0...v2.4.0) (2026-04-01)
+
+
+### Features
+
+* upgrade to @omnixhq/ucp-js-sdk@1.1.0 stable ([#34](https://github.com/OmnixHQ/ucp-client/issues/34)) ([39663c3](https://github.com/OmnixHQ/ucp-client/commit/39663c3cfe91a4ce7f1ecbd267dca924088eefb7))
+
 ## [2.3.0](https://github.com/OmnixHQ/ucp-client/compare/v2.2.0...v2.3.0) (2026-03-31)
 
 
