@@ -1437,12 +1437,12 @@ export class CatalogCapability {
 }
 
 // @public (undocumented)
-export type CatalogLookupResponse = Record<string, unknown>;
+export type CatalogLookupResponse = z.output<typeof CatalogLookupSchema>;
 
 export { CatalogLookupSchema }
 
 // @public (undocumented)
-export type CatalogSearchResponse = Record<string, unknown>;
+export type CatalogSearchResponse = z.output<typeof CatalogSearchSchema>;
 
 export { CatalogSearchSchema }
 
@@ -5581,8 +5581,8 @@ export { OptionValueSchema }
 export class OrderCapability {
     constructor(http: HttpClient);
     get(id: string): Promise<UCPSpecOrder>;
-    update(id: string, payload: Record<string, unknown>): Promise<UCPSpecOrder>;
-    updateLineItem(id: string, lineItemId: string, payload: LineItemUpdatePayload): Promise<UCPSpecOrder>;
+    update(id: string, payload: Record<string, unknown>): Promise<OrderUpdate>;
+    updateLineItem(id: string, lineItemId: string, payload: LineItemUpdatePayload): Promise<OrderUpdate>;
 }
 
 export { OrderConfirmationSchema }
@@ -5591,10 +5591,13 @@ export { OrderLineItemSchema }
 
 export { OrderLineItemStatusEnumSchema }
 
+// @public (undocumented)
+export type OrderUpdate = z.output<typeof OrderUpdateSchema>;
+
 export { OrderUpdateSchema }
 
 // @public (undocumented)
-export type Pagination = Record<string, unknown>;
+export type Pagination = z.output<typeof PaginationSchema>;
 
 export { PaginationSchema }
 

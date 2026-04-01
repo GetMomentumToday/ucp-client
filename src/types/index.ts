@@ -24,7 +24,7 @@ export type {
   FulfillmentGroupUpdatePayload,
 } from './checkout.js';
 
-export type { UCPSpecOrder, WebhookEvent, LineItemUpdatePayload } from './order.js';
+export type { UCPSpecOrder, OrderUpdate, WebhookEvent, LineItemUpdatePayload } from './order.js';
 
 export type {
   Product,

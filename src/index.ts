@@ -258,6 +258,7 @@ export type {
   PaymentHandlerInstance,
   PaymentHandlerMap,
   UCPSpecOrder,
+  OrderUpdate,
   WebhookEvent,
   LineItemUpdatePayload,
   OAuthServerMetadata,

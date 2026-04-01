@@ -1,7 +1,13 @@
 import type { z } from 'zod';
-import type { UCPSpecOrderSchema, LineItemUpdateRequestSchema } from '../schemas.js';
+import type {
+  UCPSpecOrderSchema,
+  LineItemUpdateRequestSchema,
+  OrderUpdateSchema,
+} from '../schemas.js';
 
 export type UCPSpecOrder = z.output<typeof UCPSpecOrderSchema>;
+
+export type OrderUpdate = z.output<typeof OrderUpdateSchema>;
 
 export type LineItemUpdatePayload = z.output<typeof LineItemUpdateRequestSchema>;
 
