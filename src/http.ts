@@ -31,9 +31,7 @@ export class HttpClient {
     this.ucpVersion = config.ucpVersion;
     this.requestSignature = config.requestSignature;
     this.accessToken = config.accessToken;
-    this.onValidationWarning =
-      config.onValidationWarning ?? // eslint-disable-next-line no-console
-      ((msg, detail) => console.warn(msg, detail));
+    this.onValidationWarning = config.onValidationWarning ?? (() => undefined);
   }
 
   withAccessToken(token: string): HttpClient {
@@ -94,6 +92,9 @@ export class HttpClient {
     const result = schema.safeParse(data);
     if (!result.success) {
       this.onValidationWarning('[UCPClient] Response validation failed:', result.error.message);
+      // Intentional forward-compat: return raw data so callers keep working when the server
+      // returns a newer schema version than the client's Zod schema knows about.
+      // Callers that need strict validation should provide onValidationWarning and handle it.
       return data as Output;
     }
     return result.data;

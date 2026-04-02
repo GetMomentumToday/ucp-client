@@ -112,13 +112,29 @@ export function createWebhookVerifier(gatewayUrl: string): WebhookVerifier {
   const baseUrl = gatewayUrl.replace(/\/+$/, '');
   const keyCache = new Map<string, JWK>();
   let fetched = false;
+  // Single in-flight promise prevents concurrent fetches from hammering the endpoint
+  // and avoids TOCTOU races that could leave the cache partially cleared.
+  let loadingPromise: Promise<void> | null = null;
 
   async function loadKeys(): Promise<void> {
     const res = await fetch(`${baseUrl}/.well-known/ucp`);
-    if (!res.ok) return;
-    const profile: unknown = await res.json();
+    if (!res.ok) {
+      // Mark fetched so callers don't retry on every verify() call while the endpoint is down.
+      fetched = true;
+      return;
+    }
+    let profile: unknown;
+    try {
+      profile = await res.json();
+    } catch {
+      fetched = true;
+      return;
+    }
     const rawKeys = (profile as Record<string, unknown>)['signing_keys'];
-    if (!Array.isArray(rawKeys)) return;
+    if (!Array.isArray(rawKeys)) {
+      fetched = true;
+      return;
+    }
     keyCache.clear();
     for (const item of rawKeys) {
       const parsed = JWKSchema.safeParse(item);
@@ -129,15 +145,22 @@ export function createWebhookVerifier(gatewayUrl: string): WebhookVerifier {
     fetched = true;
   }
 
+  function ensureKeys(): Promise<void> {
+    loadingPromise ??= loadKeys().finally(() => {
+      loadingPromise = null;
+    });
+    return loadingPromise;
+  }
+
   return {
     async verify(body: string, signature: string): Promise<boolean> {
       const kid = extractKid(signature);
       if (kid === null) return false;
 
-      if (!fetched) await loadKeys();
+      if (!fetched) await ensureKeys();
 
       // Re-fetch on kid miss to support key rotation (new key added to signing_keys)
-      if (!keyCache.has(kid)) await loadKeys();
+      if (!keyCache.has(kid)) await ensureKeys();
 
       const key = keyCache.get(kid);
       if (!key) return false;

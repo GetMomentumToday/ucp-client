@@ -99,11 +99,19 @@ export class UCPClient {
 }
 
 function validateConfig(config: UCPClientConfig): void {
-  new URL(config.gatewayUrl);
+  try {
+    new URL(config.gatewayUrl);
+  } catch {
+    throw new Error(`UCPClient: gatewayUrl is not a valid URL: "${config.gatewayUrl}"`);
+  }
   if (config.agentProfileUrl.includes('"') || config.agentProfileUrl.includes('\n')) {
     throw new Error('agentProfileUrl must not contain double quotes or newlines');
   }
-  new URL(config.agentProfileUrl);
+  try {
+    new URL(config.agentProfileUrl);
+  } catch {
+    throw new Error(`UCPClient: agentProfileUrl is not a valid URL: "${config.agentProfileUrl}"`);
+  }
 }
 
 function extractCapabilityNames(profile: UCPProfile): Set<string> {

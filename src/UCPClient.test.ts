@@ -564,18 +564,18 @@ describe('error handling', () => {
 
 describe('Zod validation', () => {
   it('warns on invalid response but still returns data', async () => {
-    const warnSpy = vi.spyOn(console, 'warn');
-    const client = await connectWithCapabilities();
+    const warnings: string[] = [];
+    mockResponse(makeProfile());
+    const client = await connect(CONFIG, {
+      onValidationWarning: (msg) => warnings.push(msg),
+    });
     const invalidSession = { id: 'chk_1', status: 'incomplete' };
     mockResponse(invalidSession);
     const session = await client.checkout!.create({
       line_items: [{ item: { id: 'prod-001' }, quantity: 1 }],
     });
 
-    expect(warnSpy).toHaveBeenCalledWith(
-      '[UCPClient] Response validation failed:',
-      expect.any(String),
-    );
+    expect(warnings.some((w) => w === '[UCPClient] Response validation failed:')).toBe(true);
     expect(session.id).toBe('chk_1');
   });
 

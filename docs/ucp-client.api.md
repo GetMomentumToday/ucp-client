@@ -62,6 +62,7 @@ import { FulfillmentResponseSchema } from '@omnixhq/ucp-js-sdk';
 import { FulfillmentSchema } from '@omnixhq/ucp-js-sdk';
 import { ItemResponseSchema } from '@omnixhq/ucp-js-sdk';
 import { ItemSchema } from '@omnixhq/ucp-js-sdk';
+import { UcpSigningKeySchema as JWKSchema } from '@omnixhq/ucp-js-sdk';
 import { LineItemResponseSchema } from '@omnixhq/ucp-js-sdk';
 import { LineItemSchema } from '@omnixhq/ucp-js-sdk';
 import { LineItemUpdateRequestSchema } from '@omnixhq/ucp-js-sdk';
@@ -117,7 +118,6 @@ import { UcpPlatformSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpResponseCheckoutSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpResponseOrderSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpReverseDomainNameSchema } from '@omnixhq/ucp-js-sdk';
-import { UcpSigningKeySchema } from '@omnixhq/ucp-js-sdk';
 import { OrderSchema as UCPSpecOrderSchema } from '@omnixhq/ucp-js-sdk';
 import { UcpVersionSchema } from '@omnixhq/ucp-js-sdk';
 import { z } from 'zod';
@@ -2963,7 +2963,9 @@ export interface JsonSchema {
 }
 
 // @public
-export type JWK = z.output<typeof UcpSigningKeySchema>;
+export type JWK = z.output<typeof JWKSchema>;
+
+export { JWKSchema }
 
 export { LineItemResponseSchema }
 
@@ -3029,7 +3031,7 @@ export interface OAuthServerMetadata {
 export class OrderCapability {
     constructor(http: HttpClient);
     get(id: string): Promise<UCPSpecOrder>;
-    update(id: string, payload: Record<string, unknown>): Promise<OrderUpdate>;
+    update(id: string, payload: OrderUpdatePayload): Promise<OrderUpdate>;
     updateLineItem(id: string, lineItemId: string, payload: LineItemUpdatePayload): Promise<OrderUpdate>;
 }
 
@@ -3041,6 +3043,9 @@ export { OrderLineItemStatusEnumSchema }
 
 // @public (undocumented)
 export type OrderUpdate = z.output<typeof OrderUpdateSchema>;
+
+// @public (undocumented)
+export type OrderUpdatePayload = Record<string, unknown>;
 
 export { OrderUpdateSchema }
 
@@ -3804,9 +3809,6 @@ export { UcpResponseCheckoutSchema }
 export { UcpResponseOrderSchema }
 
 export { UcpReverseDomainNameSchema }
-
-export { UcpSigningKeySchema as JWKSchema }
-export { UcpSigningKeySchema }
 
 // @public (undocumented)
 export type UCPSpecOrder = z.output<typeof UCPSpecOrderSchema>;
