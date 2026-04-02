@@ -187,9 +187,16 @@ async function buildIdentityLinking(
     );
   }
 
-  const raw: unknown = await res.json();
-  const parsed = OAuthServerMetadataSchema.safeParse(raw);
+  let raw: unknown;
+  try {
+    raw = await res.json();
+  } catch {
+    throw new Error(
+      `Identity linking OAuth metadata endpoint returned non-JSON response from ${metadataUrl}`,
+    );
+  }
 
+  const parsed = OAuthServerMetadataSchema.safeParse(raw);
   if (!parsed.success) {
     throw new Error(`Identity linking OAuth metadata validation failed: ${parsed.error.message}`);
   }

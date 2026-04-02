@@ -1,3 +1,4 @@
+import type { AgentTool } from '../agent-tools.js';
 import { UCPError, UCPEscalationError, UCPOAuthError } from '../errors.js';
 
 export interface AdapterOptions {
@@ -39,7 +40,7 @@ export async function safeExecute(
 }
 
 export async function findAndExecuteTool(
-  agentTools: readonly import('../agent-tools.js').AgentTool[],
+  agentTools: readonly AgentTool[],
   toolName: string,
   toolInput: Record<string, unknown>,
   options?: AdapterOptions,
