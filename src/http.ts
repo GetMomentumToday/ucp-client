@@ -205,7 +205,7 @@ function parseMessages(rawMessages: unknown[]): UCPMessage[] {
 
     return {
       type,
-      content: String(record['content'] ?? 'Unknown error'),
+      content: String(record['content'] ?? record['text'] ?? record['message'] ?? 'Unknown error'),
       ...(record['code'] !== undefined ? { code: String(record['code']) } : {}),
     };
   });
