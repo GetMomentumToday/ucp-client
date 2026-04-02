@@ -76,7 +76,21 @@ export class HttpClient {
       ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
     });
 
-    const data: unknown = await res.json().catch(() => ({}));
+    let data: unknown;
+    try {
+      data = await res.json();
+    } catch {
+      if (!res.ok) {
+        const bodyHint = typeof res.text === 'function' ? await res.text().catch(() => '') : '';
+        throw new UCPError(
+          'HTTP_ERROR',
+          `Gateway returned ${res.status} with non-JSON body${bodyHint ? `: ${bodyHint.slice(0, 200)}` : ''}`,
+          'error',
+          res.status,
+        );
+      }
+      data = {};
+    }
 
     if (!res.ok) {
       this.throwFromResponse(data, res.status);

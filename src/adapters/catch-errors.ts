@@ -37,3 +37,16 @@ export async function safeExecute(
     return formatToolError(err);
   }
 }
+
+export async function findAndExecuteTool(
+  agentTools: readonly import('../agent-tools.js').AgentTool[],
+  toolName: string,
+  toolInput: Record<string, unknown>,
+  options?: AdapterOptions,
+): Promise<unknown> {
+  return safeExecute(() => {
+    const tool = agentTools.find((t) => t.name === toolName);
+    if (!tool) throw new Error(`Tool not found: ${toolName}`);
+    return tool.execute(toolInput);
+  }, options?.catchErrors ?? false);
+}
