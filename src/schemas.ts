@@ -1,203 +1,20 @@
 import { z } from 'zod';
+
+// Only import schemas needed for aliases or the WebhookEventSchema definition.
+// Everything else is re-exported directly via `export { ... } from` below.
 import {
-  // ─── Response schemas ───────────────────────────────────────────────────────
   UcpDiscoveryProfileSchema,
-  CheckoutResponseStatusSchema,
-
-  // ─── Sub-entity schemas (checkout internals) ────────────────────────────────
-  BuyerSchema,
-  TotalResponseSchema,
-  LineItemResponseSchema,
-  MessageSchema,
-  MessageErrorSchema,
-  PostalAddressSchema,
-  PaymentResponseSchema,
-  PaymentHandlerResponseSchema,
-  PaymentInstrumentSchema,
-  FulfillmentResponseSchema,
-  FulfillmentMethodResponseSchema,
-  ItemResponseSchema,
-
-  // ─── Order ──────────────────────────────────────────────────────────────────
-  OrderSchema,
-
-  // ─── Checkout ───────────────────────────────────────────────────────────────
-  CheckoutSchema,
   CheckoutResponseSchema,
   CheckoutCreateRequestSchema,
   CheckoutUpdateRequestSchema,
   CheckoutCompleteRequestSchema,
-  CheckoutStatusEnumSchema,
-
-  // ─── AP2 Mandate ────────────────────────────────────────────────────────────
-  Ap2MandateAp2WithCheckoutMandateSchema,
-  Ap2MandateAp2WithMerchantAuthorizationSchema,
-  Ap2MandateCheckoutMandateSchema,
-  Ap2MandateErrorCodeSchema,
-  Ap2MandateMerchantAuthorizationSchema,
-
-  // ─── Buyer Consent ──────────────────────────────────────────────────────────
-  BuyerConsentBuyerSchema,
-  BuyerConsentConsentSchema,
-
-  // ─── Discount ───────────────────────────────────────────────────────────────
-  DiscountAllocationSchema,
-  DiscountAppliedDiscountSchema,
-  DiscountAppliedDiscountMethodEnumSchema,
-  DiscountDiscountsObjectSchema,
-
-  // ─── Fulfillment (core) ─────────────────────────────────────────────────────
-  FulfillmentSchema,
-  FulfillmentOptionSchema,
-  FulfillmentGroupSchema,
-  FulfillmentMethodSchema,
-  FulfillmentAvailableMethodSchema,
-  FulfillmentAvailableMethodTypeEnumSchema,
-  FulfillmentDestinationSchema,
-  FulfillmentEventSchema,
-  FulfillmentMethodTypeEnumSchema,
-
-  // ─── Fulfillment (extension) ────────────────────────────────────────────────
-  FulfillmentExtensionFulfillmentSchema,
-  FulfillmentExtensionFulfillmentOptionSchema,
-  FulfillmentExtensionFulfillmentGroupSchema,
-  FulfillmentExtensionFulfillmentMethodSchema,
-  FulfillmentExtensionFulfillmentAvailableMethodSchema,
-
-  // ─── Fulfillment (config) ───────────────────────────────────────────────────
-  BusinessFulfillmentConfigSchema,
-  MerchantFulfillmentConfigSchema,
-  PlatformFulfillmentConfigSchema,
-
-  // ─── Fulfillment (requests) ─────────────────────────────────────────────────
-  FulfillmentMethodCreateRequestSchema,
-  FulfillmentMethodUpdateRequestSchema,
-  FulfillmentGroupUpdateRequestSchema,
-
-  // ─── Payment ────────────────────────────────────────────────────────────────
-  AmountSchema,
-  PaymentSchema,
-  PaymentCredentialSchema,
-  PaymentIdentitySchema,
-  PaymentInstrumentResponseSchema,
-  AvailablePaymentInstrumentSchema,
-  CardCredentialSchema,
-  CardCredentialCardNumberTypeEnumSchema,
-  CardPaymentInstrumentAvailableCardPaymentInstrumentSchema,
-  TokenCredentialSchema,
-  SignedAmountSchema,
-  TotalsSchema,
-
-  // ─── Payment Handler (roles) ────────────────────────────────────────────────
-  PaymentHandlerBaseSchema,
-  PaymentHandlerBusinessSchema,
-  PaymentHandlerPlatformSchema,
-
-  // ─── Order (sub-entities) ───────────────────────────────────────────────────
-  OrderConfirmationSchema,
-  OrderLineItemSchema,
-  OrderLineItemStatusEnumSchema,
-  OrderUpdateSchema,
-
-  // ─── Item / LineItem ────────────────────────────────────────────────────────
-  ItemSchema,
-  LineItemSchema,
-  LineItemUpdateRequestSchema,
-
-  // ─── Message ────────────────────────────────────────────────────────────────
-  MessageInfoSchema,
-  MessageInfoContentTypeEnumSchema,
-  MessageWarningSchema,
-  MessageWarningContentTypeEnumSchema,
-  MessageErrorContentTypeEnumSchema,
-  MessageErrorSeverityEnumSchema,
-
-  // ─── Error handling ─────────────────────────────────────────────────────────
-  ErrorResponseSchema,
-  ErrorCodeSchema,
-  InputCorrelationSchema,
-  UcpErrorSchema,
-  UcpSuccessSchema,
-
-  // ─── Catalog ────────────────────────────────────────────────────────────────
-  CatalogSearchSchema,
-  CatalogLookupSchema,
-  ProductSchema,
-  VariantSchema,
-  CategorySchema,
-  ProductOptionSchema,
-  OptionValueSchema,
-  DetailOptionValueSchema,
-  SelectedOptionSchema,
-  MediaSchema,
-  DescriptionSchema,
-  RatingSchema,
-  PriceSchema,
-  PriceRangeSchema,
-  PriceFilterSchema,
-  PaginationSchema,
-  SearchFiltersSchema,
-  SignalsSchema,
-
-  // ─── Cart ───────────────────────────────────────────────────────────────────
+  OrderSchema,
   CartSchema,
-  CartCreateRequestSchema,
-  CartUpdateRequestSchema,
-
-  // ─── UCP protocol ───────────────────────────────────────────────────────────
-  UcpBaseSchema,
-  UcpBaseStatusEnumSchema,
-  UcpBusinessSchema,
-  UcpPlatformSchema,
-  UcpEntitySchema,
-  UcpRequiresSchema,
-  UcpResponseCartSchema,
-  UcpResponseCatalogSchema,
-  UcpResponseCheckoutSchema,
-  UcpResponseOrderSchema,
-  UcpVersionSchema,
-  UcpVersionConstraintSchema,
   UcpSigningKeySchema,
-  UcpDiscoveryBusinessProfileSchema,
-  UcpDiscoveryPlatformProfileSchema,
-  ReverseDomainNameSchema,
-
-  // ─── Capability / Service ───────────────────────────────────────────────────
-  CapabilityBaseSchema,
-  CapabilityBusinessSchema,
-  CapabilityPlatformSchema,
-  CapabilityResponseSchema,
-  ServiceBaseSchema,
-  ServiceBaseTransportEnumSchema,
-  ServiceBusinessSchema,
-  ServicePlatformSchema,
-  ServiceResponseSchema,
-
-  // ─── Profile ────────────────────────────────────────────────────────────────
-  ProfileSchemaBaseSchema,
-  ProfileSchemaBusinessProfileSchema,
-  ProfileSchemaPlatformProfileSchema,
-  ProfileSchemaSigningKeySchema,
-  ProfileSchemaSigningKeyUseEnumSchema,
-
-  // ─── Misc ───────────────────────────────────────────────────────────────────
-  AccountInfoSchema,
-  AdjustmentSchema,
-  AdjustmentStatusEnumSchema,
-  BindingSchema,
-  ContextSchema,
-  EmbeddedConfigSchema,
-  ExpectationSchema,
-  ExpectationMethodTypeEnumSchema,
-  LinkSchema,
-  RetailLocationSchema,
-  ShippingDestinationSchema,
-  TotalSchema,
 } from '@omnixhq/ucp-js-sdk';
 
-// ─── Response / request schema aliases ─────────────────────────────────────
-// Aliases used internally by UCPClient for validation. No passthrough — strict
-// spec compliance only.
+// ─── Internal aliases ───────────────────────────────────────────────────────
+// Used by UCPClient and capabilities for validation.
 
 export const CheckoutSessionSchema = CheckoutResponseSchema;
 export const UCPProfileSchema = UcpDiscoveryProfileSchema;
@@ -207,9 +24,19 @@ export const CreateCheckoutRequestSchema = CheckoutCreateRequestSchema;
 export const UpdateCheckoutRequestSchema = CheckoutUpdateRequestSchema;
 export const CompleteCheckoutRequestSchema = CheckoutCompleteRequestSchema;
 
+// ─── Custom schemas ─────────────────────────────────────────────────────────
+// Not in the SDK — defined here.
+
+export const WebhookEventSchema = z.object({
+  event_id: z.string(),
+  created_time: z.string(),
+  order: OrderSchema,
+});
+
+export { UcpSigningKeySchema as JWKSchema };
+
 // ─── SDK re-exports ─────────────────────────────────────────────────────────
-// Re-export all SDK schemas so consumers can use them for tool definitions,
-// Zod-to-JSON-Schema conversion, validation, etc.
+// Direct re-export from the SDK. Each schema appears only once.
 
 export {
   // Enums / status
@@ -223,47 +50,41 @@ export {
   MessageSchema,
   MessageErrorSchema,
   PostalAddressSchema,
-
-  // Payment (response)
   PaymentResponseSchema,
   PaymentHandlerResponseSchema,
   PaymentInstrumentSchema,
-
-  // Fulfillment (response)
   FulfillmentResponseSchema,
   FulfillmentMethodResponseSchema,
-
-  // Items (response)
   ItemResponseSchema,
 
   // Order (UCP spec order — different from gateway's UCPOrderSchema)
   OrderSchema as UCPSpecOrderSchema,
 
-  // ─── Checkout ───────────────────────────────────────────────────────────────
+  // Checkout
   CheckoutSchema,
   CheckoutResponseSchema,
   CheckoutCreateRequestSchema,
   CheckoutUpdateRequestSchema,
   CheckoutCompleteRequestSchema,
 
-  // ─── AP2 Mandate ────────────────────────────────────────────────────────────
+  // AP2 Mandate
   Ap2MandateAp2WithCheckoutMandateSchema,
   Ap2MandateAp2WithMerchantAuthorizationSchema,
   Ap2MandateCheckoutMandateSchema,
   Ap2MandateErrorCodeSchema,
   Ap2MandateMerchantAuthorizationSchema,
 
-  // ─── Buyer Consent ──────────────────────────────────────────────────────────
+  // Buyer Consent
   BuyerConsentBuyerSchema,
   BuyerConsentConsentSchema,
 
-  // ─── Discount ───────────────────────────────────────────────────────────────
+  // Discount
   DiscountAllocationSchema,
   DiscountAppliedDiscountSchema,
   DiscountAppliedDiscountMethodEnumSchema,
   DiscountDiscountsObjectSchema,
 
-  // ─── Fulfillment (core) ─────────────────────────────────────────────────────
+  // Fulfillment (core)
   FulfillmentSchema,
   FulfillmentOptionSchema,
   FulfillmentGroupSchema,
@@ -274,24 +95,24 @@ export {
   FulfillmentEventSchema,
   FulfillmentMethodTypeEnumSchema,
 
-  // ─── Fulfillment (extension) ────────────────────────────────────────────────
+  // Fulfillment (extension)
   FulfillmentExtensionFulfillmentSchema,
   FulfillmentExtensionFulfillmentOptionSchema,
   FulfillmentExtensionFulfillmentGroupSchema,
   FulfillmentExtensionFulfillmentMethodSchema,
   FulfillmentExtensionFulfillmentAvailableMethodSchema,
 
-  // ─── Fulfillment (config) ───────────────────────────────────────────────────
+  // Fulfillment (config)
   BusinessFulfillmentConfigSchema,
   MerchantFulfillmentConfigSchema,
   PlatformFulfillmentConfigSchema,
 
-  // ─── Fulfillment (requests) ─────────────────────────────────────────────────
+  // Fulfillment (requests)
   FulfillmentMethodCreateRequestSchema,
   FulfillmentMethodUpdateRequestSchema,
   FulfillmentGroupUpdateRequestSchema,
 
-  // ─── Payment ────────────────────────────────────────────────────────────────
+  // Payment
   AmountSchema,
   PaymentSchema,
   PaymentCredentialSchema,
@@ -305,23 +126,23 @@ export {
   SignedAmountSchema,
   TotalsSchema,
 
-  // ─── Payment Handler (roles) ────────────────────────────────────────────────
+  // Payment Handler (roles)
   PaymentHandlerBaseSchema,
   PaymentHandlerBusinessSchema,
   PaymentHandlerPlatformSchema,
 
-  // ─── Order (sub-entities) ───────────────────────────────────────────────────
+  // Order (sub-entities)
   OrderConfirmationSchema,
   OrderLineItemSchema,
   OrderLineItemStatusEnumSchema,
   OrderUpdateSchema,
 
-  // ─── Item / LineItem ────────────────────────────────────────────────────────
+  // Item / LineItem
   ItemSchema,
   LineItemSchema,
   LineItemUpdateRequestSchema,
 
-  // ─── Message ────────────────────────────────────────────────────────────────
+  // Message
   MessageInfoSchema,
   MessageInfoContentTypeEnumSchema,
   MessageWarningSchema,
@@ -329,14 +150,14 @@ export {
   MessageErrorContentTypeEnumSchema,
   MessageErrorSeverityEnumSchema,
 
-  // ─── Error handling ─────────────────────────────────────────────────────────
+  // Error handling
   ErrorResponseSchema,
   ErrorCodeSchema,
   InputCorrelationSchema,
   UcpErrorSchema,
   UcpSuccessSchema,
 
-  // ─── Catalog ────────────────────────────────────────────────────────────────
+  // Catalog
   CatalogSearchSchema,
   CatalogLookupSchema,
   ProductSchema,
@@ -356,12 +177,12 @@ export {
   SearchFiltersSchema,
   SignalsSchema,
 
-  // ─── Cart ───────────────────────────────────────────────────────────────────
+  // Cart
   CartSchema,
   CartCreateRequestSchema,
   CartUpdateRequestSchema,
 
-  // ─── UCP protocol ───────────────────────────────────────────────────────────
+  // UCP protocol
   UcpBaseSchema,
   UcpBaseStatusEnumSchema,
   UcpBusinessSchema,
@@ -379,7 +200,7 @@ export {
   UcpDiscoveryPlatformProfileSchema,
   ReverseDomainNameSchema,
 
-  // ─── Capability / Service ───────────────────────────────────────────────────
+  // Capability / Service
   CapabilityBaseSchema,
   CapabilityBusinessSchema,
   CapabilityPlatformSchema,
@@ -390,14 +211,14 @@ export {
   ServicePlatformSchema,
   ServiceResponseSchema,
 
-  // ─── Profile ────────────────────────────────────────────────────────────────
+  // Profile
   ProfileSchemaBaseSchema,
   ProfileSchemaBusinessProfileSchema,
   ProfileSchemaPlatformProfileSchema,
   ProfileSchemaSigningKeySchema,
   ProfileSchemaSigningKeyUseEnumSchema,
 
-  // ─── Misc ───────────────────────────────────────────────────────────────────
+  // Misc
   AccountInfoSchema,
   AdjustmentSchema,
   AdjustmentStatusEnumSchema,
@@ -410,17 +231,4 @@ export {
   RetailLocationSchema,
   ShippingDestinationSchema,
   TotalSchema,
-};
-
-// ─── Webhook event schema ────────────────────────────────────────────────────
-// Not in the SDK — wraps the Order entity with event metadata.
-
-export const WebhookEventSchema = z.object({
-  event_id: z.string(),
-  created_time: z.string(),
-  order: OrderSchema,
-});
-
-// ─── JWK schema ─────────────────────────────────────────────────────────────
-// Use the SDK's UcpSigningKeySchema as the canonical signing key schema.
-export { UcpSigningKeySchema as JWKSchema };
+} from '@omnixhq/ucp-js-sdk';
