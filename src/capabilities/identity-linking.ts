@@ -97,10 +97,20 @@ export class IdentityLinkingCapability {
     });
 
     if (!res.ok) {
-      throw new UCPOAuthError(`Token exchange failed with status ${res.status}`, res.status);
+      const errorBody = await res.text().catch(() => '');
+      throw new UCPOAuthError(
+        `Token exchange failed with status ${res.status}${errorBody ? `: ${errorBody.slice(0, 200)}` : ''}`,
+        res.status,
+      );
     }
 
-    const raw: unknown = await res.json();
+    let raw: unknown;
+    try {
+      raw = await res.json();
+    } catch {
+      throw new UCPOAuthError('Token endpoint returned non-JSON response', res.status);
+    }
+
     const parsed = TokenResponseSchema.safeParse(raw);
     if (!parsed.success) {
       throw new UCPOAuthError(`Invalid token response: ${parsed.error.message}`, res.status);

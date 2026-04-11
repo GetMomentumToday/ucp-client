@@ -108,10 +108,15 @@ export interface WebhookVerifier {
  * if (!valid) return res.status(401).send('Invalid signature');
  * ```
  */
-export function createWebhookVerifier(gatewayUrl: string): WebhookVerifier {
+export function createWebhookVerifier(
+  gatewayUrl: string,
+  options?: { readonly refetchCooldownMs?: number },
+): WebhookVerifier {
   const baseUrl = gatewayUrl.replace(/\/+$/, '');
+  const refetchCooldownMs = options?.refetchCooldownMs ?? 60_000;
   const keyCache = new Map<string, JWK>();
   let fetched = false;
+  let lastRefetchTime = 0;
   // Single in-flight promise prevents concurrent fetches from hammering the endpoint
   // and avoids TOCTOU races that could leave the cache partially cleared.
   let loadingPromise: Promise<void> | null = null;
@@ -119,7 +124,6 @@ export function createWebhookVerifier(gatewayUrl: string): WebhookVerifier {
   async function loadKeys(): Promise<void> {
     const res = await fetch(`${baseUrl}/.well-known/ucp`);
     if (!res.ok) {
-      // Mark fetched so callers don't retry on every verify() call while the endpoint is down.
       fetched = true;
       return;
     }
@@ -159,8 +163,15 @@ export function createWebhookVerifier(gatewayUrl: string): WebhookVerifier {
 
       if (!fetched) await ensureKeys();
 
-      // Re-fetch on kid miss to support key rotation (new key added to signing_keys)
-      if (!keyCache.has(kid)) await ensureKeys();
+      // Re-fetch on kid miss to support key rotation, but rate-limit
+      // to prevent DoS via requests with unknown kid values.
+      if (!keyCache.has(kid)) {
+        const now = Date.now();
+        if (now - lastRefetchTime >= refetchCooldownMs) {
+          lastRefetchTime = now;
+          await ensureKeys();
+        }
+      }
 
       const key = keyCache.get(kid);
       if (!key) return false;

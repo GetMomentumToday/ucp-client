@@ -220,7 +220,7 @@ function respond(res: ServerResponse, status: number, body: unknown): void {
 function respondError(res: ServerResponse, status: number, code: string, detail: string): void {
   respond(res, status, {
     code,
-    messages: [{ type: 'error', text: detail, severity: 'recoverable' }],
+    messages: [{ type: 'error', code, content: detail, severity: 'recoverable' }],
   });
 }
 

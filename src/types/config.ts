@@ -13,6 +13,9 @@ export const UCP_CAPABILITIES = {
   DISCOUNT: 'dev.ucp.shopping.discount',
   BUYER_CONSENT: 'dev.ucp.shopping.buyer_consent',
   ORDER: 'dev.ucp.shopping.order',
+  CATALOG_SEARCH: 'dev.ucp.shopping.catalog.search',
+  CATALOG_LOOKUP: 'dev.ucp.shopping.catalog.lookup',
+  CART: 'dev.ucp.shopping.cart',
   IDENTITY_LINKING: 'dev.ucp.common.identity_linking',
   AP2_MANDATE: 'dev.ucp.shopping.ap2_mandate',
 } as const;

@@ -21,168 +21,13 @@ export type { UCPMessage, MessageType, MessageSeverity, ContentType } from './er
 
 export { CheckoutCapability } from './capabilities/checkout.js';
 export { OrderCapability } from './capabilities/order.js';
+export { CatalogCapability } from './capabilities/catalog.js';
+export type { CatalogExtensions } from './capabilities/catalog.js';
+export { CartCapability } from './capabilities/cart.js';
 export { IdentityLinkingCapability } from './capabilities/identity-linking.js';
 
-export {
-  // Gateway-specific schemas
-  CheckoutSessionSchema,
-  UCPProfileSchema,
-  JWKSchema,
-  WebhookEventSchema,
-  CreateCheckoutRequestSchema,
-  UpdateCheckoutRequestSchema,
-  CompleteCheckoutRequestSchema,
-
-  // Enums / status
-  CheckoutResponseStatusSchema,
-  CheckoutStatusEnumSchema,
-
-  // Sub-entity schemas (checkout internals)
-  BuyerSchema,
-  TotalResponseSchema,
-  LineItemResponseSchema,
-  MessageSchema,
-  MessageErrorSchema,
-  PostalAddressSchema,
-  PaymentResponseSchema,
-  PaymentHandlerResponseSchema,
-  PaymentInstrumentSchema,
-  FulfillmentResponseSchema,
-  FulfillmentMethodResponseSchema,
-  ItemResponseSchema,
-  UCPSpecOrderSchema,
-
-  // Checkout
-  CheckoutSchema,
-  CheckoutResponseSchema,
-  CheckoutCreateRequestSchema,
-  CheckoutUpdateRequestSchema,
-  CheckoutCompleteRequestSchema,
-
-  // AP2 Mandate
-  Ap2MandateAp2WithCheckoutMandateSchema,
-  Ap2MandateAp2WithMerchantAuthorizationSchema,
-  Ap2MandateCheckoutMandateSchema,
-  Ap2MandateErrorCodeSchema,
-  Ap2MandateMerchantAuthorizationSchema,
-
-  // Buyer Consent
-  BuyerConsentBuyerSchema,
-  BuyerConsentConsentSchema,
-
-  // Discount
-  DiscountAllocationSchema,
-  DiscountAppliedDiscountSchema,
-  DiscountAppliedDiscountMethodEnumSchema,
-  DiscountDiscountsObjectSchema,
-
-  // Fulfillment (core)
-  FulfillmentSchema,
-  FulfillmentOptionSchema,
-  FulfillmentGroupSchema,
-  FulfillmentMethodSchema,
-  FulfillmentAvailableMethodSchema,
-  FulfillmentAvailableMethodTypeEnumSchema,
-  FulfillmentDestinationSchema,
-  FulfillmentEventSchema,
-  FulfillmentMethodTypeEnumSchema,
-
-  // Fulfillment (extension)
-  FulfillmentExtensionFulfillmentSchema,
-  FulfillmentExtensionFulfillmentOptionSchema,
-  FulfillmentExtensionFulfillmentGroupSchema,
-  FulfillmentExtensionFulfillmentMethodSchema,
-  FulfillmentExtensionFulfillmentAvailableMethodSchema,
-
-  // Fulfillment (config)
-  BusinessFulfillmentConfigSchema,
-  MerchantFulfillmentConfigSchema,
-  PlatformFulfillmentConfigSchema,
-
-  // Fulfillment (requests)
-  FulfillmentMethodCreateRequestSchema,
-  FulfillmentMethodUpdateRequestSchema,
-  FulfillmentGroupUpdateRequestSchema,
-
-  // Payment
-  PaymentSchema,
-  PaymentCredentialSchema,
-  PaymentIdentitySchema,
-  PaymentInstrumentResponseSchema,
-  CardCredentialSchema,
-  CardCredentialCardNumberTypeEnumSchema,
-  CardPaymentInstrumentSchema,
-  TokenCredentialSchema,
-
-  // Payment Handler (roles)
-  PaymentHandlerBaseSchema,
-  PaymentHandlerBusinessSchema,
-  PaymentHandlerPlatformSchema,
-
-  // Order (sub-entities)
-  OrderConfirmationSchema,
-  OrderLineItemSchema,
-  OrderLineItemStatusEnumSchema,
-  OrderUpdateSchema,
-
-  // Item / LineItem
-  ItemSchema,
-  LineItemSchema,
-  LineItemUpdateRequestSchema,
-
-  // Message
-  MessageInfoSchema,
-  MessageInfoContentTypeEnumSchema,
-  MessageWarningSchema,
-  MessageWarningContentTypeEnumSchema,
-  MessageErrorContentTypeEnumSchema,
-  MessageErrorSeverityEnumSchema,
-
-  // UCP protocol
-  UcpBaseSchema,
-  UcpBusinessSchema,
-  UcpPlatformSchema,
-  UcpEntitySchema,
-  UcpResponseCheckoutSchema,
-  UcpResponseOrderSchema,
-  UcpVersionSchema,
-  UcpDiscoveryBusinessProfileSchema,
-  UcpDiscoveryPlatformProfileSchema,
-  UcpReverseDomainNameSchema,
-
-  // Capability / Service
-  CapabilityBaseSchema,
-  CapabilityBusinessSchema,
-  CapabilityPlatformSchema,
-  CapabilityResponseSchema,
-  ServiceBaseSchema,
-  ServiceBaseTransportEnumSchema,
-  ServiceBusinessSchema,
-  ServicePlatformSchema,
-  ServiceResponseSchema,
-
-  // Profile
-  ProfileSchemaBaseSchema,
-  ProfileSchemaBusinessProfileSchema,
-  ProfileSchemaPlatformProfileSchema,
-  ProfileSchemaSigningKeySchema,
-  ProfileSchemaSigningKeyUseEnumSchema,
-
-  // Misc
-  AccountInfoSchema,
-  AdjustmentSchema,
-  AdjustmentStatusEnumSchema,
-  BindingSchema,
-  ContextSchema,
-  EmbeddedConfigSchema,
-  ExpectationSchema,
-  ExpectationMethodTypeEnumSchema,
-  LinkSchema,
-  RetailLocationSchema,
-  ShippingDestinationSchema,
-  TotalSchema,
-  TotalTypeEnumSchema,
-} from './schemas.js';
+// All schemas from schemas.ts (SDK re-exports + internal aliases)
+export * from './schemas.js';
 
 export type {
   UCPClientConfig,
@@ -210,6 +55,16 @@ export type {
   OrderUpdatePayload,
   WebhookEvent,
   LineItemUpdatePayload,
+  Product,
+  Variant,
+  DetailOptionValue,
+  CatalogSearchResponse,
+  CatalogLookupResponse,
+  SearchFilters,
+  Pagination,
+  Cart,
+  CartCreatePayload,
+  CartUpdatePayload,
   OAuthServerMetadata,
   AuthorizationParams,
   TokenResponse,

@@ -10,6 +10,7 @@ const MINIMAL_ORDER = {
   line_items: [],
   fulfillment: {},
   totals: [],
+  currency: 'USD',
 };
 
 const VALID_EVENT = {

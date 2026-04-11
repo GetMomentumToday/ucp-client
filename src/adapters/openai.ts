@@ -1,5 +1,5 @@
 import type { AgentTool, JsonSchema } from '../agent-tools.js';
-import { type AdapterOptions, safeExecute } from './catch-errors.js';
+import { type AdapterOptions, findAndExecuteTool } from './catch-errors.js';
 
 export type { AgentTool, JsonSchema };
 
@@ -35,9 +35,5 @@ export async function executeOpenAIToolCall(
   toolInput: Record<string, unknown>,
   options?: AdapterOptions,
 ): Promise<unknown> {
-  return safeExecute(() => {
-    const tool = agentTools.find((t) => t.name === toolName);
-    if (!tool) throw new Error(`Tool not found: ${toolName}`);
-    return tool.execute(toolInput);
-  }, options?.catchErrors ?? false);
+  return findAndExecuteTool(agentTools, toolName, toolInput, options);
 }

@@ -55,7 +55,7 @@ import {
   PaymentIdentitySchema,
   PaymentInstrumentResponseSchema,
   CardCredentialSchema,
-  CardPaymentInstrumentSchema,
+  CardPaymentInstrumentAvailableCardPaymentInstrumentSchema,
   TokenCredentialSchema,
 
   // Payment Handler (roles)
@@ -85,7 +85,7 @@ import {
   UcpResponseCheckoutSchema,
   UcpResponseOrderSchema,
   UcpVersionSchema,
-  UcpReverseDomainNameSchema,
+  ReverseDomainNameSchema,
 
   // Capability / Service
   CapabilityBaseSchema,
@@ -144,9 +144,7 @@ describe('Checkout (base) schemas', () => {
   });
 
   it('CheckoutUpdateRequestSchema', () => {
-    expect(CheckoutUpdateRequestSchema.safeParse({ id: 'chk_123', line_items: [] }).success).toBe(
-      true,
-    );
+    expect(CheckoutUpdateRequestSchema.safeParse({ line_items: [] }).success).toBe(true);
   });
 
   it('CheckoutCompleteRequestSchema', () => {
@@ -394,9 +392,9 @@ describe('Payment schemas', () => {
     ).toBe(true);
   });
 
-  it('CardPaymentInstrumentSchema', () => {
+  it('CardPaymentInstrumentAvailableCardPaymentInstrumentSchema', () => {
     expect(
-      CardPaymentInstrumentSchema.safeParse({
+      CardPaymentInstrumentAvailableCardPaymentInstrumentSchema.safeParse({
         id: 'instr-1',
         handler_id: 'h1',
         type: 'card',
@@ -462,6 +460,7 @@ describe('Order (sub-entity) schemas', () => {
         line_items: [],
         fulfillment: {},
         totals: [],
+        currency: 'USD',
       }).success,
     ).toBe(true);
   });
@@ -552,8 +551,8 @@ describe('UCP protocol schemas', () => {
     expect(UcpVersionSchema.safeParse(UCP_VERSION).success).toBe(true);
   });
 
-  it('UcpReverseDomainNameSchema', () => {
-    expect(UcpReverseDomainNameSchema.safeParse('dev.ucp.shopping.checkout').success).toBe(true);
+  it('ReverseDomainNameSchema', () => {
+    expect(ReverseDomainNameSchema.safeParse('dev.ucp.shopping.checkout').success).toBe(true);
   });
 });
 

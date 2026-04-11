@@ -76,7 +76,7 @@ export class HttpClient {
       ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
     });
 
-    const data: unknown = await res.json().catch(() => ({}));
+    const data = await this.parseResponseBody(res);
 
     if (!res.ok) {
       this.throwFromResponse(data, res.status);
@@ -98,6 +98,30 @@ export class HttpClient {
       return data as Output;
     }
     return result.data;
+  }
+
+  private async parseResponseBody(res: Response): Promise<unknown> {
+    // Prefer .text() + JSON.parse() so the raw body is available for error
+    // messages when the response is not valid JSON (e.g. HTML from a gateway).
+    // Fall back to .json() for environments where .text() is not available
+    // (e.g. lightweight test mocks).
+    if (typeof res.text === 'function') {
+      const text = await res.text();
+      try {
+        return JSON.parse(text) as unknown;
+      } catch {
+        if (!res.ok) {
+          throw new UCPError(
+            'HTTP_ERROR',
+            `Gateway returned ${res.status} with non-JSON body: ${text.slice(0, 200)}`,
+            'error',
+            res.status,
+          );
+        }
+        return {};
+      }
+    }
+    return (await res.json().catch(() => ({}))) as unknown;
   }
 
   private throwFromResponse(data: unknown, statusCode: number): never {
@@ -181,7 +205,7 @@ function parseMessages(rawMessages: unknown[]): UCPMessage[] {
 
     return {
       type,
-      content: String(record['content'] ?? 'Unknown error'),
+      content: String(record['content'] ?? record['text'] ?? record['message'] ?? 'Unknown error'),
       ...(record['code'] !== undefined ? { code: String(record['code']) } : {}),
     };
   });

@@ -121,6 +121,32 @@ describe('getAgentTools', () => {
     expect(names).not.toContain('get_order');
   });
 
+  it('returns search_catalog when catalog.search extension is true', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.catalog.search']);
+    const names = client.getAgentTools().map((t) => t.name);
+
+    expect(names).toContain('search_catalog');
+    expect(names).not.toContain('get_product');
+  });
+
+  it('returns get_product when catalog.lookup extension is true', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.catalog.lookup']);
+    const names = client.getAgentTools().map((t) => t.name);
+
+    expect(names).toContain('get_product');
+    expect(names).not.toContain('search_catalog');
+  });
+
+  it('returns cart tools when cart is available', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.cart']);
+    const names = client.getAgentTools().map((t) => t.name);
+
+    expect(names).toContain('create_cart');
+    expect(names).toContain('get_cart');
+    expect(names).toContain('update_cart');
+    expect(names).toContain('cancel_cart');
+  });
+
   it('standalone getAgentTools() returns same as client.getAgentTools()', async () => {
     const client = await connectWithCapabilities(['dev.ucp.shopping.checkout']);
     const fromClient = client.getAgentTools();
@@ -300,5 +326,92 @@ describe('AgentTool.execute', () => {
       fulfillment: {},
     })) as Record<string, unknown>;
     expect(result['id']).toBe('ord_1');
+  });
+});
+
+describe('AgentTool.execute (catalog)', () => {
+  let tools: readonly AgentTool[];
+
+  beforeEach(async () => {
+    const client = await connectWithCapabilities([
+      'dev.ucp.shopping.catalog.search',
+      'dev.ucp.shopping.catalog.lookup',
+    ]);
+    tools = client.getAgentTools();
+  });
+
+  function findTool(name: string): AgentTool {
+    return tools.find((t) => t.name === name)!;
+  }
+
+  it('search_catalog dispatches to catalog.search', async () => {
+    mockResponse({ products: [], pagination: {} });
+    const result = (await findTool('search_catalog').execute({
+      query: 'shoes',
+    })) as Record<string, unknown>;
+    expect(result['products']).toEqual([]);
+  });
+
+  it('get_product dispatches to catalog.getProduct', async () => {
+    mockResponse({ product: { id: 'prod_1', title: 'Test' } });
+    const result = (await findTool('get_product').execute({
+      product_id: 'prod_1',
+    })) as Record<string, unknown>;
+    expect((result['product'] as Record<string, unknown>)['id']).toBe('prod_1');
+  });
+});
+
+describe('AgentTool.execute (cart)', () => {
+  const MINIMAL_CART = {
+    ucp: { version: '2026-01-23', status: 'success' },
+    id: 'cart_1',
+    line_items: [],
+    currency: 'USD',
+    totals: [],
+    messages: [],
+  };
+
+  let tools: readonly AgentTool[];
+
+  beforeEach(async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.cart']);
+    tools = client.getAgentTools();
+  });
+
+  function findTool(name: string): AgentTool {
+    return tools.find((t) => t.name === name)!;
+  }
+
+  it('create_cart dispatches to cart.create', async () => {
+    mockResponse(MINIMAL_CART);
+    const result = (await findTool('create_cart').execute({
+      line_items: [{ item: { id: 'prod_1' }, quantity: 1 }],
+    })) as Record<string, unknown>;
+    expect(result['id']).toBe('cart_1');
+  });
+
+  it('get_cart dispatches to cart.get', async () => {
+    mockResponse(MINIMAL_CART);
+    const result = (await findTool('get_cart').execute({
+      id: 'cart_1',
+    })) as Record<string, unknown>;
+    expect(result['id']).toBe('cart_1');
+  });
+
+  it('update_cart dispatches to cart.update', async () => {
+    mockResponse(MINIMAL_CART);
+    const result = (await findTool('update_cart').execute({
+      id: 'cart_1',
+      line_items: [{ item: { id: 'prod_1' }, quantity: 2 }],
+    })) as Record<string, unknown>;
+    expect(result['id']).toBe('cart_1');
+  });
+
+  it('cancel_cart dispatches to cart.cancel', async () => {
+    mockResponse(MINIMAL_CART);
+    const result = (await findTool('cancel_cart').execute({
+      id: 'cart_1',
+    })) as Record<string, unknown>;
+    expect(result['id']).toBe('cart_1');
   });
 });
