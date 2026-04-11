@@ -13,7 +13,7 @@
 
 ## Current Version
 
-`2.3.0` (on npm). SDK dependency: `@omnixhq/ucp-js-sdk@1.1.0`.
+`2.5.0` (on npm). SDK dependency: `@omnixhq/ucp-js-sdk@2.0.0`.
 
 ## Repository
 
@@ -40,6 +40,8 @@ interface ConnectedClient {
   signingKeys: readonly JWK[]; // EC P-256 keys for webhook verification
   checkout: CheckoutCapability | null; // dev.ucp.shopping.checkout
   order: OrderCapability | null; // dev.ucp.shopping.order
+  catalog: CatalogCapability | null; // dev.ucp.shopping.catalog.search / .lookup
+  cart: CartCapability | null; // dev.ucp.shopping.cart
   identityLinking: IdentityLinkingCapability | null; // dev.ucp.common.identity_linking
   paymentHandlers: PaymentHandlerMap; // namespace-keyed map from profile
   describeTools(): readonly ToolDescriptor[]; // lightweight name+description list
@@ -68,6 +70,9 @@ interface AgentTool {
 | `dev.ucp.shopping.fulfillment`    | + `set_fulfillment`, `select_destination`, `select_fulfillment_option`, `create_fulfillment_method`, `update_fulfillment_method`, `update_fulfillment_group` |
 | `dev.ucp.shopping.discount`       | + `apply_discount_codes`                                                                                                                                     |
 | `dev.ucp.shopping.order`          | + `get_order`, `update_order`, `update_order_line_item`                                                                                                      |
+| `dev.ucp.shopping.catalog.search` | + `search_catalog`                                                                                                                                           |
+| `dev.ucp.shopping.catalog.lookup` | + `get_product`                                                                                                                                              |
+| `dev.ucp.shopping.cart`           | + `create_cart`, `get_cart`, `update_cart`, `cancel_cart`                                                                                                    |
 | `dev.ucp.common.identity_linking` | + `get_authorization_url`, `exchange_auth_code`, `refresh_access_token`, `revoke_token`                                                                      |
 
 `describeTools()` returns the same set (name + capability + description only, no parameters or execute).
@@ -83,6 +88,17 @@ client.checkout.extensions.buyerConsent; // dev.ucp.shopping.buyer_consent
 client.checkout.extensions.ap2Mandate; // dev.ucp.shopping.ap2_mandate
 ```
 
+### CatalogCapability Extensions
+
+When either `dev.ucp.shopping.catalog.search` or `dev.ucp.shopping.catalog.lookup` is declared:
+
+```typescript
+client.catalog.extensions.search; // dev.ucp.shopping.catalog.search
+client.catalog.extensions.lookup; // dev.ucp.shopping.catalog.lookup
+```
+
+A server may advertise search without lookup, or both. The capability is null only when neither is declared.
+
 ## Source Layout
 
 ```
@@ -92,6 +108,9 @@ src/
     checkout.ts         — CheckoutSession, CheckoutExtensions, Create/Update/CompleteCheckoutPayload,
                           FulfillmentMethod*Payload, CheckoutSessionStatus
     order.ts            — UCPSpecOrder, OrderUpdate, WebhookEvent, LineItemUpdatePayload
+    catalog.ts          — Product, Variant, DetailOptionValue, CatalogSearchResponse,
+                          CatalogLookupResponse, SearchFilters, Pagination
+    cart.ts             — Cart, CartCreatePayload, CartUpdatePayload
     payment.ts          — PaymentCredential, PaymentInstrument, PaymentHandlerInstance, PaymentHandlerMap
     identity-linking.ts — OAuthServerMetadata, TokenResponse, AuthorizationParams,
                           TokenExchangeParams, TokenRefreshParams, TokenRevokeParams
@@ -104,6 +123,8 @@ src/
                           createFulfillmentMethod, updateFulfillmentMethod, updateFulfillmentGroup,
                           applyDiscountCodes)
     order.ts            — OrderCapability (get, update, updateLineItem)
+    catalog.ts          — CatalogCapability (search, getProduct), CatalogExtensions
+    cart.ts             — CartCapability (create, get, update, cancel)
     identity-linking.ts — IdentityLinkingCapability (getAuthorizationUrl, exchangeCode,
                           refreshToken, revokeToken)
   adapters/
@@ -117,8 +138,10 @@ src/
   UCPClient.ts          — connect(), ConnectedClient, UCPProfile, ToolDescriptor
   http.ts               — HttpClient (headers, idempotency, error parsing, auth)
   errors.ts             — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
-  schemas.ts            — Zod schema aliases + re-exports from @omnixhq/ucp-js-sdk;
-                          WebhookEventSchema (local — SDK doesn't own webhook envelope)
+  schemas.ts            — Zod schema aliases + direct re-exports from @omnixhq/ucp-js-sdk;
+                          WebhookEventSchema (local — SDK doesn't own webhook envelope).
+                          Pass-through schemas use `export { ... } from` (no import needed).
+                          index.ts uses `export * from './schemas.js'` to avoid duplication.
   verify-signature.ts   — verifyRequestSignature(), createWebhookVerifier(), WebhookVerifier
   parse-webhook-event.ts — parseWebhookEvent()
   index.ts              — Public API surface
@@ -139,11 +162,12 @@ scripts/
 
 All public types are derived from `@omnixhq/ucp-js-sdk` schemas via `z.output<typeof XSchema>`. No manual interfaces that duplicate SDK-owned shapes.
 
-Three custom (non-SDK) schemas are justified and remain:
+Four custom (non-SDK) schemas are justified and remain:
 
 | Schema                      | Location       | Why custom                                                                   |
 | --------------------------- | -------------- | ---------------------------------------------------------------------------- |
 | `WebhookEventSchema`        | `schemas.ts`   | Webhook envelope (`event_id`, `created_time`) — not owned by UCP spec        |
+| `CartResponseSchema`        | `schemas.ts`   | Alias for `CartSchema` — mirrors `CheckoutSessionSchema` pattern             |
 | `PaymentHandlerMapSchema`   | `UCPClient.ts` | Map-level wrapper composing `PaymentHandlerBaseSchema` — SDK has no map type |
 | `OAuthServerMetadataSchema` | `UCPClient.ts` | RFC 8414 (OAuth 2.0 metadata) — not UCP spec; has `.passthrough()` correctly |
 
@@ -153,7 +177,7 @@ Three custom (non-SDK) schemas are justified and remain:
 
 - `UCPClient`, `connect` — connect to a UCP server
 - `UCPError`, `UCPEscalationError`, `UCPIdempotencyConflictError`, `UCPOAuthError`
-- `CheckoutCapability`, `OrderCapability`, `IdentityLinkingCapability`
+- `CheckoutCapability`, `OrderCapability`, `CatalogCapability`, `CatalogExtensions`, `CartCapability`, `IdentityLinkingCapability`
 - `getAgentTools()`, `AgentTool`, `JsonSchema`
 - `verifyRequestSignature()`, `createWebhookVerifier()`, `WebhookVerifier`
 - `parseWebhookEvent()`
@@ -219,7 +243,7 @@ All adapters accept optional `AdapterOptions` (`catchErrors?: boolean`). When `c
 
 - **Framework**: Vitest
 - **Coverage threshold**: 80% (functions, lines, branches)
-- **Unit tests**: mock `fetch` via `vi.fn()`; 319 unit tests
+- **Unit tests**: mock `fetch` via `vi.fn()`; 382 unit tests
 - **Integration tests**: skipped unless `INTEGRATION=true`; run against `scripts/mock-ucp-server.ts` (port 3001)
 - **Type tests**: `src/__tests__/types/*.test-d.ts` via `vitest run --typecheck.only` (`npm run test:types`)
 - **CI jobs**: Build + Lint + Test, Integration (mock server), per-adapter agent examples (5 jobs)
