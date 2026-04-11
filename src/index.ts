@@ -21,6 +21,9 @@ export type { UCPMessage, MessageType, MessageSeverity, ContentType } from './er
 
 export { CheckoutCapability } from './capabilities/checkout.js';
 export { OrderCapability } from './capabilities/order.js';
+export { CatalogCapability } from './capabilities/catalog.js';
+export type { CatalogExtensions } from './capabilities/catalog.js';
+export { CartCapability } from './capabilities/cart.js';
 export { IdentityLinkingCapability } from './capabilities/identity-linking.js';
 
 export {
@@ -32,6 +35,7 @@ export {
   CreateCheckoutRequestSchema,
   UpdateCheckoutRequestSchema,
   CompleteCheckoutRequestSchema,
+  CartResponseSchema,
 
   // Enums / status
   CheckoutResponseStatusSchema,
@@ -105,14 +109,18 @@ export {
   FulfillmentGroupUpdateRequestSchema,
 
   // Payment
+  AmountSchema,
   PaymentSchema,
   PaymentCredentialSchema,
   PaymentIdentitySchema,
   PaymentInstrumentResponseSchema,
+  AvailablePaymentInstrumentSchema,
   CardCredentialSchema,
   CardCredentialCardNumberTypeEnumSchema,
-  CardPaymentInstrumentSchema,
+  CardPaymentInstrumentAvailableCardPaymentInstrumentSchema,
   TokenCredentialSchema,
+  SignedAmountSchema,
+  TotalsSchema,
 
   // Payment Handler (roles)
   PaymentHandlerBaseSchema,
@@ -138,17 +146,55 @@ export {
   MessageErrorContentTypeEnumSchema,
   MessageErrorSeverityEnumSchema,
 
+  // Error handling
+  ErrorResponseSchema,
+  ErrorCodeSchema,
+  InputCorrelationSchema,
+  UcpErrorSchema,
+  UcpSuccessSchema,
+
+  // Catalog
+  CatalogSearchSchema,
+  CatalogLookupSchema,
+  ProductSchema,
+  VariantSchema,
+  CategorySchema,
+  ProductOptionSchema,
+  OptionValueSchema,
+  DetailOptionValueSchema,
+  SelectedOptionSchema,
+  MediaSchema,
+  DescriptionSchema,
+  RatingSchema,
+  PriceSchema,
+  PriceRangeSchema,
+  PriceFilterSchema,
+  PaginationSchema,
+  SearchFiltersSchema,
+  SignalsSchema,
+
+  // Cart
+  CartSchema,
+  CartCreateRequestSchema,
+  CartUpdateRequestSchema,
+
   // UCP protocol
   UcpBaseSchema,
+  UcpBaseStatusEnumSchema,
   UcpBusinessSchema,
   UcpPlatformSchema,
   UcpEntitySchema,
+  UcpRequiresSchema,
+  UcpResponseCartSchema,
+  UcpResponseCatalogSchema,
   UcpResponseCheckoutSchema,
   UcpResponseOrderSchema,
   UcpVersionSchema,
+  UcpVersionConstraintSchema,
+  UcpSigningKeySchema,
   UcpDiscoveryBusinessProfileSchema,
   UcpDiscoveryPlatformProfileSchema,
-  UcpReverseDomainNameSchema,
+  ReverseDomainNameSchema,
 
   // Capability / Service
   CapabilityBaseSchema,
@@ -181,7 +227,6 @@ export {
   RetailLocationSchema,
   ShippingDestinationSchema,
   TotalSchema,
-  TotalTypeEnumSchema,
 } from './schemas.js';
 
 export type {
@@ -210,6 +255,16 @@ export type {
   OrderUpdatePayload,
   WebhookEvent,
   LineItemUpdatePayload,
+  Product,
+  Variant,
+  DetailOptionValue,
+  CatalogSearchResponse,
+  CatalogLookupResponse,
+  SearchFilters,
+  Pagination,
+  Cart,
+  CartCreatePayload,
+  CartUpdatePayload,
   OAuthServerMetadata,
   AuthorizationParams,
   TokenResponse,

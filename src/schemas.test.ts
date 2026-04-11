@@ -179,6 +179,7 @@ describe('SDK sub-entity schemas are importable and functional', () => {
       fulfillment: {},
       permalink_url: 'https://store.com/orders/001',
       ucp: { version: '2026-01-23', capabilities: {} },
+      currency: 'USD',
     });
     expect(result.success).toBe(true);
   });

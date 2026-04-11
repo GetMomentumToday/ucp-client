@@ -117,6 +117,45 @@ describe('capability detection', () => {
     const client = await connectWithCapabilities(['dev.ucp.shopping.order']);
     expect(client.checkout).toBeNull();
   });
+
+  it('exposes catalog when server has catalog.search capability', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.catalog.search']);
+    expect(client.catalog).not.toBeNull();
+    expect(client.catalog!.extensions.search).toBe(true);
+    expect(client.catalog!.extensions.lookup).toBe(false);
+  });
+
+  it('exposes catalog when server has catalog.lookup capability', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.catalog.lookup']);
+    expect(client.catalog).not.toBeNull();
+    expect(client.catalog!.extensions.search).toBe(false);
+    expect(client.catalog!.extensions.lookup).toBe(true);
+  });
+
+  it('sets catalog extensions based on server capabilities', async () => {
+    const client = await connectWithCapabilities([
+      'dev.ucp.shopping.catalog.search',
+      'dev.ucp.shopping.catalog.lookup',
+    ]);
+    expect(client.catalog).not.toBeNull();
+    expect(client.catalog!.extensions.search).toBe(true);
+    expect(client.catalog!.extensions.lookup).toBe(true);
+  });
+
+  it('returns null catalog when neither catalog.search nor catalog.lookup is declared', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.checkout']);
+    expect(client.catalog).toBeNull();
+  });
+
+  it('exposes cart when server has cart capability', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.cart']);
+    expect(client.cart).not.toBeNull();
+  });
+
+  it('returns null cart when server lacks cart capability', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.checkout']);
+    expect(client.cart).toBeNull();
+  });
 });
 
 describe('describeTools', () => {
@@ -167,6 +206,51 @@ describe('describeTools', () => {
     expect(toolNames).toContain('get_order');
     expect(toolNames).toContain('update_order');
     expect(toolNames).toContain('update_order_line_item');
+  });
+
+  it('includes search_catalog when catalog.search is available', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.catalog.search']);
+    const toolNames = client.describeTools().map((t) => t.name);
+
+    expect(toolNames).toContain('search_catalog');
+    expect(toolNames).not.toContain('get_product');
+  });
+
+  it('includes get_product when catalog.lookup is available', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.catalog.lookup']);
+    const toolNames = client.describeTools().map((t) => t.name);
+
+    expect(toolNames).toContain('get_product');
+    expect(toolNames).not.toContain('search_catalog');
+  });
+
+  it('includes both catalog tools when both extensions are available', async () => {
+    const client = await connectWithCapabilities([
+      'dev.ucp.shopping.catalog.search',
+      'dev.ucp.shopping.catalog.lookup',
+    ]);
+    const toolNames = client.describeTools().map((t) => t.name);
+
+    expect(toolNames).toContain('search_catalog');
+    expect(toolNames).toContain('get_product');
+  });
+
+  it('includes cart tools when cart capability is available', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.cart']);
+    const toolNames = client.describeTools().map((t) => t.name);
+
+    expect(toolNames).toContain('create_cart');
+    expect(toolNames).toContain('get_cart');
+    expect(toolNames).toContain('update_cart');
+    expect(toolNames).toContain('cancel_cart');
+  });
+
+  it('does not include cart tools when cart capability is absent', async () => {
+    const client = await connectWithCapabilities(['dev.ucp.shopping.checkout']);
+    const toolNames = client.describeTools().map((t) => t.name);
+
+    expect(toolNames).not.toContain('create_cart');
+    expect(toolNames).not.toContain('cancel_cart');
   });
 
   it('returns no tools when server has no capabilities', async () => {

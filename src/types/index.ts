@@ -33,6 +33,18 @@ export type {
 } from './order.js';
 
 export type {
+  Product,
+  Variant,
+  DetailOptionValue,
+  CatalogSearchResponse,
+  CatalogLookupResponse,
+  SearchFilters,
+  Pagination,
+} from './catalog.js';
+
+export type { Cart, CartCreatePayload, CartUpdatePayload } from './cart.js';
+
+export type {
   OAuthServerMetadata,
   AuthorizationParams,
   TokenResponse,

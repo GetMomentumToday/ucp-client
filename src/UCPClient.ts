@@ -5,6 +5,9 @@ import { UCPProfileSchema, JWKSchema, PaymentHandlerBaseSchema } from './schemas
 import type { JWK } from './types/common.js';
 import { CheckoutCapability } from './capabilities/checkout.js';
 import { OrderCapability } from './capabilities/order.js';
+import { CatalogCapability } from './capabilities/catalog.js';
+import type { CatalogExtensions } from './capabilities/catalog.js';
+import { CartCapability } from './capabilities/cart.js';
 import { IdentityLinkingCapability } from './capabilities/identity-linking.js';
 import type { UCPClientConfig } from './types/config.js';
 import { DEFAULT_UCP_VERSION, UCP_CAPABILITIES } from './types/config.js';
@@ -37,6 +40,10 @@ export interface ConnectedClient {
   readonly checkout: CheckoutCapability | null;
   /** Order operations. Null if server does not support `dev.ucp.shopping.order`. */
   readonly order: OrderCapability | null;
+  /** Catalog operations. Null if server supports neither `dev.ucp.shopping.catalog.search` nor `dev.ucp.shopping.catalog.lookup`. */
+  readonly catalog: CatalogCapability | null;
+  /** Cart operations. Null if server does not support `dev.ucp.shopping.cart`. */
+  readonly cart: CartCapability | null;
   /** OAuth 2.0 identity linking. Null if server does not support `dev.ucp.common.identity_linking`. */
   readonly identityLinking: IdentityLinkingCapability | null;
   /** Payment handlers declared by the server, keyed by namespace. */
@@ -72,6 +79,8 @@ export async function connect(
 
   const checkout = buildCheckoutCapability(http, capabilityNames);
   const order = capabilityNames.has(UCP_CAPABILITIES.ORDER) ? new OrderCapability(http) : null;
+  const catalog = buildCatalogCapability(http, capabilityNames);
+  const cart = capabilityNames.has(UCP_CAPABILITIES.CART) ? new CartCapability(http) : null;
   const identityLinking = await buildIdentityLinking(config, capabilityNames);
   const paymentHandlers = extractPaymentHandlers(profile);
   const signingKeys = extractSigningKeys(profile);
@@ -81,9 +90,11 @@ export async function connect(
     signingKeys,
     checkout,
     order,
+    catalog,
+    cart,
     identityLinking,
     paymentHandlers,
-    describeTools: () => buildToolDescriptors(checkout, order, identityLinking),
+    describeTools: () => buildToolDescriptors(checkout, order, catalog, cart, identityLinking),
     getAgentTools: () => getAgentTools(client),
   };
 
@@ -157,6 +168,19 @@ function buildCheckoutCapability(
   return new CheckoutCapability(http, extensions);
 }
 
+function buildCatalogCapability(
+  http: HttpClient,
+  capabilityNames: Set<string>,
+): CatalogCapability | null {
+  const extensions: CatalogExtensions = {
+    search: capabilityNames.has(UCP_CAPABILITIES.CATALOG_SEARCH),
+    lookup: capabilityNames.has(UCP_CAPABILITIES.CATALOG_LOOKUP),
+  };
+
+  if (!extensions.search && !extensions.lookup) return null;
+  return new CatalogCapability(http, extensions);
+}
+
 const OAuthServerMetadataSchema = z
   .object({
     issuer: z.string(),
@@ -207,6 +231,8 @@ async function buildIdentityLinking(
 function buildToolDescriptors(
   checkout: CheckoutCapability | null,
   order: OrderCapability | null,
+  catalog: CatalogCapability | null,
+  cart: CartCapability | null,
   identityLinking: IdentityLinkingCapability | null,
 ): readonly ToolDescriptor[] {
   const tools: ToolDescriptor[] = [];
@@ -280,6 +306,48 @@ function buildToolDescriptors(
         name: 'update_order_line_item',
         capability: 'order',
         description: 'Update a line item within an order',
+      },
+    );
+  }
+
+  if (catalog) {
+    if (catalog.extensions.search) {
+      tools.push({
+        name: 'search_catalog',
+        capability: 'catalog',
+        description: 'Search the product catalog',
+      });
+    }
+    if (catalog.extensions.lookup) {
+      tools.push({
+        name: 'get_product',
+        capability: 'catalog',
+        description: 'Get product details by ID',
+      });
+    }
+  }
+
+  if (cart) {
+    tools.push(
+      {
+        name: 'create_cart',
+        capability: 'cart',
+        description: 'Create a new cart',
+      },
+      {
+        name: 'get_cart',
+        capability: 'cart',
+        description: 'Get cart by ID',
+      },
+      {
+        name: 'update_cart',
+        capability: 'cart',
+        description: 'Update an existing cart',
+      },
+      {
+        name: 'cancel_cart',
+        capability: 'cart',
+        description: 'Cancel a cart',
       },
     );
   }

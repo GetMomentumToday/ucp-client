@@ -75,14 +75,18 @@ import {
   FulfillmentGroupUpdateRequestSchema,
 
   // ─── Payment ────────────────────────────────────────────────────────────────
+  AmountSchema,
   PaymentSchema,
   PaymentCredentialSchema,
   PaymentIdentitySchema,
   PaymentInstrumentResponseSchema,
+  AvailablePaymentInstrumentSchema,
   CardCredentialSchema,
   CardCredentialCardNumberTypeEnumSchema,
-  CardPaymentInstrumentSchema,
+  CardPaymentInstrumentAvailableCardPaymentInstrumentSchema,
   TokenCredentialSchema,
+  SignedAmountSchema,
+  TotalsSchema,
 
   // ─── Payment Handler (roles) ────────────────────────────────────────────────
   PaymentHandlerBaseSchema,
@@ -108,18 +112,55 @@ import {
   MessageErrorContentTypeEnumSchema,
   MessageErrorSeverityEnumSchema,
 
+  // ─── Error handling ─────────────────────────────────────────────────────────
+  ErrorResponseSchema,
+  ErrorCodeSchema,
+  InputCorrelationSchema,
+  UcpErrorSchema,
+  UcpSuccessSchema,
+
+  // ─── Catalog ────────────────────────────────────────────────────────────────
+  CatalogSearchSchema,
+  CatalogLookupSchema,
+  ProductSchema,
+  VariantSchema,
+  CategorySchema,
+  ProductOptionSchema,
+  OptionValueSchema,
+  DetailOptionValueSchema,
+  SelectedOptionSchema,
+  MediaSchema,
+  DescriptionSchema,
+  RatingSchema,
+  PriceSchema,
+  PriceRangeSchema,
+  PriceFilterSchema,
+  PaginationSchema,
+  SearchFiltersSchema,
+  SignalsSchema,
+
+  // ─── Cart ───────────────────────────────────────────────────────────────────
+  CartSchema,
+  CartCreateRequestSchema,
+  CartUpdateRequestSchema,
+
   // ─── UCP protocol ───────────────────────────────────────────────────────────
   UcpBaseSchema,
+  UcpBaseStatusEnumSchema,
   UcpBusinessSchema,
   UcpPlatformSchema,
   UcpEntitySchema,
+  UcpRequiresSchema,
+  UcpResponseCartSchema,
+  UcpResponseCatalogSchema,
   UcpResponseCheckoutSchema,
   UcpResponseOrderSchema,
   UcpVersionSchema,
+  UcpVersionConstraintSchema,
   UcpSigningKeySchema,
   UcpDiscoveryBusinessProfileSchema,
   UcpDiscoveryPlatformProfileSchema,
-  UcpReverseDomainNameSchema,
+  ReverseDomainNameSchema,
 
   // ─── Capability / Service ───────────────────────────────────────────────────
   CapabilityBaseSchema,
@@ -152,7 +193,6 @@ import {
   RetailLocationSchema,
   ShippingDestinationSchema,
   TotalSchema,
-  TotalTypeEnumSchema,
 } from '@omnixhq/ucp-js-sdk';
 
 // ─── Response / request schema aliases ─────────────────────────────────────
@@ -161,6 +201,7 @@ import {
 
 export const CheckoutSessionSchema = CheckoutResponseSchema;
 export const UCPProfileSchema = UcpDiscoveryProfileSchema;
+export const CartResponseSchema = CartSchema;
 
 export const CreateCheckoutRequestSchema = CheckoutCreateRequestSchema;
 export const UpdateCheckoutRequestSchema = CheckoutUpdateRequestSchema;
@@ -251,14 +292,18 @@ export {
   FulfillmentGroupUpdateRequestSchema,
 
   // ─── Payment ────────────────────────────────────────────────────────────────
+  AmountSchema,
   PaymentSchema,
   PaymentCredentialSchema,
   PaymentIdentitySchema,
   PaymentInstrumentResponseSchema,
+  AvailablePaymentInstrumentSchema,
   CardCredentialSchema,
   CardCredentialCardNumberTypeEnumSchema,
-  CardPaymentInstrumentSchema,
+  CardPaymentInstrumentAvailableCardPaymentInstrumentSchema,
   TokenCredentialSchema,
+  SignedAmountSchema,
+  TotalsSchema,
 
   // ─── Payment Handler (roles) ────────────────────────────────────────────────
   PaymentHandlerBaseSchema,
@@ -284,18 +329,55 @@ export {
   MessageErrorContentTypeEnumSchema,
   MessageErrorSeverityEnumSchema,
 
+  // ─── Error handling ─────────────────────────────────────────────────────────
+  ErrorResponseSchema,
+  ErrorCodeSchema,
+  InputCorrelationSchema,
+  UcpErrorSchema,
+  UcpSuccessSchema,
+
+  // ─── Catalog ────────────────────────────────────────────────────────────────
+  CatalogSearchSchema,
+  CatalogLookupSchema,
+  ProductSchema,
+  VariantSchema,
+  CategorySchema,
+  ProductOptionSchema,
+  OptionValueSchema,
+  DetailOptionValueSchema,
+  SelectedOptionSchema,
+  MediaSchema,
+  DescriptionSchema,
+  RatingSchema,
+  PriceSchema,
+  PriceRangeSchema,
+  PriceFilterSchema,
+  PaginationSchema,
+  SearchFiltersSchema,
+  SignalsSchema,
+
+  // ─── Cart ───────────────────────────────────────────────────────────────────
+  CartSchema,
+  CartCreateRequestSchema,
+  CartUpdateRequestSchema,
+
   // ─── UCP protocol ───────────────────────────────────────────────────────────
   UcpBaseSchema,
+  UcpBaseStatusEnumSchema,
   UcpBusinessSchema,
   UcpPlatformSchema,
   UcpEntitySchema,
+  UcpRequiresSchema,
+  UcpResponseCartSchema,
+  UcpResponseCatalogSchema,
   UcpResponseCheckoutSchema,
   UcpResponseOrderSchema,
   UcpVersionSchema,
+  UcpVersionConstraintSchema,
   UcpSigningKeySchema,
   UcpDiscoveryBusinessProfileSchema,
   UcpDiscoveryPlatformProfileSchema,
-  UcpReverseDomainNameSchema,
+  ReverseDomainNameSchema,
 
   // ─── Capability / Service ───────────────────────────────────────────────────
   CapabilityBaseSchema,
@@ -328,7 +410,6 @@ export {
   RetailLocationSchema,
   ShippingDestinationSchema,
   TotalSchema,
-  TotalTypeEnumSchema,
 };
 
 // ─── Webhook event schema ────────────────────────────────────────────────────
