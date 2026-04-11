@@ -95,11 +95,16 @@ async function main(): Promise<void> {
 
   // Signing keys
   assert(client.signingKeys.length > 0, `Signing keys extracted: ${client.signingKeys.length}`);
-  assert(typeof client.signingKeys[0]!.kid === 'string', `First key kid: ${client.signingKeys[0]!.kid}`);
+  assert(
+    typeof client.signingKeys[0]!.kid === 'string',
+    `First key kid: ${client.signingKeys[0]!.kid}`,
+  );
 
   // Payment handlers
   assert(typeof client.paymentHandlers === 'object', 'Payment handlers is object');
-  console.log(`    Payment handler namespaces: ${JSON.stringify(Object.keys(client.paymentHandlers))}`);
+  console.log(
+    `    Payment handler namespaces: ${JSON.stringify(Object.keys(client.paymentHandlers))}`,
+  );
 
   // Order capability (may or may not be present)
   console.log(`    Order capability: ${client.order !== null ? 'yes' : 'no'}`);
@@ -123,16 +128,25 @@ async function main(): Promise<void> {
   // Verify each tool has required fields
   for (const tool of tools) {
     assert(typeof tool.name === 'string' && tool.name.length > 0, `Tool "${tool.name}" has name`);
-    assert(typeof tool.description === 'string' && tool.description.length > 0, `Tool "${tool.name}" has description`);
+    assert(
+      typeof tool.description === 'string' && tool.description.length > 0,
+      `Tool "${tool.name}" has description`,
+    );
     assert(tool.parameters.type === 'object', `Tool "${tool.name}" parameters.type is "object"`);
     assert(typeof tool.execute === 'function', `Tool "${tool.name}" has execute function`);
   }
 
   // describeTools() + getAgentTools() on client
   const descriptors = client.describeTools();
-  assert(descriptors.length === tools.length, `describeTools() count matches: ${descriptors.length}`);
+  assert(
+    descriptors.length === tools.length,
+    `describeTools() count matches: ${descriptors.length}`,
+  );
   const clientTools = client.getAgentTools();
-  assert(clientTools.length === tools.length, `client.getAgentTools() count matches: ${clientTools.length}`);
+  assert(
+    clientTools.length === tools.length,
+    `client.getAgentTools() count matches: ${clientTools.length}`,
+  );
 
   // ─── 3. Adapter Conversion ─────────────────────────────────────────────
   console.log('\n3. Adapter Conversion');
@@ -144,7 +158,10 @@ async function main(): Promise<void> {
 
   const anthropicTools = toAnthropicTools(tools);
   assert(anthropicTools.length === tools.length, `Anthropic tools: ${anthropicTools.length}`);
-  assert(anthropicTools[0]!.input_schema.type === 'object', 'Anthropic input_schema.type is "object"');
+  assert(
+    anthropicTools[0]!.input_schema.type === 'object',
+    'Anthropic input_schema.type is "object"',
+  );
 
   const mcpTools = toMCPTools(tools);
   assert(mcpTools.length === tools.length, `MCP tools: ${mcpTools.length}`);
