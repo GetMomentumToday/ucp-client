@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0](https://github.com/OmnixHQ/ucp-client/compare/v2.5.0...v3.0.0) (2026-04-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* CardPaymentInstrumentSchema removed (replaced by CardPaymentInstrumentAvailableCardPaymentInstrumentSchema). TotalTypeEnumSchema removed (no replacement in SDK v2.0.0). UcpReverseDomainNameSchema renamed to ReverseDomainNameSchema.
+
+### Features
+
+* upgrade @omnixhq/ucp-js-sdk to v2.0.0 with catalog and cart capabilities ([#38](https://github.com/OmnixHQ/ucp-client/issues/38)) ([08cba5e](https://github.com/OmnixHQ/ucp-client/commit/08cba5e6944e63f285a65833055d9ae633aac7f8))
+
+
+### Documentation
+
+* update CLAUDE.md and project-context.md for SDK v2.0.0 ([#40](https://github.com/OmnixHQ/ucp-client/issues/40)) ([9b59f3b](https://github.com/OmnixHQ/ucp-client/commit/9b59f3bf58726bba53c36999bba3546ea6c147ac))
+
 ## [2.5.0](https://github.com/OmnixHQ/ucp-client/compare/v2.4.0...v2.5.0) (2026-04-02)
 
 
