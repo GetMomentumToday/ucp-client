@@ -17,8 +17,8 @@ It is a **library, not a server** — no port, no process, no Docker container.
 
 ```
 src/
-  types/           — Domain-split types (config, checkout, order, payment, identity-linking, common)
-  capabilities/    — CheckoutCapability, OrderCapability, IdentityLinkingCapability
+  types/           — Domain-split types (config, checkout, order, payment, catalog, cart, identity-linking, common)
+  capabilities/    — CheckoutCapability, OrderCapability, CatalogCapability, CartCapability, IdentityLinkingCapability
   adapters/        — Framework adapters (openai, anthropic, vercel-ai, langchain, mcp, catch-errors)
   http.ts          — Shared HttpClient (headers, idempotency, error parsing)
   errors.ts        — UCPError, UCPEscalationError, UCPIdempotencyConflictError, UCPOAuthError
@@ -35,13 +35,17 @@ scripts/
 
 ### Capability Mapping
 
-| Server Capability                 | Client Property          | Null when absent |
-| --------------------------------- | ------------------------ | ---------------- |
-| `dev.ucp.shopping.checkout`       | `client.checkout`        | Yes              |
-| `dev.ucp.shopping.order`          | `client.order`           | Yes              |
-| `dev.ucp.common.identity_linking` | `client.identityLinking` | Yes              |
+| Server Capability                                                     | Client Property          | Null when absent      |
+| --------------------------------------------------------------------- | ------------------------ | --------------------- |
+| `dev.ucp.shopping.checkout`                                           | `client.checkout`        | Yes                   |
+| `dev.ucp.shopping.order`                                              | `client.order`           | Yes                   |
+| `dev.ucp.shopping.catalog.search` / `dev.ucp.shopping.catalog.lookup` | `client.catalog`         | Yes (null if neither) |
+| `dev.ucp.shopping.cart`                                               | `client.cart`            | Yes                   |
+| `dev.ucp.common.identity_linking`                                     | `client.identityLinking` | Yes                   |
 
-Extensions (`fulfillment`, `discount`, `buyerConsent`, `ap2Mandate`) are booleans on `checkout.extensions`.
+Checkout extensions (`fulfillment`, `discount`, `buyerConsent`, `ap2Mandate`) are booleans on `checkout.extensions`.
+
+Catalog extensions (`search`, `lookup`) are booleans on `catalog.extensions`.
 
 ## Project Context Maintenance
 
